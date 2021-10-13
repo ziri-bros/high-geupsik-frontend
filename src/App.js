@@ -1,9 +1,8 @@
 import React from 'react';
+import RootRoute from './routes';
 
 const App = () => (
-  <div>
-    test
-  </div>
+  <RootRoute />
 );
 
 export default App;
