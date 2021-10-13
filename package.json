@@ -2,20 +2,6 @@
   "name": "high-geupsik-frontend",
   "version": "0.1.0",
   "private": true,
-  "babel": {
-    "presets": ["@emotion/babel-preset-css-prop"],
-    "plugins": [
-      [
-        "@emotion",
-        {
-          "sourceMap": true,
-          "autoLabel": "dev-only",
-          "labelFormat": "[local]",
-          "cssPropOptimization": true
-        }
-      ]
-    ]
-  },
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
