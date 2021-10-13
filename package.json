@@ -2,6 +2,20 @@
   "name": "high-geupsik-frontend",
   "version": "0.1.0",
   "private": true,
+  "babel": {
+    "presets": ["@emotion/babel-preset-css-prop"],
+    "plugins": [
+      [
+        "@emotion",
+        {
+          "sourceMap": true,
+          "autoLabel": "dev-only",
+          "labelFormat": "[local]",
+          "cssPropOptimization": true
+        }
+      ]
+    ]
+  },
   "dependencies": {
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
@@ -9,6 +23,7 @@
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
     "eslint-config-prettier": "^8.3.0",
+    "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-redux": "^7.2.5",
@@ -44,6 +59,9 @@
     ]
   },
   "devDependencies": {
+    "@babel/preset-react": "^7.14.5",
+    "@emotion/babel-plugin": "^11.3.0",
+    "@emotion/babel-preset-css-prop": "^11.2.0",
     "eslint-config-airbnb": "^18.2.1"
   }
 }
