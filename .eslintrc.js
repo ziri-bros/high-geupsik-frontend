@@ -19,6 +19,6 @@ module.exports = {
     'operator-linebreak': 0,
     'object-curly-newline': 0,
     'no-confusing-arrow': 0,
+    'linebreak-style': 0,
   },
-
 };
