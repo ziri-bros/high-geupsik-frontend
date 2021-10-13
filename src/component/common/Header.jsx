@@ -4,7 +4,7 @@ import React from 'react';
 const HeaderStyle = styled.div`
     display:flex;
     justify-content:space-between;
-    margin:30px 23px 6px  20px;
+    margin:30px 23px 6px 20px;
 `;
 
 const LogoBox = styled.div`
@@ -42,7 +42,6 @@ const Header = () => (
         <img src="/images/icons/bell.png" alt="search" />
       </IconItem>
     </IconBox>
-
   </HeaderStyle>
 );
 
