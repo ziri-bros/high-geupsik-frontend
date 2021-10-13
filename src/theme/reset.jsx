@@ -1,5 +1,3 @@
-// GlobalStyle 적용하는 코드
-
 import { css } from '@emotion/react';
 
 const reset = css`
