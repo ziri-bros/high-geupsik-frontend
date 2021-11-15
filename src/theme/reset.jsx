@@ -7,6 +7,7 @@ const reset = css`
     body {
         letter-spacing: -0.03px;
         line-height: 1.5;
+        margin:0;
     }
     input {
         all: unset;
