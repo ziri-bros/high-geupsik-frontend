@@ -36,7 +36,7 @@ const lists = [
   {
     id: 1,
     name: '전체',
-    url: '/board/entire',
+    url: '/board',
   },
   {
     id: 2,
