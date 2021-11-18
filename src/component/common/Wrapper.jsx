@@ -9,15 +9,11 @@ const WrapperStyle = styled.div`
     margin:0 auto;
     position: relative;
 
-    /* 구분을 위한 css 코드 */
-    border:1px solid gray;
+  /* 구분을 위한 css 코드 */
+  border: 1px solid gray;
 `;
 
-const Wrapper = ({ children }) => (
-  <WrapperStyle>
-    {children}
-  </WrapperStyle>
-);
+const Wrapper = ({ children }) => <WrapperStyle>{children}</WrapperStyle>;
 
 Wrapper.propTypes = {
   children: PropTypes.node.isRequired,
