@@ -10,7 +10,13 @@ const RootRoute = () => (
   <>
     <Global styles={reset} />
     <Switch>
-      <Route path="/" component={Auth} exact />
+      <Route path="/" exact>
+        <Auth type="login" />
+      </Route>
+      <Route path="/signup" exact>
+        <Auth type="signup" />
+      </Route>
+
       <Route path="/board" component={Board} exact />
 
       {/* 경로가 유효하지 않을 때 */}

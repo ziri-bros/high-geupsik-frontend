@@ -8,7 +8,7 @@ const HeaderStyle = styled.div`
   margin: 30px 23px 6px 20px;
 `;
 
-const LogoBox = styled.div`
+const LogoBox = styled(Link)`
   img {
     width: 93px;
     cursor: pointer;
@@ -32,11 +32,9 @@ const IconItem = styled.div`
 
 const Header = () => (
   <HeaderStyle>
-    <Link to="/home">
-      <LogoBox>
-        <img src="/images/logo/logo.png" alt="logo" />
-      </LogoBox>
-    </Link>
+    <LogoBox to="/home">
+      <img src="/images/logo/logo.png" alt="logo" />
+    </LogoBox>
     <IconBox>
       <IconItem>
         <img src="/images/icons/search.png" alt="search" />
