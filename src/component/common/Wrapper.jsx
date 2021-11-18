@@ -7,6 +7,7 @@ const WrapperStyle = styled.div`
     max-width:480px;
     height:100vh;
     margin:0 auto;
+    position: relative;
 
     /* 구분을 위한 css 코드 */
     border:1px solid gray;
