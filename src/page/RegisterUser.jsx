@@ -1,20 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
-import Sign from '../component/Login';
+import RegisterUserInfo from '../component/RegisterUserInfo';
 
-const Auth = ({ type }) => (
+const RegisterUser = () => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
-    <Sign type={type} />
+    <RegisterUserInfo />
   </Wrapper>
 );
 
-Auth.propTypes = {
-  type: PropTypes.string.isRequired,
-};
-
-export default Auth;
+export default RegisterUser;
