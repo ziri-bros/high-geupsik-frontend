@@ -85,6 +85,52 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
+const BlackBackground = styled.div`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DeleteModal = styled.div`
+  width: 234px;
+  height: 110px;
+  background: white;
+  font-size: 14px;
+  font-weight : 500;
+  color: #4f4f4f;
+  border-radius: 5px;
+`;
+
+const ModalTitle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 30px;
+  border-bottom: 1px solid #adadad;
+`;
+
+const ModalBtnWrapper = styled.div`
+  display: flex;
+  height: 42px;
+`;
+
+const ModalBtn = styled.div`
+  color: #5D6E1E;
+  width: 50%;
+  height: 96%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-right: ${props => props.first && '1px solid #adadad'};
+`;
+
 const lists = [
   { name: '0교시', id: '0' },
   { name: '1교시', id: '1' },
@@ -99,8 +145,10 @@ const lists = [
 
 const Timetable = () => {
   const [buttonOn, setButtonOn] = useState(true);
+  const [onDelete, setOnDelete] = useState(true);
 
   const onClickBtn = () => setButtonOn(!buttonOn);
+  const onClickDeleteBtn = () => setOnDelete(!onDelete);
 
   return (
     <TimetableWrapper>
@@ -117,7 +165,7 @@ const Timetable = () => {
             <Icon onClick={onClickBtn}>
               <img className="deleteImg" src="/images/icons/close.png" alt="close" />
             </Icon>
-            <DeleteBtn className="deleteBtn">모두 지우기</DeleteBtn>
+            <DeleteBtn onClick={onClickDeleteBtn} className="deleteBtn">모두 지우기</DeleteBtn>
           </>
         )}
       </Head>
@@ -142,6 +190,19 @@ const Timetable = () => {
         ))}
       </Table>
       {!buttonOn && <Button footer>저장</Button>}
+
+      {/* 지우기 클릭시 생성되는 모달 창 */}
+      {!onDelete && (
+        <BlackBackground>
+          <DeleteModal>
+            <ModalTitle>시간표를 모두 지우시겠습니까?</ModalTitle>
+            <ModalBtnWrapper>
+              <ModalBtn first onClick={onClickDeleteBtn}>취소</ModalBtn>
+              <ModalBtn>확인</ModalBtn>
+            </ModalBtnWrapper>
+          </DeleteModal>
+        </BlackBackground>
+      )}
     </TimetableWrapper>
   );
 };
