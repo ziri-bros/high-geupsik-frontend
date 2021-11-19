@@ -18,7 +18,7 @@ const RootRoute = () => (
       <Route path="/signup" exact>
         <AuthPage type="signup" />
       </Route>
-      <Route path="/register" component={RegisterUserPage} exact />
+      <Route path={['/register', '/modify']} component={RegisterUserPage} exact />
       <Route path="/board" component={Board} exact />
       <Route path="/myInfo" component={MyInfoPage} exact />
 
