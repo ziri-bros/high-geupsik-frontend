@@ -1,5 +1,8 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import Comment from '../component/common/Comment';
+import Cocomment from '../component/common/Cocomment';
+import CommentInput from '../component/common/CommentInput';
 
 const PostWrapper = styled.div`
   display: flex;
@@ -190,74 +193,103 @@ const examplePost = {
     {
       name: '익명1',
       time: '21/7/23 11:50',
-      good: 0,
+      content: '냉모밀 먹어라',
+      goodCount: 0,
       cocomments: [],
     },
     {
       name: '익명2',
       time: '21/7/23 11:50',
-      good: 2,
-      cocomments: [],
+      content: '치킨 먹어라',
+      goodCount: 2,
+      cocomments: [
+        {
+          name: '익명(글쓴이)',
+          time: '21/7/23 11:50',
+          content: '추천 고마워',
+          goodCount: 0,
+        },
+        {
+          name: '익명2',
+          time: '21/7/23 11:50',
+          content: '맛있게 먹어',
+          goodCount: 0,
+        },
+      ],
     },
   ],
 };
 
-const Post = () => (
-  <PostWrapper>
-    <LeftArrow>
-      <img src="/images/icons/left_arrow.png" alt="left_arrow" />
-    </LeftArrow>
+const PostPage = () => (
+  <>
+    <PostWrapper>
+      <LeftArrow>
+        <img src="/images/icons/left_arrow.png" alt="left_arrow" />
+      </LeftArrow>
 
-    <PostMainWrapper>
-      <PostTitleWrapper>
-        <PostMainTitle>{examplePost.title}</PostMainTitle>
-        <PostMoreButton>
-          <img src="/images/icons/more.png" alt="more" />
-        </PostMoreButton>
-      </PostTitleWrapper>
-      <PostSubTitleWrapper>
-        <PostSubTitle>{examplePost.time}</PostSubTitle>
-        <PostSubTitle>|</PostSubTitle>
-        <View>
-          <img src="/images/icons/view.png" alt="view" />
-        </View>
-        <PostSubTitle>{examplePost.view}</PostSubTitle>
-      </PostSubTitleWrapper>
-    </PostMainWrapper>
+      <PostMainWrapper>
+        <PostTitleWrapper>
+          <PostMainTitle>{examplePost.title}</PostMainTitle>
+          <PostMoreButton>
+            <img src="/images/icons/more.png" alt="more" />
+          </PostMoreButton>
+        </PostTitleWrapper>
+        <PostSubTitleWrapper>
+          <PostSubTitle>{examplePost.time}</PostSubTitle>
+          <PostSubTitle>|</PostSubTitle>
+          <View>
+            <img src="/images/icons/view.png" alt="view" />
+          </View>
+          <PostSubTitle>{examplePost.view}</PostSubTitle>
+        </PostSubTitleWrapper>
+      </PostMainWrapper>
 
-    <PostContentsWrapper>
-      <PostContents>{examplePost.content}</PostContents>
-      <PostImages>
-        {examplePost.images.map((img, index) => (
-          <img src={img} alt={index} />
+      <PostContentsWrapper>
+        <PostContents>{examplePost.content}</PostContents>
+        <PostImages>
+          {examplePost.images.map((img, index) => (
+            <img src={img} alt={index} />
+          ))}
+        </PostImages>
+        {examplePost.liked ? (
+          <PostLikedButton>
+            <img src="/images/icons/filledHeart.png" alt="liked" />
+            좋아요
+          </PostLikedButton>
+        ) : (
+          <PostLikeButton>
+            <img src="/images/icons/emptyHeart.png" alt="like" />
+            좋아요
+          </PostLikeButton>
+        )}
+      </PostContentsWrapper>
+
+      <PostCommentsWrapper>
+        <PostCommentsNumberWrapper>
+          <PostCommentsLikedNumber>
+            <img src="/images/icons/heart.png" alt="heart" />
+            {examplePost.like}
+          </PostCommentsLikedNumber>
+          <PostCommentsNumber>
+            <img src="/images/icons/chat.png" alt="comment" />
+            {examplePost.comments.length}
+          </PostCommentsNumber>
+        </PostCommentsNumberWrapper>
+        {examplePost.comments.map(comment => (
+          <Comment comments={comment} />
         ))}
-      </PostImages>
-      {examplePost.liked ? (
-        <PostLikedButton>
-          <img src="/images/icons/filledHeart.png" alt="liked" />
-          좋아요
-        </PostLikedButton>
-      ) : (
-        <PostLikeButton>
-          <img src="/images/icons/emptyHeart.png" alt="like" />
-          좋아요
-        </PostLikeButton>
-      )}
-    </PostContentsWrapper>
 
-    <PostCommentsWrapper>
-      <PostCommentsNumberWrapper>
-        <PostCommentsLikedNumber>
-          <img src="/images/icons/heart.png" alt="heart" />
-          {examplePost.like}
-        </PostCommentsLikedNumber>
-        <PostCommentsNumber>
-          <img src="/images/icons/chat.png" alt="comment" />
-          {examplePost.comments.length}
-        </PostCommentsNumber>
-      </PostCommentsNumberWrapper>
-    </PostCommentsWrapper>
-  </PostWrapper>
+        {/* 이중 map 안되는 부분 */}
+        {/* {examplePost.comments.map(comment => (
+          <Comment comments={comment} />
+          {comment.cocomments.map((cocomment) => (
+            <Cocomment cocomments={cocomment} />
+          ))}
+        ))} */}
+      </PostCommentsWrapper>
+    </PostWrapper>
+    <CommentInput />
+  </>
 );
 
-export default Post;
+export default PostPage;

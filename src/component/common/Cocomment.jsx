@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import Cocomment from './Cocomment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
+  background: #fdfff6;
   width: 440px;
   height: 100px;
   display: flex;
@@ -21,6 +21,14 @@ const CommentLineWrapper1 = styled.div`
 const CommentNameButtonWrapper = styled.div`
   display: flex;
   align-items: center;
+`;
+
+const CommentArrow = styled.div`
+  margin-right: 8px;
+  img {
+    width: 24px;
+    height: 24px;
+  }
 `;
 
 const CommentName = styled.div`
@@ -54,6 +62,7 @@ const CommentTime = styled.div`
 const CommentLineWrapper2 = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 32px;
 `;
 
 const CommentContents = styled.div`
@@ -64,6 +73,7 @@ const CommentContents = styled.div`
 const CommentLineWrapper3 = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 32px;
 `;
 
 const CommentLikeButton = styled.div`
@@ -97,50 +107,46 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comments }) => (
-  <>
-    <CommentWrapper>
-      <CommentLineWrapper1>
-        <CommentNameButtonWrapper>
-          <CommentName>{comments.name}</CommentName>
-          <CommentMoreButton>
-            <img src="/images/icons/more.png" alt="more" />
-          </CommentMoreButton>
-        </CommentNameButtonWrapper>
-        <CommentTime>{comments.time}</CommentTime>
-      </CommentLineWrapper1>
-      <CommentLineWrapper2>
-        <CommentContents>{comments.content}</CommentContents>
-      </CommentLineWrapper2>
-      <CommentLineWrapper3>
-        <CommentLikeButton>
-          {comments.goodCount > 0 ? (
-            <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
-          ) : (
-            <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
-          )}
-          {comments.goodCount}
-        </CommentLikeButton>
-        <CommentNumber>
-          {comments.cocomments.length > 0 ? (
-            <img src="/images/icons/comment-green.png" alt="comment" />
-          ) : (
-            <img src="/images/icons/comment-grey.png" alt="comment" />
-          )}
-          {comments.cocomments.length}
-        </CommentNumber>
-      </CommentLineWrapper3>
-    </CommentWrapper>
-    {comments.cocomments.length > 0 &&
-      comments.cocomments.map(cocomment => (
-        <Cocomment cocomments={cocomment} />
-      ))}
-  </>
+const Cocomment = ({ cocomments }) => (
+  <CommentWrapper>
+    <CommentLineWrapper1>
+      <CommentNameButtonWrapper>
+        <CommentArrow>
+          <img src="/images/icons/return.png" alt="return" />
+        </CommentArrow>
+        <CommentName>{cocomments.name}</CommentName>
+        <CommentMoreButton>
+          <img src="/images/icons/more.png" alt="more" />
+        </CommentMoreButton>
+      </CommentNameButtonWrapper>
+      <CommentTime>{cocomments.time}</CommentTime>
+    </CommentLineWrapper1>
+    <CommentLineWrapper2>
+      <CommentContents>{cocomments.content}</CommentContents>
+    </CommentLineWrapper2>
+    <CommentLineWrapper3>
+      <CommentLikeButton>
+        {cocomments.goodCount > 0 ? (
+          <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
+        ) : (
+          <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
+        )}
+        {cocomments.goodCount}
+      </CommentLikeButton>
+      <CommentNumber>
+        {cocomments.length > 0 ? (
+          <img src="/images/icons/comment-green.png" alt="comment" />
+        ) : (
+          <img src="/images/icons/comment-grey.png" alt="comment" />
+        )}
+        {cocomments.length}
+      </CommentNumber>
+    </CommentLineWrapper3>
+  </CommentWrapper>
 );
 
-Comment.propTypes = {
-  comments: PropTypes.arrayOf,
+Cocomment.propTypes = {
   cocomments: PropTypes.arrayOf,
 };
 
-export default Comment;
+export default Cocomment;
