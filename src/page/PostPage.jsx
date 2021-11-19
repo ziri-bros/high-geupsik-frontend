@@ -94,8 +94,8 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 320px;
-    height: 320px;
+    width: 440px;
+    height: 440px;
     margin-top: 20px;
   }
 `;
@@ -185,10 +185,11 @@ const examplePost = {
   title: '안녕하세요',
   time: '21/7/23 11:34',
   view: '100',
-  content: '점심메뉴 추천 좀 아이 시발',
+  content: '점심메뉴 추천 좀',
   images: ['/images/icons/square.png', '/images/icons/square.png'],
   like: 5,
   liked: true,
+  totalCommentCount: 4,
   comments: [
     {
       name: '익명1',
@@ -208,12 +209,14 @@ const examplePost = {
           time: '21/7/23 11:50',
           content: '추천 고마워',
           goodCount: 0,
+          cocommentsCount: 1,
         },
         {
           name: '익명2',
           time: '21/7/23 11:50',
           content: '맛있게 먹어',
-          goodCount: 0,
+          goodCount: 1,
+          cocommentsCount: 0,
         },
       ],
     },
@@ -272,7 +275,7 @@ const PostPage = () => (
           </PostCommentsLikedNumber>
           <PostCommentsNumber>
             <img src="/images/icons/chat.png" alt="comment" />
-            {examplePost.comments.length}
+            {examplePost.totalCommentCount}
           </PostCommentsNumber>
         </PostCommentsNumberWrapper>
         {examplePost.comments.map(comment => (

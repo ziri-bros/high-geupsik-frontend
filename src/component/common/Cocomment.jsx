@@ -134,12 +134,12 @@ const Cocomment = ({ cocomments }) => (
         {cocomments.goodCount}
       </CommentLikeButton>
       <CommentNumber>
-        {cocomments.length > 0 ? (
+        {cocomments.cocommentsCount > 0 ? (
           <img src="/images/icons/comment-green.png" alt="comment" />
         ) : (
           <img src="/images/icons/comment-grey.png" alt="comment" />
         )}
-        {cocomments.length}
+        {cocomments.cocommentsCount}
       </CommentNumber>
     </CommentLineWrapper3>
   </CommentWrapper>
