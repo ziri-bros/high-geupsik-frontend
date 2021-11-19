@@ -1,6 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
+import Button from './common/Button';
 
 const TimetableWrapper = styled.div`
   margin: 19px 20px 0 20px;
@@ -140,6 +141,7 @@ const Timetable = () => {
           </Trow>
         ))}
       </Table>
+      {!buttonOn && <Button footer>저장</Button>}
     </TimetableWrapper>
   );
 };
