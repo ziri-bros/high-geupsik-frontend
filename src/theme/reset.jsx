@@ -8,6 +8,7 @@ const reset = css`
         letter-spacing: -0.03px;
         line-height: 1.5;
         margin:0;
+        font-family: Noto sans KR;
     }
     input {
         all: unset;

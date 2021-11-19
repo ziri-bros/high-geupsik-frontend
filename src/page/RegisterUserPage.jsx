@@ -4,7 +4,7 @@ import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import RegisterUserInfo from '../component/RegisterUserInfo';
 
-const RegisterUser = () => (
+const RegisterUserPage = () => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
@@ -12,4 +12,4 @@ const RegisterUser = () => (
   </Wrapper>
 );
 
-export default RegisterUser;
+export default RegisterUserPage;
