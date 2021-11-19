@@ -31,7 +31,7 @@ const Button = ({ children, footer }) => (
 
 Button.propTypes = {
   children: PropTypes.string.isRequired,
-  footer: PropTypes.string,
+  footer: PropTypes.bool,
 };
 
 export default Button;
