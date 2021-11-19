@@ -140,7 +140,6 @@ const Comment = ({ comments }) => (
 
 Comment.propTypes = {
   comments: PropTypes.arrayOf,
-  cocomments: PropTypes.arrayOf,
 };
 
 export default Comment;
