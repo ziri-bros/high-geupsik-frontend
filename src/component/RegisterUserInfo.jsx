@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useRef, useState } from 'react';
+import Button from './common/Button';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -82,24 +83,6 @@ const ImageUploadButton = styled.div`
   cursor: pointer;
 `;
 
-const RegisterBtn = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 11px 5px 11px;
-  height: 40px;
-  background: #5d6e1e;
-  border-radius: 5px;
-  cursor:pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-`;
-
 const RegisterUserInfo = () => {
   const [imgData, setImgData] = useState(null);
   const fileInput = useRef(null);
@@ -139,7 +122,7 @@ const RegisterUserInfo = () => {
           <ImageUploadButton onClick={onClickBtn}>학생증 첨부</ImageUploadButton>
         </ImageWrapper>
       </InputWrapper>
-      <RegisterBtn>가입하기</RegisterBtn>
+      <Button footer>가입하기</Button>
     </RegisterUserInfoBox>
   );
 };

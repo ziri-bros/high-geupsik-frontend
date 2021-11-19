@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 import React from 'react';
+import Button from './common/Button';
 
 const MyInfoWrapper = styled.div`
   margin: 20px 10px;
@@ -39,8 +40,8 @@ const MyInfo = () => (
         <Text area>서울</Text>
         <Text>성신여자고등학교</Text>
       </div>
-
     </MyInfoBox>
+    <Button>내 정보 수정</Button>
   </MyInfoWrapper>
 );
 
