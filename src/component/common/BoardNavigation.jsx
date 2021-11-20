@@ -51,12 +51,12 @@ const lists = [
   {
     id: 4,
     name: '인기',
-    url: '/board/popular',
+    url: '/board/hot',
   },
   {
     id: 5,
     name: '홍보',
-    url: '/board/promote',
+    url: '/board/promotion',
   },
 ];
 
