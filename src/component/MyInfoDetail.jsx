@@ -43,7 +43,7 @@ const DropdownMenu = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 3px  10px 0 ;
+  padding: 3px  0  0 10px;
   border: 1px solid gray;
   width: ${props => props.local ? '152px' : '223px'};
   height: 35px;
@@ -52,10 +52,9 @@ const DropdownMenu = styled.div`
 
 const Icon = styled.div`
   img{
-    width: 10px;
-    height: 8px;
+    width: 35px;
+    display: flex;  
     cursor: pointer;
-    margin-bottom: 2px;
   }
 `;
 
