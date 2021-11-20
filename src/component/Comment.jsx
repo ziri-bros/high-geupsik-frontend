@@ -5,7 +5,7 @@ import Cocomment from './Cocomment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
-  /* width: 440px; */
+  width: 100%;
   height: 100px;
   width:100%;
   display: flex;
@@ -98,13 +98,13 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comments }) => (
+const Comment = ({ comments, morePopHandle }) => (
   <>
     <CommentWrapper>
       <CommentMainWrapper>
         <CommentNameButtonWrapper>
           <CommentName>{comments.name}</CommentName>
-          <CommentMoreButton>
+          <CommentMoreButton onClick={morePopHandle}>
             <img src="/images/icons/more.png" alt="more" />
           </CommentMoreButton>
         </CommentNameButtonWrapper>
@@ -134,13 +134,14 @@ const Comment = ({ comments }) => (
     </CommentWrapper>
     {comments.cocomments.length > 0 &&
       comments.cocomments.map(cocomment => (
-        <Cocomment cocomments={cocomment} />
+        <Cocomment cocomments={cocomment} morePopHandle={morePopHandle} />
       ))}
   </>
 );
 
 Comment.propTypes = {
   comments: PropTypes.arrayOf,
+  morePopHandle: PropTypes.func,
 };
 
 export default Comment;

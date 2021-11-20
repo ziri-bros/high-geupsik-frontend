@@ -8,9 +8,10 @@ import NoMatchPage from '../page/NoMatchPage';
 import MyInfoDetailPage from '../page/MyInfoDetailPage';
 import reset from '../theme/reset';
 import SchedulePage from '../page/SchedulePage';
+import PostPage from '../page/PostPage';
+import PostCreatePage from '../page/PostCreatePage';
 import AllowPage from '../page/AllowPage';
 import AdminPage from '../page/AdminPage';
-import Home from '../page/Home';
 
 const RootRoute = () => (
   <>
@@ -22,7 +23,6 @@ const RootRoute = () => (
       <Route path="/signup" exact>
         <AuthPage type="signup" />
       </Route>
-      <Route path="/home" component={Home} exact />
       <Route
         path={['/register', '/modify']}
         component={MyInfoDetailPage}
@@ -39,6 +39,8 @@ const RootRoute = () => (
         component={BoardPage}
         exact
       />
+      <Route path="/board/post" component={PostPage} exact />
+      <Route path="/postCreate" component={PostCreatePage} exact />
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={AllowPage} exact />

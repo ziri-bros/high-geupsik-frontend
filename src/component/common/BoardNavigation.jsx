@@ -3,9 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 const BoardNavigationBox = styled.div`
-  height: 50px;
   display: flex;
   align-items: center;
+  height: 50px;
   border-bottom: 0.5px solid #5d6e1e;
 `;
 
