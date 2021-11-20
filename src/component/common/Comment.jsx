@@ -12,7 +12,7 @@ const CommentWrapper = styled.div`
   justify-content: space-evenly;
 `;
 
-const CommentLineWrapper1 = styled.div`
+const CommentMainWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -51,7 +51,7 @@ const CommentTime = styled.div`
   margin-right: 10px;
 `;
 
-const CommentLineWrapper2 = styled.div`
+const CommentSubWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -61,7 +61,7 @@ const CommentContents = styled.div`
   font-size: 14px;
 `;
 
-const CommentLineWrapper3 = styled.div`
+const CommentIconWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
@@ -100,7 +100,7 @@ const CommentNumber = styled.div`
 const Comment = ({ comments }) => (
   <>
     <CommentWrapper>
-      <CommentLineWrapper1>
+      <CommentMainWrapper>
         <CommentNameButtonWrapper>
           <CommentName>{comments.name}</CommentName>
           <CommentMoreButton>
@@ -108,11 +108,11 @@ const Comment = ({ comments }) => (
           </CommentMoreButton>
         </CommentNameButtonWrapper>
         <CommentTime>{comments.time}</CommentTime>
-      </CommentLineWrapper1>
-      <CommentLineWrapper2>
+      </CommentMainWrapper>
+      <CommentSubWrapper>
         <CommentContents>{comments.content}</CommentContents>
-      </CommentLineWrapper2>
-      <CommentLineWrapper3>
+      </CommentSubWrapper>
+      <CommentIconWrapper>
         <CommentLikeButton>
           {comments.goodCount > 0 ? (
             <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
@@ -129,7 +129,7 @@ const Comment = ({ comments }) => (
           )}
           {comments.cocomments.length}
         </CommentNumber>
-      </CommentLineWrapper3>
+      </CommentIconWrapper>
     </CommentWrapper>
     {comments.cocomments.length > 0 &&
       comments.cocomments.map(cocomment => (

@@ -12,7 +12,7 @@ const CommentWrapper = styled.div`
   justify-content: space-evenly;
 `;
 
-const CommentLineWrapper1 = styled.div`
+const CommentMainWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,7 +59,7 @@ const CommentTime = styled.div`
   margin-right: 10px;
 `;
 
-const CommentLineWrapper2 = styled.div`
+const CommentSubWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 32px;
@@ -70,7 +70,7 @@ const CommentContents = styled.div`
   font-size: 14px;
 `;
 
-const CommentLineWrapper3 = styled.div`
+const CommentIconWrapper = styled.div`
   display: flex;
   align-items: center;
   margin-left: 32px;
@@ -109,7 +109,7 @@ const CommentNumber = styled.div`
 
 const Cocomment = ({ cocomments }) => (
   <CommentWrapper>
-    <CommentLineWrapper1>
+    <CommentMainWrapper>
       <CommentNameButtonWrapper>
         <CommentArrow>
           <img src="/images/icons/return.png" alt="return" />
@@ -120,11 +120,11 @@ const Cocomment = ({ cocomments }) => (
         </CommentMoreButton>
       </CommentNameButtonWrapper>
       <CommentTime>{cocomments.time}</CommentTime>
-    </CommentLineWrapper1>
-    <CommentLineWrapper2>
+    </CommentMainWrapper>
+    <CommentSubWrapper>
       <CommentContents>{cocomments.content}</CommentContents>
-    </CommentLineWrapper2>
-    <CommentLineWrapper3>
+    </CommentSubWrapper>
+    <CommentIconWrapper>
       <CommentLikeButton>
         {cocomments.goodCount > 0 ? (
           <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
@@ -141,7 +141,7 @@ const Cocomment = ({ cocomments }) => (
         )}
         {cocomments.cocommentsCount}
       </CommentNumber>
-    </CommentLineWrapper3>
+    </CommentIconWrapper>
   </CommentWrapper>
 );
 
