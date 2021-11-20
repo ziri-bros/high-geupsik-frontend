@@ -75,9 +75,6 @@ const ContentsInformationSet = styled.span`
 `;
 
 const BoardComponent = ({ type, objects }) => {
-  const sangmin = () => {
-    console.log('si');
-  };
   const [tmp, setTmp] = useState();
 
   return (

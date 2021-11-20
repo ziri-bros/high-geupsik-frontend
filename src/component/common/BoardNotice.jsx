@@ -41,14 +41,12 @@ const BoardNotice = () => {
 
   return (
     <>
-      {notice === 1 ? (
+      {notice === 1 && (
         <BoardNoticeWrapper>
-          <img src="images/icons/pin.png" alt="" />
+          <img src="/images/icons/pin.png" alt="" />
           <span>공지</span>
           <span>하고싶은말을 자유롭게 적어주세요</span>
         </BoardNoticeWrapper>
-      ) : (
-        console.log('nothing')
       )}
     </>
   );

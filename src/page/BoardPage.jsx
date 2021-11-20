@@ -7,7 +7,7 @@ import Wrapper from '../component/common/Wrapper';
 import BoardPosting from '../component/common/BoardPosting';
 import Writing from '../component/common/Writing';
 
-const Board = ({ match }) => (
+const BoardPage = ({ match }) => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
@@ -17,8 +17,8 @@ const Board = ({ match }) => (
   </Wrapper>
 );
 
-Board.propTypes = {
+BoardPage.propTypes = {
   match: ReactRouterPropTypes.match.isRequired,
 };
 
-export default Board;
+export default BoardPage;

@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
 const Write = styled.div`
-  position: fixed;
+  position: absolute;
   width: 60px;
   height: 60px;
   bottom: 25px;
@@ -17,12 +17,12 @@ const IconItem = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
+  cursor: pointer;
   img {
     display: flex;
     margin: 50% 0 0 0;
     width: 30px;
     height: 30px;
-    cursor: pointer;
   }
 `;
 
