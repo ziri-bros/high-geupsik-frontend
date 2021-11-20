@@ -5,8 +5,9 @@ import Cocomment from './Cocomment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
-  width: 440px;
+  /* width: 440px; */
   height: 100px;
+  width:100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;

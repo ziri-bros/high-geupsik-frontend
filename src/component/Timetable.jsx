@@ -98,8 +98,6 @@ const BlackBackground = styled.div`
 `;
 
 const DeleteModal = styled.div`
-  width: 234px;
-  height: 110px;
   background: white;
   font-size: 14px;
   font-weight : 500;
