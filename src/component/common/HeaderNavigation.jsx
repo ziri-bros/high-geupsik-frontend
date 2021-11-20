@@ -19,7 +19,6 @@ const NavigationItem = styled(Link)`
   align-items: center;
   justify-content: center;
 
-  font-family: Noto sans KR;
   font-size: 16px;
   color: #5d6e1e;
   cursor: pointer;
