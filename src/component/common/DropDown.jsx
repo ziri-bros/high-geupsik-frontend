@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 const DropDownCategory = styled.div`
   position: relative;
   margin-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 10px;
   height: 40px;
   border: 1px solid #828282;
   border-radius: 8px;
@@ -33,6 +32,9 @@ const DropDownCategory = styled.div`
 const DropDownCategoryBox = styled.div`
   width: 100%;
   position: absolute;
+  left: 0;
+  top: 38px;
+
   height: auto;
   border: 1px solid #828282;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
@@ -41,9 +43,6 @@ const DropDownCategoryBox = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-  left: 0;
-  top: 38px;
 
   background-color: white;
 
@@ -56,7 +55,7 @@ const DropDownContents = styled.div`
   font-weight: normal;
   font-size: 16px;
 
-  padding: 10px 10px;
+  padding: 10px;
 
   display: flex;
   align-items: center;
@@ -70,14 +69,8 @@ const DropDown = ({ name, list }) => {
   const [dropDownOn, setDropDownOn] = useState(false);
   const [selected, setSelected] = useState();
 
-  const onClickDropDownOn = () => {
-    setDropDownOn(!dropDownOn);
-  };
-
-  const onClickSelected = e => {
-    setSelected(e.target.innerHTML);
-  };
-
+  const onClickDropDownOn = () => setDropDownOn(!dropDownOn);
+  const onClickSelected = e => setSelected(e.target.innerHTML);
   return (
     <DropDownCategory onClick={onClickDropDownOn}>
       {selected || name}
@@ -95,7 +88,7 @@ const DropDown = ({ name, list }) => {
 
 DropDown.propTypes = {
   name: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf.isRequired,
+  list: PropTypes.arrayOf(PropTypes.object).isRequired,
 };
 
 export default DropDown;
