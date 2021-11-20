@@ -5,8 +5,7 @@ import PropTypes from 'prop-types';
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
   background: #fdfff6;
-  /* width: 440px; */
-  width:100%;
+  width: 100%;
   height: 100px;
   display: flex;
   flex-direction: column;
@@ -108,7 +107,7 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Cocomment = ({ cocomments }) => (
+const Cocomment = ({ cocomments, morePopHandle }) => (
   <CommentWrapper>
     <CommentMainWrapper>
       <CommentNameButtonWrapper>
@@ -116,7 +115,7 @@ const Cocomment = ({ cocomments }) => (
           <img src="/images/icons/return.png" alt="return" />
         </CommentArrow>
         <CommentName>{cocomments.name}</CommentName>
-        <CommentMoreButton>
+        <CommentMoreButton onClick={morePopHandle}>
           <img src="/images/icons/more.png" alt="more" />
         </CommentMoreButton>
       </CommentNameButtonWrapper>
@@ -148,6 +147,7 @@ const Cocomment = ({ cocomments }) => (
 
 Cocomment.propTypes = {
   cocomments: PropTypes.arrayOf,
+  morePopHandle: PropTypes.func,
 };
 
 export default Cocomment;

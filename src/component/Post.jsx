@@ -1,8 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
+import MoreButtonPop from './common/MoreButtonPop';
+
+const PostMainBox = styled.div`
+  overflow-y: auto;
+`;
 
 const PostWrapper = styled.div`
   display: flex;
@@ -94,8 +99,8 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 440px;
-    height: 440px;
+    width: 200px;
+    height: 200px;
     margin-top: 20px;
   }
 `;
@@ -181,80 +186,86 @@ const PostCommentsNumber = styled.div`
   }
 `;
 
-const Post = ({ data }) => (
-  <>
-    <PostWrapper>
-      <LeftArrow>
-        <img src="/images/icons/left_arrow.png" alt="left_arrow" />
-      </LeftArrow>
+const Post = ({ data }) => {
+  const [morePopOff, setMorePopOff] = useState(false);
 
-      <PostMainWrapper>
-        <PostTitleWrapper>
-          <PostMainTitle>{data.title}</PostMainTitle>
-          <PostMoreButton>
-            <img src="/images/icons/more.png" alt="more" />
-          </PostMoreButton>
-        </PostTitleWrapper>
-        <PostSubTitleWrapper>
-          <PostSubTitle>{data.time}</PostSubTitle>
-          <PostSubTitle>|</PostSubTitle>
-          <View>
-            <img src="/images/icons/view.png" alt="view" />
-          </View>
-          <PostSubTitle>{data.view}</PostSubTitle>
-        </PostSubTitleWrapper>
-      </PostMainWrapper>
+  const morePopOn = () => {
+    setMorePopOff(!morePopOff);
+  };
 
-      <PostContentsWrapper>
-        <PostContents>{data.content}</PostContents>
-        <PostImages>
-          {data.images.map((img, index) => (
-            <img src={img} alt={index} />
-          ))}
-        </PostImages>
-        {data.liked ? (
-          <PostLikedButton>
-            <img src="/images/icons/filledHeart.png" alt="liked" />
-            좋아요
-          </PostLikedButton>
-        ) : (
-          <PostLikeButton>
-            <img src="/images/icons/emptyHeart.png" alt="like" />
-            좋아요
-          </PostLikeButton>
-        )}
-      </PostContentsWrapper>
+  return (
+    <>
+      {morePopOff && (
+        <MoreButtonPop type={data.isMe} morePopHandle={morePopOn} />
+      )}
+      <PostMainBox>
+        <PostWrapper>
+          <LeftArrow>
+            <img src="/images/icons/left_arrow.png" alt="left_arrow" />
+          </LeftArrow>
 
-      <PostCommentsWrapper>
-        <PostCommentsNumberWrapper>
-          <PostCommentsLikedNumber>
-            <img src="/images/icons/heart.png" alt="heart" />
-            {data.like}
-          </PostCommentsLikedNumber>
-          <PostCommentsNumber>
-            <img src="/images/icons/chat.png" alt="comment" />
-            {data.totalCommentCount}
-          </PostCommentsNumber>
-        </PostCommentsNumberWrapper>
-        {data.comments.map(comment => (
-          <Comment comments={comment} />
-        ))}
+          <PostMainWrapper>
+            <PostTitleWrapper>
+              <PostMainTitle>{data.title}</PostMainTitle>
+              <PostMoreButton onClick={morePopOn}>
+                <img src="/images/icons/more.png" alt="more" />
+              </PostMoreButton>
+            </PostTitleWrapper>
+            <PostSubTitleWrapper>
+              <PostSubTitle>{data.time}</PostSubTitle>
+              <PostSubTitle>|</PostSubTitle>
+              <View>
+                <img src="/images/icons/view.png" alt="view" />
+              </View>
+              <PostSubTitle>{data.view}</PostSubTitle>
+            </PostSubTitleWrapper>
+          </PostMainWrapper>
 
-        {/* 이중 map 안되는 부분 */}
-        {/* {data.comments.map(comment => (
-          <Comment comments={comment} />
-          {comment.cocomments.map((cocomment) => (
-            <Cocomment cocomments={cocomment} />
-          ))}
-        ))} */}
-      </PostCommentsWrapper>
-    </PostWrapper>
-    <CommentInput />
-  </>
-);
+          <PostContentsWrapper>
+            <PostContents>{data.content}</PostContents>
+            <PostImages>
+              {data.images.map((img, index) => (
+                <img src={img} alt={index} />
+              ))}
+            </PostImages>
+            {data.liked ? (
+              <PostLikedButton>
+                <img src="/images/icons/filledHeart.png" alt="liked" />
+                좋아요
+              </PostLikedButton>
+            ) : (
+              <PostLikeButton>
+                <img src="/images/icons/emptyHeart.png" alt="like" />
+                좋아요
+              </PostLikeButton>
+            )}
+          </PostContentsWrapper>
+
+          <PostCommentsWrapper>
+            <PostCommentsNumberWrapper>
+              <PostCommentsLikedNumber>
+                <img src="/images/icons/heart.png" alt="heart" />
+                {data.like}
+              </PostCommentsLikedNumber>
+              <PostCommentsNumber>
+                <img src="/images/icons/chat.png" alt="comment" />
+                {data.totalCommentCount}
+              </PostCommentsNumber>
+            </PostCommentsNumberWrapper>
+            {data.comments.map(comment => (
+              <Comment comments={comment} morePopHandle={morePopOn} />
+            ))}
+          </PostCommentsWrapper>
+        </PostWrapper>
+
+        <CommentInput />
+      </PostMainBox>
+    </>
+  );
+};
 
 Post.propTypes = {
-  data: PropTypes.objectOf,
+  data: PropTypes.objectOf(PropTypes.object).isRequired,
 };
 
 export default Post;

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 
 const WrapperStyle = styled.div`
+  display: flex;
+  flex-direction: column;
   width: 100%;
   max-width: 480px;
   height: 100vh;

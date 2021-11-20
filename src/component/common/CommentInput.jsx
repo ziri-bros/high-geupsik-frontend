@@ -14,11 +14,12 @@ const CommentInputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: 450px;
+  width: 85%;
   height: 40px;
   background: #ffffff;
   border-radius: 5px;
   padding-left: 10px;
+  padding-right: 10px;
 
   font-weight: normal;
   font-size: 14px;
@@ -31,10 +32,8 @@ const Input = styled.input`
 `;
 
 const CommentButton = styled.div`
-  position: absolute;
   cursor: pointer;
-  bottom: 8px;
-  left: 425px;
+  margin-left: 10px;
 
   img {
     width: 32px;
@@ -59,7 +58,7 @@ const CommentInput = () => {
         onChange={onChangeComment}
       />
       <CommentButton>
-        <img src="images/icons/send_green.png" alt="send" />
+        <img src="/images/icons/send_green.png" alt="send" />
       </CommentButton>
     </CommentInputWrapper>
   );

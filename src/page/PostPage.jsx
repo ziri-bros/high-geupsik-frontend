@@ -1,4 +1,9 @@
 import React from 'react';
+import BoardNaviagtion from '../component/common/BoardNavigation';
+import Header from '../component/common/Header';
+import HeaderNavigation from '../component/common/HeaderNavigation';
+import MoreButtonPop from '../component/common/MoreButtonPop';
+import Wrapper from '../component/common/Wrapper';
 import Post from '../component/Post';
 
 const examplePost = {
@@ -10,6 +15,7 @@ const examplePost = {
   like: 5,
   liked: true,
   totalCommentCount: 4,
+  isMe: true,
   comments: [
     {
       name: '익명1',
@@ -43,6 +49,13 @@ const examplePost = {
   ],
 };
 
-const PostPage = () => <Post data={examplePost}></Post>;
+const PostPage = () => (
+  <Wrapper>
+    <Header />
+    <HeaderNavigation />
+    <BoardNaviagtion />
+    <Post data={examplePost}></Post>
+  </Wrapper>
+);
 
 export default PostPage;

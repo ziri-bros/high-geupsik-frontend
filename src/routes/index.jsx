@@ -8,6 +8,8 @@ import NoMatchPage from '../page/NoMatchPage';
 import MyInfoDetailPage from '../page/MyInfoDetailPage';
 import reset from '../theme/reset';
 import SchedulePage from '../page/SchedulePage';
+import PostPage from '../page/PostPage';
+import PostCreatePage from '../page/PostCreatePage';
 import AllowPage from '../page/AllowPage';
 import AdminPage from '../page/AdminPage';
 import Home from '../page/Home';
