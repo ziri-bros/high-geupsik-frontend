@@ -4,6 +4,7 @@ import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import PostPage from './PostPage';
+import Writing from '../component/common/Writing';
 
 const Board = () => (
   <Wrapper>
@@ -11,6 +12,7 @@ const Board = () => (
     <HeaderNavigation />
     <BoardNaviagtion />
     <PostPage />
+    <Writing />
   </Wrapper>
 );
 
