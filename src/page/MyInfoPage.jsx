@@ -2,14 +2,14 @@ import React from 'react';
 import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
-import RegisterUserInfo from '../component/RegisterUserInfo';
+import MyInfo from '../component/MyInfo';
 
-const RegisterUser = () => (
+const MyInfoPage = () => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
-    <RegisterUserInfo />
+    <MyInfo />
   </Wrapper>
 );
 
-export default RegisterUser;
+export default MyInfoPage;

@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
+import Button from './common/Button';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -53,7 +55,7 @@ const Icon = styled.div`
     width: 10px;
     height: 8px;
     cursor: pointer;
-    margin-bottom:2px;
+    margin-bottom: 2px;
   }
 `;
 
@@ -82,27 +84,16 @@ const ImageUploadButton = styled.div`
   cursor: pointer;
 `;
 
-const RegisterBtn = styled.div`
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: 0 11px 5px 11px;
-  height: 40px;
-  background: #5d6e1e;
-  border-radius: 5px;
-  cursor:pointer;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: bold;
-`;
-
-const RegisterUserInfo = () => {
+const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
+  const [location, setLocation] = useState(null);
   const fileInput = useRef(null);
+
+  // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
+  useEffect(() => {
+    if (path === '/modify') setLocation('modify');
+    if (path === '/register') setLocation('register');
+  }, []);
 
   const onChange = (e) => setImgData(e.target.value);
   const onClickBtn = () => fileInput.current.click();
@@ -111,11 +102,11 @@ const RegisterUserInfo = () => {
     <RegisterUserInfoBox>
       <Menu>
         <img src="/images/icons/left_arrow.png" alt="arrow" />
-        <Title>회원가입</Title>
+        <Title>{location === 'register' ? '회원가입' : '내 정보 수정'}</Title>
       </Menu>
       <InputWrapper>
         <InputText>지역<span>*</span></InputText>
-        <DropdownMenu local>
+        <DropdownMenu local="local">
           <InputText blur>지역 선택</InputText>
           <Icon>
             <img src="/images/icons/drop_down.png" alt="dropdown" />
@@ -131,17 +122,29 @@ const RegisterUserInfo = () => {
           </Icon>
         </DropdownMenu>
       </InputWrapper>
-      <InputWrapper>
-        <InputText>학생증 첨부<span>*</span></InputText>
-        <ImageWrapper>
-          <input type="file" ref={fileInput} onChange={onChange} style={{ display: 'none' }} />
-          <ImageText>{imgData || '파일 없음'}</ImageText>
-          <ImageUploadButton onClick={onClickBtn}>학생증 첨부</ImageUploadButton>
-        </ImageWrapper>
-      </InputWrapper>
-      <RegisterBtn>가입하기</RegisterBtn>
+      {
+        location === 'register' && (
+          <InputWrapper>
+            <InputText>학생증 첨부<span>*</span></InputText>
+            <ImageWrapper>
+              <input type="file" ref={fileInput} onChange={onChange} style={{ display: 'none' }} />
+              <ImageText>{imgData || '파일 없음'}</ImageText>
+              <ImageUploadButton onClick={onClickBtn}>학생증 첨부</ImageUploadButton>
+            </ImageWrapper>
+          </InputWrapper>
+        )
+      }
+      {
+        location === 'register' ?
+          <Button footer>가입하기</Button> : <Button footer>저장하기</Button>
+      }
+
     </RegisterUserInfoBox>
   );
 };
 
-export default RegisterUserInfo;
+MyInfoDetail.propTypes = {
+  path: PropTypes.string.isRequired,
+};
+
+export default MyInfoDetail;

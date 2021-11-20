@@ -5,7 +5,7 @@ import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import Sign from '../component/Login';
 
-const Auth = ({ type }) => (
+const AuthPage = ({ type }) => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
@@ -13,8 +13,8 @@ const Auth = ({ type }) => (
   </Wrapper>
 );
 
-Auth.propTypes = {
+AuthPage.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
-export default Auth;
+export default AuthPage;

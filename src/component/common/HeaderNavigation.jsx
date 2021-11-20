@@ -54,7 +54,7 @@ const lists = [
   {
     id: 5,
     name: '내정보',
-    url: '/myinfo',
+    url: '/myInfo',
   },
 ];
 
