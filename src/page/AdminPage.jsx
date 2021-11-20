@@ -6,7 +6,7 @@ import Wrapper from '../component/common/Wrapper';
 
 const AdminPage = () => (
   <Wrapper>
-    <Header />
+    <Header admin />
     <AdminController />
   </Wrapper>
 );
