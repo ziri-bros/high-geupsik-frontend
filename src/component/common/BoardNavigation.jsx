@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
-import React, { useState, useEffect } from 'react';
-import ReactRouterPropTypes from 'react-router-prop-types';
+import React from 'react';
 import { Link } from 'react-router-dom';
 
 import BoardPosting from './BoardComponent';
@@ -63,20 +62,16 @@ const lists = [
   },
 ];
 
-const BoardNaviagtion = () => {
-  const [boardType, setBoardType] = useState();
-
-  return (
-    <>
-      <BoardNavigationBox>
-        {lists.map(list => (
-          <NavigationItem to={list.url} key={list.id}>
-            {list.name}
-          </NavigationItem>
-        ))}
-      </BoardNavigationBox>
-    </>
-  );
-};
+const BoardNaviagtion = () => (
+  <>
+    <BoardNavigationBox>
+      {lists.map(list => (
+        <NavigationItem to={list.url} key={list.id}>
+          {list.name}
+        </NavigationItem>
+      ))}
+    </BoardNavigationBox>
+  </>
+);
 
 export default BoardNaviagtion;
