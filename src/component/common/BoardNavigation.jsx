@@ -61,13 +61,15 @@ const lists = [
 ];
 
 const BoardNaviagtion = () => (
-  <BoardNavigationBox>
-    {lists.map(list => (
-      <NavigationItem to={list.url} key={list.id}>
-        {list.name}
-      </NavigationItem>
-    ))}
-  </BoardNavigationBox>
+  <>
+    <BoardNavigationBox>
+      {lists.map(list => (
+        <NavigationItem to={list.url} key={list.id}>
+          {list.name}
+        </NavigationItem>
+      ))}
+    </BoardNavigationBox>
+  </>
 );
 
 export default BoardNaviagtion;
