@@ -2,8 +2,6 @@ import styled from '@emotion/styled';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import BoardPosting from './BoardComponent';
-
 const BoardNavigationBox = styled.div`
   height: 50px;
   display: flex;
