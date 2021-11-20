@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Link } from 'react-router-dom';
 
 const Write = styled.div`
   position: fixed;
@@ -29,9 +30,9 @@ const Writing = () => (
   <>
     <Write>
       <IconItem>
-        <a href="/home">
+        <Link to="/home">
           <img src="/images/icons/pencil_color.png" alt="pencil_color" />
-        </a>
+        </Link>
       </IconItem>
     </Write>
   </>
