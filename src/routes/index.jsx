@@ -2,7 +2,7 @@ import { Global } from '@emotion/react';
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
 import AuthPage from '../page/AuthPage';
-import Board from '../page/Board';
+import BoardPage from '../page/BoardPage';
 import MyInfoPage from '../page/MyInfoPage';
 import NoMatchPage from '../page/NoMatchPage';
 import MyInfoDetailPage from '../page/MyInfoDetailPage';
@@ -36,7 +36,7 @@ const RootRoute = () => (
           '/board/hot',
           '/board/promotion',
         ]}
-        component={Board}
+        component={BoardPage}
         exact
       />
       <Route path="/myInfo" component={MyInfoPage} exact />

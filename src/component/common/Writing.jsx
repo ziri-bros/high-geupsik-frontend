@@ -17,12 +17,12 @@ const IconItem = styled.div`
   display: flex;
   justify-content: center;
   align-content: center;
+  cursor: pointer;
   img {
     display: flex;
     margin: 50% 0 0 0;
     width: 30px;
     height: 30px;
-    cursor: pointer;
   }
 `;
 
