@@ -10,6 +10,7 @@ import reset from '../theme/reset';
 import SchedulePage from '../page/SchedulePage';
 import AllowPage from '../page/AllowPage';
 import AdminPage from '../page/AdminPage';
+import Home from '../page/Home';
 
 const RootRoute = () => (
   <>
@@ -21,8 +22,23 @@ const RootRoute = () => (
       <Route path="/signup" exact>
         <AuthPage type="signup" />
       </Route>
-      <Route path={['/register', '/modify']} component={MyInfoDetailPage} exact />
-      <Route path="/board" component={Board} exact />
+      <Route path="/home" component={Home} exact />
+      <Route
+        path={['/register', '/modify']}
+        component={MyInfoDetailPage}
+        exact
+      />
+      <Route
+        path={[
+          '/board',
+          '/board/free',
+          '/board/information',
+          '/board/hot',
+          '/board/promotion',
+        ]}
+        component={Board}
+        exact
+      />
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={AllowPage} exact />

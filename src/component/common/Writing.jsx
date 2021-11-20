@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
 
 const Write = styled.div`
-  position: fixed;
+  position: absolute;
   width: 60px;
   height: 60px;
   bottom: 25px;
