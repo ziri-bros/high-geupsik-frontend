@@ -9,6 +9,7 @@ import MyInfoDetailPage from '../page/MyInfoDetailPage';
 import reset from '../theme/reset';
 import SchedulePage from '../page/SchedulePage';
 import AllowPage from '../page/AllowPage';
+import AdminPage from '../page/AdminPage';
 
 const RootRoute = () => (
   <>
@@ -25,6 +26,9 @@ const RootRoute = () => (
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={AllowPage} exact />
+
+      {/* 관리자 전용 페이지 */}
+      <Route path="/admin" component={AdminPage} exact />
 
       {/* 경로가 유효하지 않을 때 */}
       <Route path="*" component={NoMatchPage} exact />

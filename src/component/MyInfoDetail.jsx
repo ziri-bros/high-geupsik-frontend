@@ -138,7 +138,6 @@ const MyInfoDetail = ({ path }) => {
         location === 'register' ?
           <Button footer>가입하기</Button> : <Button footer>저장하기</Button>
       }
-
     </RegisterUserInfoBox>
   );
 };
