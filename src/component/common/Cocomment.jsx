@@ -5,7 +5,8 @@ import PropTypes from 'prop-types';
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
   background: #fdfff6;
-  width: 440px;
+  /* width: 440px; */
+  width:100%;
   height: 100px;
   display: flex;
   flex-direction: column;

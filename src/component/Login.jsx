@@ -42,7 +42,7 @@ const LoginButton = styled.div`
 `;
 
 const LoginText = styled.div`
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 500;
   width: 120px;
   text-align: center;

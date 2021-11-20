@@ -94,8 +94,10 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 440px;
-    height: 440px;
+    /* width: 440px; */
+    /* height: 440px; */
+    width:200px;
+    height:200px;
     margin-top: 20px;
   }
 `;
@@ -289,9 +291,9 @@ const PostPage = () => (
             <Cocomment cocomments={cocomment} />
           ))}
         ))} */}
+
       </PostCommentsWrapper>
     </PostWrapper>
-    <CommentInput />
   </>
 );
 
