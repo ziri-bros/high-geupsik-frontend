@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 import React, { useState, useEffect } from 'react';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import { Link } from 'react-router-dom';
 
-import BoardPost from './BoardPost';
+import BoardPosting from './BoardComponent';
 
 const BoardNavigationBox = styled.div`
   height: 50px;
@@ -65,9 +66,6 @@ const lists = [
 const BoardNaviagtion = () => {
   const [boardType, setBoardType] = useState();
 
-  useEffect(() => {
-    console.log('button changed');
-  }, [boardType]);
   return (
     <>
       <BoardNavigationBox>
@@ -77,8 +75,6 @@ const BoardNaviagtion = () => {
           </NavigationItem>
         ))}
       </BoardNavigationBox>
-      {/* boardContents zone 진입 */}
-      <BoardPost />
     </>
   );
 };
