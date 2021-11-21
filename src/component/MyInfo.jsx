@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import BoardComponent from './common/BoardComponent';
 import Button from './common/Button';
 import PostNotFound from './common/PostNotFound';
 
@@ -60,6 +61,50 @@ const Bar = styled.div`
 
 const ButtonWrapper = styled(Link)``;
 
+// 예시 DB
+const examplePost = {
+  title: '제목입니다',
+  time: '21/7/23 11:34',
+  view: '100',
+  content: '점심메뉴 추천 좀',
+  images: ['/images/icons/square.png', '/images/icons/square.png'],
+  like: 5,
+  liked: true,
+  totalCommentCount: 4,
+  isMe: true,
+  comments: [
+    {
+      name: '익명1',
+      time: '21/7/23 11:50',
+      content: '냉모밀 먹어라',
+      goodCount: 0,
+      cocomments: [],
+    },
+    {
+      name: '익명2',
+      time: '21/7/23 11:50',
+      content: '치킨 먹어라',
+      goodCount: 2,
+      cocomments: [
+        {
+          name: '익명(글쓴이)',
+          time: '21/7/23 11:50',
+          content: '추천 고마워',
+          goodCount: 0,
+          cocommentsCount: 1,
+        },
+        {
+          name: '익명2',
+          time: '21/7/23 11:50',
+          content: '맛있게 먹어',
+          goodCount: 1,
+          cocommentsCount: 0,
+        },
+      ],
+    },
+  ],
+};
+
 const MyInfo = () => {
   const [menuOn, setMenuOn] = useState(true);
 
@@ -84,7 +129,11 @@ const MyInfo = () => {
         <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>내가 댓글 단 게시글</MyPostMenu>
       </MyPostMenuList>
       {/* 게시글 없을 때 */}
-      <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
+      {
+        examplePost ?
+          <BoardComponent objects={examplePost} /> :
+          <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
+      }
     </MyInfoWrapper>
   );
 };
