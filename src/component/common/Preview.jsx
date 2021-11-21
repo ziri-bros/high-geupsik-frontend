@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import BoardComponent from './BoardComponent';
 
-const PrivewItem = styled.div`
+const PreviewItem = styled.div`
   display: flex;
   flex-direction: column;
   width: 96%;
@@ -147,7 +147,6 @@ const RecentPostWrapper = styled.div`
   height: auto;
   border-radius: 5px;
   margin: 0 0 10px;
-  background-color: blue;
 `;
 
 // 예시 DB
@@ -194,96 +193,90 @@ const examplePost = {
   ],
 };
 
-const Preview = ({ type }) => {
-  console.log('default');
-  return (
-    <>
-      {type === 'cafeteria' && (
-        <PrivewItem>
-          <TitleWrapper>
-            <span>오늘의 급식</span>
-            <IconItem>
-              <Link to="/home">
-                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-              </Link>
-            </IconItem>
-          </TitleWrapper>
-          <CafeteriaWrapper>
-            <CafeteriaItem>
-              <CafeteriaTitleWrapper>
-                <DaytimeItem>아침</DaytimeItem>
-                <span>11월17일</span>
-              </CafeteriaTitleWrapper>
-              <CafeteriaMenu>쇠고기 무국</CafeteriaMenu>
-            </CafeteriaItem>
-            <CafeteriaItem>
-              <CafeteriaTitleWrapper>
-                <DaytimeItem>점심</DaytimeItem>
-                <span>12월15일</span>
-              </CafeteriaTitleWrapper>
-              <CafeteriaMenu>파전</CafeteriaMenu>
-            </CafeteriaItem>
-            <CafeteriaItem>
-              <CafeteriaTitleWrapper>
-                <DaytimeItem>저녁</DaytimeItem>
-                <span>12월27일</span>
-              </CafeteriaTitleWrapper>
-              <CafeteriaMenu>박성호</CafeteriaMenu>
-            </CafeteriaItem>
-          </CafeteriaWrapper>
-        </PrivewItem>
-      )}
-      {type === 'board' && (
-        <PrivewItem>
-          <TitleWrapper>
-            <span>게시판 모아보기</span>
-            <IconItem>
-              <Link to="/board">
-                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-              </Link>
-            </IconItem>
-          </TitleWrapper>
-          <BoardWrapper>
-            <BoardItem>
-              <span>자유 게시판</span>
-              <span>내용1</span>
-            </BoardItem>
-            <BoardItem>
-              <span>정보 게시판</span>
-              <span>내용2</span>
-            </BoardItem>
-            <BoardItem>
-              <span>인기 게시판</span>
-              <span>내용3</span>
-            </BoardItem>
-            <BoardItem>
-              <span>홍보 게시판</span>
-              <span>내용4</span>
-            </BoardItem>
-          </BoardWrapper>
-        </PrivewItem>
-      )}
-      {type === 'post' && (
-        <PrivewItem>
-          <TitleWrapper>
-            <span>최근 게시글</span>
-            <IconItem>
-              <Link to="/board">
-                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-              </Link>
-            </IconItem>
-          </TitleWrapper>
-          <RecentPostWrapper>
-            <BoardComponent
-              noticeExistence={`${false}`}
-              objects={examplePost}
-            />
-          </RecentPostWrapper>
-        </PrivewItem>
-      )}
-    </>
-  );
-};
+const Preview = ({ type }) => (
+  <>
+    {type === 'cafeteria' && (
+      <PreviewItem>
+        <TitleWrapper>
+          <span>오늘의 급식</span>
+          <IconItem>
+            <Link to="/home">
+              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+            </Link>
+          </IconItem>
+        </TitleWrapper>
+        <CafeteriaWrapper>
+          <CafeteriaItem>
+            <CafeteriaTitleWrapper>
+              <DaytimeItem>아침</DaytimeItem>
+              <span>11월17일</span>
+            </CafeteriaTitleWrapper>
+            <CafeteriaMenu>쇠고기 무국</CafeteriaMenu>
+          </CafeteriaItem>
+          <CafeteriaItem>
+            <CafeteriaTitleWrapper>
+              <DaytimeItem>점심</DaytimeItem>
+              <span>12월15일</span>
+            </CafeteriaTitleWrapper>
+            <CafeteriaMenu>파전</CafeteriaMenu>
+          </CafeteriaItem>
+          <CafeteriaItem>
+            <CafeteriaTitleWrapper>
+              <DaytimeItem>저녁</DaytimeItem>
+              <span>12월27일</span>
+            </CafeteriaTitleWrapper>
+            <CafeteriaMenu>박성호</CafeteriaMenu>
+          </CafeteriaItem>
+        </CafeteriaWrapper>
+      </PreviewItem>
+    )}
+    {type === 'board' && (
+      <PreviewItem>
+        <TitleWrapper>
+          <span>게시판 모아보기</span>
+          <IconItem>
+            <Link to="/board">
+              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+            </Link>
+          </IconItem>
+        </TitleWrapper>
+        <BoardWrapper>
+          <BoardItem>
+            <span>자유 게시판</span>
+            <span>내용1</span>
+          </BoardItem>
+          <BoardItem>
+            <span>정보 게시판</span>
+            <span>내용2</span>
+          </BoardItem>
+          <BoardItem>
+            <span>인기 게시판</span>
+            <span>내용3</span>
+          </BoardItem>
+          <BoardItem>
+            <span>홍보 게시판</span>
+            <span>내용4</span>
+          </BoardItem>
+        </BoardWrapper>
+      </PreviewItem>
+    )}
+    {type === 'post' && (
+      <PreviewItem>
+        <TitleWrapper>
+          <span>최근 게시글</span>
+          <IconItem>
+            <Link to="/board">
+              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+            </Link>
+          </IconItem>
+        </TitleWrapper>
+        <RecentPostWrapper>
+          <BoardComponent noticeExistence={`${false}`} objects={examplePost} />
+        </RecentPostWrapper>
+      </PreviewItem>
+    )}
+  </>
+);
 
 Preview.propTypes = {
   type: PropTypes.string,
