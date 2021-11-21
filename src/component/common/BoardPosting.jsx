@@ -90,6 +90,9 @@ const examplePost2 = {
   ],
 };
 
+// 예시 DB 2
+const examplePost3 = [];
+
 const BoardPosting = ({ path }) => {
   const [boardType, setBoardType] = useState(path);
 
@@ -110,7 +113,7 @@ const BoardPosting = ({ path }) => {
         <BoardComponent type={boardType} objects={examplePost2} />
       )}
       {boardType === 'information' && (
-        <BoardComponent type={boardType} objects={examplePost} />
+        <BoardComponent type={boardType} objects={examplePost3} />
       )}
       {boardType === 'hot' && (
         <BoardComponent type={boardType} objects={examplePost} />
