@@ -13,11 +13,10 @@ const HomeWrapper = styled.div`
   flex-direction: column;
   width: 100%;
   height: auto;
-  background-color: red;
-  overflow: auto;
+  background-color: #e5e5e5;
 `;
 
-const Home = () => (
+const HomePage = () => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
@@ -29,4 +28,4 @@ const Home = () => (
   </Wrapper>
 );
 
-export default Home;
+export default HomePage;

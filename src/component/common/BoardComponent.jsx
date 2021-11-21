@@ -75,14 +75,13 @@ const ContentsInformationSet = styled.span`
   }
 `;
 
-const BoardComponent = ({ type, objects }) => {
+const BoardComponent = ({ noticeExistence, type, objects }) => {
   const [tmp, setTmp] = useState();
 
   return (
     <>
       <BoardWrapper>
-        <BoardNotice />
-        {/* <PostNotFound /> */}
+        {noticeExistence === 'true' && <BoardNotice />}
         <BoardContents>
           <BoardInnerWrapper>
             <ContentsTitle>{objects.title}</ContentsTitle>
@@ -152,6 +151,7 @@ const BoardComponent = ({ type, objects }) => {
 };
 
 BoardComponent.propTypes = {
+  noticeExistence: PropTypes.string,
   type: PropTypes.string,
   objects: PropTypes.objectOf,
 };
