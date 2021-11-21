@@ -17,6 +17,8 @@ const PostCreateWrapper = styled.div`
 
 const PostCreateExitButton = styled.div`
   margin-top: 15px;
+  width: 28px;
+  height: 28px;
   cursor: pointer;
 
   img {
@@ -41,12 +43,27 @@ const PostCreateTitleInput = styled.input`
   }
 `;
 
-const PostCreateImgWrapper = styled.div``;
+const PostCreateImgWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
 
-const PostCreateImg = styled.div``;
+  overflow-x: auto;
+`;
 
-const PostCreateImgUploadButton = styled.div`
-  margin-top: 15px;
+const PostCreateImg = styled.div`
+  img {
+    width: 60px;
+    height: 60px;
+
+    margin-right: 7px;
+
+    border: 1px solid black;
+  }
+`;
+
+const PostCreateImgUploadButton = styled.label`
+  margin-top: 10px;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -75,7 +92,7 @@ const PostCreateContentTextarea = styled.textarea`
 
   margin-top: 7px;
   padding: 10px 10px 0 10px;
-  height: 320px;
+  height: ${props => (props.isImgs ? '245px' : '330px')};
   border: 1px solid #828282;
   border-radius: 8px;
 
@@ -98,6 +115,7 @@ const PostCreate = () => {
   const [dropDownSelected, setDropDownSelected] = useState('');
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [images, setImages] = useState([]);
   const history = useHistory();
 
   const onChangeSelected = selected => setDropDownSelected(selected);
@@ -116,9 +134,20 @@ const PostCreate = () => {
     }
   };
 
-  const onSubmit = () => {
-    console.log(dropDownSelected, title, content);
+  const addImages = e => {
+    const imgs = [...e.target.files];
+    const imgsUrl = [...images];
+
+    imgs.forEach(img => {
+      const currentImgUrl = URL.createObjectURL(img);
+      imgsUrl.push(currentImgUrl);
+    });
+    setImages(imgsUrl);
   };
+
+  console.log(images);
+
+  const onSubmit = () => {};
 
   return (
     <PostCreateWrapper>
@@ -134,14 +163,29 @@ const PostCreate = () => {
         placeholder="제목을 입력해주세요"
         onChange={onChangeTitle}
       />
-      <PostCreateImgWrapper></PostCreateImgWrapper>
-      <PostCreateImgUploadButton>
+      <PostCreateImgWrapper>
+        {images.map(img => (
+          <PostCreateImg>
+            <img src={img} alt="imgs" />
+          </PostCreateImg>
+        ))}
+      </PostCreateImgWrapper>
+      <input
+        type="file"
+        multiple="multiple"
+        id="input-file"
+        style={{ display: 'none' }}
+        accept=".jpg, .jpeg, .png"
+        onChange={addImages}
+      />
+      <PostCreateImgUploadButton htmlFor="input-file">
         <img src="/images/icons/img_box_fill.png" alt="img" />
         이미지 업로드
       </PostCreateImgUploadButton>
       <PostCreateContentTextarea
         placeholder="내용을 입력해주세요"
         onChange={onChangeContent}
+        isImgs={images.length}
       />
       <Button footer onClick={onSubmit}>
         등록
