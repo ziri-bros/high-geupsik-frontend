@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { css } from '@emotion/react';
 
 const DropDownCategory = styled.div`
   position: relative;
@@ -9,9 +10,19 @@ const DropDownCategory = styled.div`
   height: 40px;
   border: 1px solid #828282;
   border-radius: 8px;
-
   font-weight: 500;
   font-size: 16px;
+  
+
+  ${props => props.narrow && css`
+    width: 152px;
+    font-size: 14px;
+  `}
+
+  ${props => props.school && css`
+    width: 230px;
+  `}
+
 
   display: flex;
   justify-content: space-between;
@@ -45,7 +56,6 @@ const DropDownCategoryBox = styled.div`
   justify-content: center;
 
   background-color: white;
-
   z-index: 999;
 `;
 
@@ -63,9 +73,21 @@ const DropDownContents = styled.div`
   &:hover {
     background: rgba(244, 255, 193, 0.3);
   }
+
+
+  ${props => props.narrow && css`
+    color: #a4a4a4;
+    font-size: 14px;
+
+
+    &:hover {
+      color: black;
+      font-weight: 600;
+    }
+  `}
 `;
 
-const DropDown = ({ name, list, onChangeSelected }) => {
+const DropDown = ({ name, list, onChangeSelected, narrow, school }) => {
   const [dropDownOn, setDropDownOn] = useState(false);
   const [selected, setSelected] = useState();
 
@@ -76,13 +98,13 @@ const DropDown = ({ name, list, onChangeSelected }) => {
   };
 
   return (
-    <DropDownCategory onClick={onClickDropDownOn}>
+    <DropDownCategory onClick={onClickDropDownOn} narrow={narrow} school={school}>
       {selected || name}
       <img src="/images/icons/drop_down.png" alt="drop_down" />
       {dropDownOn && (
-        <DropDownCategoryBox>
+        <DropDownCategoryBox narrow>
           {list.map(li => (
-            <DropDownContents onClick={onClickSelected}>{li}</DropDownContents>
+            <DropDownContents onClick={onClickSelected} narrow>{li}</DropDownContents>
           ))}
         </DropDownCategoryBox>
       )}
@@ -92,6 +114,8 @@ const DropDown = ({ name, list, onChangeSelected }) => {
 
 DropDown.propTypes = {
   name: PropTypes.string.isRequired,
+  narrow: PropTypes.string.isRequired,
+  school: PropTypes.string.isRequired,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
   onChangeSelected: PropTypes.func.isRequired,
 };

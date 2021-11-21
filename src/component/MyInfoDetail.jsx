@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Button from './common/Button';
+import DropDown from './common/DropDown';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -39,25 +40,6 @@ const InputText = styled.div`
   }
 `;
 
-const DropdownMenu = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 3px  0  0 10px;
-  border: 1px solid gray;
-  width: ${props => props.local ? '152px' : '223px'};
-  height: 35px;
-  border-radius: 5px;
-`;
-
-const Icon = styled.div`
-  img{
-    width: 35px;
-    display: flex;  
-    cursor: pointer;
-  }
-`;
-
 const ImageWrapper = styled.div`
   display:flex;
   align-items: flex-start;
@@ -83,19 +65,26 @@ const ImageUploadButton = styled.div`
   cursor: pointer;
 `;
 
+const areas = ['서울', '경기도', '경상북도', '경상남도'];
+const schools = ['안동고등학교', '영일고등학교', '우심고등학교', '청원고등학교'];
+
 const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
   const [location, setLocation] = useState(null);
+  const [area, setArea] = useState(null);
+  const [school, setSchool] = useState(null);
   const fileInput = useRef(null);
+
+  const onChangeArea = (value) => setArea(value);
+  const onChangeSchool = (value) => setSchool(value);
+  const onChange = (e) => setImgData(e.target.value);
+  const onClickBtn = () => fileInput.current.click();
 
   // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
   useEffect(() => {
     if (path === '/modify') setLocation('modify');
     if (path === '/register') setLocation('register');
   }, []);
-
-  const onChange = (e) => setImgData(e.target.value);
-  const onClickBtn = () => fileInput.current.click();
 
   return (
     <RegisterUserInfoBox>
@@ -105,21 +94,11 @@ const MyInfoDetail = ({ path }) => {
       </Menu>
       <InputWrapper>
         <InputText>지역<span>*</span></InputText>
-        <DropdownMenu local="local">
-          <InputText blur>지역 선택</InputText>
-          <Icon>
-            <img src="/images/icons/drop_down.png" alt="dropdown" />
-          </Icon>
-        </DropdownMenu>
+        <DropDown name="지역 선택" list={areas} onChangeSelected={onChangeArea} narrow />
       </InputWrapper>
       <InputWrapper>
         <InputText>재학 중인 고등학교<span>*</span></InputText>
-        <DropdownMenu>
-          <InputText blur>재학 중인 고등학교 선택</InputText>
-          <Icon>
-            <img src="/images/icons/drop_down.png" alt="dropdown" />
-          </Icon>
-        </DropdownMenu>
+        <DropDown name="재학 중인 고등학교 선택" list={schools} onChangeSelected={onChangeSchool} narrow school />
       </InputWrapper>
       {
         location === 'register' && (
