@@ -21,7 +21,7 @@ const HomePage = () => (
     <Header />
     <HeaderNavigation />
     <HomeWrapper>
-      <Preview type="cafeteria" />
+      <Preview type="schoolfood" />
       <Preview type="board" />
       <Preview type="post" />
     </HomeWrapper>

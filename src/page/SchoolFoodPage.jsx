@@ -27,7 +27,7 @@ const SchoolFoodWrapper = styled.div`
   align-items: center;
 `;
 
-const CafeteriaItem = styled.div`
+const SchoolFoodItem = styled.div`
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
@@ -64,7 +64,6 @@ const DaytimeItem = styled.span`
   background-color: #fdfff6;
   border: 1px solid #5d6e1e;
   border-radius: 5px;
-  cursor: pointer;
   margin: 12px 0 0 15px;
 `;
 
@@ -119,8 +118,8 @@ const HomePage = () => {
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
 
-  const haveday31 = [0, 1, 3, 5, 7, 8, 10, 12];
-  const haveday30 = [2, 4, 6, 9, 11];
+  // const haveday31 = [0, 1, 3, 5, 7, 8, 10, 12];
+  // const haveday30 = [2, 4, 6, 9, 11];
 
   const dateItem = new Date();
   // 초기 단 한번
@@ -165,27 +164,27 @@ const HomePage = () => {
           <img src="/images/icons/right_arrow.png" alt="right_arrow" />
         </DateWrapper>
         <SchoolFoodWrapper>
-          <CafeteriaItem>
+          <SchoolFoodItem>
             <SchoolFoodUpperWrapper>
               <DaytimeItem>아침</DaytimeItem>
               <Kcal>890 kcal</Kcal>
             </SchoolFoodUpperWrapper>
             <SchoolFoodList>식단1</SchoolFoodList>
-          </CafeteriaItem>
-          <CafeteriaItem>
+          </SchoolFoodItem>
+          <SchoolFoodItem>
             <SchoolFoodUpperWrapper>
               <DaytimeItem>점심</DaytimeItem>
               <Kcal>890 kcal</Kcal>
             </SchoolFoodUpperWrapper>
             <SchoolFoodList>식단2</SchoolFoodList>
-          </CafeteriaItem>
-          <CafeteriaItem>
+          </SchoolFoodItem>
+          <SchoolFoodItem>
             <SchoolFoodUpperWrapper>
               <DaytimeItem>저녁</DaytimeItem>
               <Kcal>890 kcal</Kcal>
             </SchoolFoodUpperWrapper>
             <SchoolFoodList>식단3</SchoolFoodList>
-          </CafeteriaItem>
+          </SchoolFoodItem>
         </SchoolFoodWrapper>
       </Wrapper>
     </>
