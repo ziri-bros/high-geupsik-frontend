@@ -52,6 +52,8 @@ const PostCreateImgWrapper = styled.div`
 `;
 
 const PostCreateImg = styled.div`
+  position: relative;
+
   img {
     width: 60px;
     height: 60px;
@@ -59,6 +61,20 @@ const PostCreateImg = styled.div`
     margin-right: 7px;
 
     border: 1px solid black;
+  }
+`;
+
+const PostCreateImgDelete = styled.div`
+  position: absolute;
+
+  top: 0;
+  right: 0;
+
+  cursor: pointer;
+  img {
+    width: 20px;
+    height: 20px;
+    border: none;
   }
 `;
 
@@ -92,7 +108,7 @@ const PostCreateContentTextarea = styled.textarea`
 
   margin-top: 7px;
   padding: 10px 10px 0 10px;
-  height: ${props => (props.isImgs ? '245px' : '330px')};
+  height: ${props => (props.isImgs ? '248px' : '330px')};
   border: 1px solid #828282;
   border-radius: 8px;
 
@@ -123,7 +139,7 @@ const PostCreate = () => {
   const onChangeContent = e => setContent(e.target.value);
 
   const onExit = () => {
-    if (title.length > 0 || content.length > 0) {
+    if (title.length > 0 || content.length > 0 || images.length > 0) {
       const isExit = window.confirm(
         '게시글을 작성중입니다. 정말 나가시겠습니까?',
       );
@@ -145,7 +161,13 @@ const PostCreate = () => {
     setImages(imgsUrl);
   };
 
-  console.log(images);
+  const onClickDeleteImages = e => {
+    const imgs = [...images];
+
+    const filteredImgs = imgs.filter((img, idx) => idx !== Number(e.target.id));
+
+    setImages([...filteredImgs]);
+  };
 
   const onSubmit = () => {};
 
@@ -164,9 +186,16 @@ const PostCreate = () => {
         onChange={onChangeTitle}
       />
       <PostCreateImgWrapper>
-        {images.map(img => (
+        {images.map((img, idx) => (
           <PostCreateImg>
-            <img src={img} alt="imgs" />
+            <img src={img} alt="imgs" id={idx} />
+            <PostCreateImgDelete onClick={onClickDeleteImages}>
+              <img
+                src="/images/icons/close_fill_green.png"
+                alt="imgs_delete"
+                id={idx}
+              />
+            </PostCreateImgDelete>
           </PostCreateImg>
         ))}
       </PostCreateImgWrapper>
