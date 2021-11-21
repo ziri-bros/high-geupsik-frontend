@@ -30,7 +30,7 @@ const Writing = () => (
   <>
     <Write>
       <IconItem>
-        <Link to="/home">
+        <Link to="/postCreate">
           <img src="/images/icons/pencil_color.png" alt="pencil_color" />
         </Link>
       </IconItem>

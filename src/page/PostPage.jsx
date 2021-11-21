@@ -2,7 +2,6 @@ import React from 'react';
 import BoardNaviagtion from '../component/common/BoardNavigation';
 import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
-import MoreButtonPop from '../component/common/MoreButtonPop';
 import Wrapper from '../component/common/Wrapper';
 import Post from '../component/Post';
 

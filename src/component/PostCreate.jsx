@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
@@ -69,7 +70,7 @@ const PostCreateImgUploadButton = styled.div`
   }
 `;
 
-const PostCreateContentInput = styled.textarea`
+const PostCreateContentTextarea = styled.textarea`
   resize: none;
 
   margin-top: 7px;
@@ -95,11 +96,33 @@ const PostCreateContentInput = styled.textarea`
 const PostCreate = () => {
   const list = ['자유게시판', '정보게시판', '홍보게시판'];
   const [dropDownSelected, setDropDownSelected] = useState('');
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
+  const history = useHistory();
+
   const onChangeSelected = selected => setDropDownSelected(selected);
+  const onChangeTitle = e => setTitle(e.target.value);
+  const onChangeContent = e => setContent(e.target.value);
+
+  const onExit = () => {
+    if (title.length > 0 || content.length > 0) {
+      const isExit = window.confirm(
+        '게시글을 작성중입니다. 정말 나가시겠습니까?',
+      );
+      // eslint-disable-next-line no-unused-expressions
+      isExit && history.goBack();
+    } else {
+      history.goBack();
+    }
+  };
+
+  const onSubmit = () => {
+    console.log(dropDownSelected, title, content);
+  };
 
   return (
     <PostCreateWrapper>
-      <PostCreateExitButton>
+      <PostCreateExitButton onClick={onExit}>
         <img src="/images/icons/close_grey.png" alt="close" />
       </PostCreateExitButton>
       <DropDown
@@ -107,14 +130,22 @@ const PostCreate = () => {
         list={list}
         onChangeSelected={onChangeSelected}
       />
-      <PostCreateTitleInput placeholder="제목을 입력해주세요" />
+      <PostCreateTitleInput
+        placeholder="제목을 입력해주세요"
+        onChange={onChangeTitle}
+      />
       <PostCreateImgWrapper></PostCreateImgWrapper>
       <PostCreateImgUploadButton>
         <img src="/images/icons/img_box_fill.png" alt="img" />
         이미지 업로드
       </PostCreateImgUploadButton>
-      <PostCreateContentInput placeholder="내용을 입력해주세요" />
-      <Button footer>등록</Button>
+      <PostCreateContentTextarea
+        placeholder="내용을 입력해주세요"
+        onChange={onChangeContent}
+      />
+      <Button footer onClick={onSubmit}>
+        등록
+      </Button>
     </PostCreateWrapper>
   );
 };
