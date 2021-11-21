@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Button from './common/Button';
+import PostNotFound from './common/PostNotFound';
 
 const MyInfoWrapper = styled.div`
   margin: 20px 10px;
@@ -61,8 +62,9 @@ const ButtonWrapper = styled(Link)``;
 
 const MyInfo = () => {
   const [menuOn, setMenuOn] = useState(true);
-  const onClickMenu = () => setMenuOn(!menuOn);
 
+  const onClickWriteBtn = () => setMenuOn(true);
+  const onClickCommentBtn = () => setMenuOn(false);
   return (
     <MyInfoWrapper>
       <MyInfoBox>
@@ -77,10 +79,12 @@ const MyInfo = () => {
         <Button>내 정보 수정</Button>
       </ButtonWrapper>
       <MyPostMenuList>
-        <MyPostMenu menuOn={menuOn} onClick={onClickMenu}>내가 작성한 게시글</MyPostMenu>
+        <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>내가 작성한 게시글</MyPostMenu>
         <Bar />
-        <MyPostMenu menuOn={!menuOn} onClick={onClickMenu}>내가 댓글 단 게시글</MyPostMenu>
+        <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>내가 댓글 단 게시글</MyPostMenu>
       </MyPostMenuList>
+      {/* 게시글 없을 때 */}
+      <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
     </MyInfoWrapper>
   );
 };
