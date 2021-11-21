@@ -37,7 +37,7 @@ const IconItem = styled.div`
   }
 `;
 
-const CafeteriaWrapper = styled.div`
+const SchoolFoodWrapper = styled.div`
   display: flex;
   flex-direction: row;
   width: auto;
@@ -50,7 +50,7 @@ const CafeteriaWrapper = styled.div`
   }
 `;
 
-const CafeteriaItem = styled.div`
+const SchoolFoodItem = styled.div`
   display: flex;
   flex-direction: column;
   flex: 0 0 auto;
@@ -62,7 +62,7 @@ const CafeteriaItem = styled.div`
   margin: 10px;
 `;
 
-const CafeteriaTitleWrapper = styled.div`
+const SchoolFoodTitleWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
@@ -90,16 +90,10 @@ const DaytimeItem = styled.div`
   background-color: #fdfff6;
   border: 1px solid #5d6e1e;
   border-radius: 5px;
-  cursor: pointer;
   margin: 0 5px 0 9px;
-
-  &:hover {
-    font-weight: bold;
-    background-color: #cbe54e;
-  }
 `;
 
-const CafeteriaMenu = styled.div`
+const SchoolFoodMenu = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -195,39 +189,39 @@ const examplePost = {
 
 const Preview = ({ type }) => (
   <>
-    {type === 'cafeteria' && (
+    {type === 'schoolfood' && (
       <PreviewItem>
         <TitleWrapper>
           <span>오늘의 급식</span>
           <IconItem>
-            <Link to="/home">
+            <Link to="/schoolfood">
               <img src="/images/icons/right_arrow.png" alt="right_arrow" />
             </Link>
           </IconItem>
         </TitleWrapper>
-        <CafeteriaWrapper>
-          <CafeteriaItem>
-            <CafeteriaTitleWrapper>
+        <SchoolFoodWrapper>
+          <SchoolFoodItem>
+            <SchoolFoodTitleWrapper>
               <DaytimeItem>아침</DaytimeItem>
               <span>11월17일</span>
-            </CafeteriaTitleWrapper>
-            <CafeteriaMenu>쇠고기 무국</CafeteriaMenu>
-          </CafeteriaItem>
-          <CafeteriaItem>
-            <CafeteriaTitleWrapper>
+            </SchoolFoodTitleWrapper>
+            <SchoolFoodMenu>쇠고기 무국</SchoolFoodMenu>
+          </SchoolFoodItem>
+          <SchoolFoodItem>
+            <SchoolFoodTitleWrapper>
               <DaytimeItem>점심</DaytimeItem>
               <span>12월15일</span>
-            </CafeteriaTitleWrapper>
-            <CafeteriaMenu>파전</CafeteriaMenu>
-          </CafeteriaItem>
-          <CafeteriaItem>
-            <CafeteriaTitleWrapper>
+            </SchoolFoodTitleWrapper>
+            <SchoolFoodMenu>파전</SchoolFoodMenu>
+          </SchoolFoodItem>
+          <SchoolFoodItem>
+            <SchoolFoodTitleWrapper>
               <DaytimeItem>저녁</DaytimeItem>
               <span>12월27일</span>
-            </CafeteriaTitleWrapper>
-            <CafeteriaMenu>박성호</CafeteriaMenu>
-          </CafeteriaItem>
-        </CafeteriaWrapper>
+            </SchoolFoodTitleWrapper>
+            <SchoolFoodMenu>박성호</SchoolFoodMenu>
+          </SchoolFoodItem>
+        </SchoolFoodWrapper>
       </PreviewItem>
     )}
     {type === 'board' && (
