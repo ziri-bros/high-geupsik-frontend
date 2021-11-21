@@ -54,13 +54,23 @@ const Contour = styled.div`
 const SearchPage = () => {
   const history = useHistory();
 
+  const handleKeyPress = e => {
+    if (e.key === 'Enter') {
+      console.log('Enter');
+    }
+  };
+
   return (
     <>
       <Wrapper>
         <SearchHeader>
           <SearchInnerBox>
             <img src="/images/icons/search.png" alt="search" />
-            <SearchInput placeholder="검색어 입력" maxLength={20} />
+            <SearchInput
+              placeholder="검색어 입력"
+              maxLength={20}
+              onKeyPress={handleKeyPress}
+            />
           </SearchInnerBox>
           <CancelBtn onClick={history.goBack}>취소</CancelBtn>
         </SearchHeader>
