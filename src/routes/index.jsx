@@ -13,6 +13,7 @@ import AdminPage from '../page/AdminPage';
 import MatchPage from '../page/MatchPage';
 import HomePage from '../page/HomePage';
 import SearchPage from '../page/SearchPage';
+import SchoolFoodPage from '../page/SchoolFoodPage';
 
 const RootRoute = () => (
   <>
@@ -26,6 +27,7 @@ const RootRoute = () => (
       </Route>
       <Route path="/home" component={HomePage} exact />
       <Route path="/search" component={SearchPage} exact />
+      <Route path="/schoolfood" component={SchoolFoodPage} exact />
       <Route
         path={['/register', '/modify']}
         component={MyInfoDetailPage}
