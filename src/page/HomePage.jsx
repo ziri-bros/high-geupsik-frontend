@@ -9,11 +9,10 @@ const HomeWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  flex-direction: column;
   width: 100%;
-  height: auto;
+  height: 100%;
   background-color: #e5e5e5;
+  overflow-y: auto;
 `;
 
 const HomePage = () => (
