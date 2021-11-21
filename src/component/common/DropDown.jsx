@@ -65,12 +65,16 @@ const DropDownContents = styled.div`
   }
 `;
 
-const DropDown = ({ name, list }) => {
+const DropDown = ({ name, list, onChangeSelected }) => {
   const [dropDownOn, setDropDownOn] = useState(false);
   const [selected, setSelected] = useState();
 
   const onClickDropDownOn = () => setDropDownOn(!dropDownOn);
-  const onClickSelected = e => setSelected(e.target.innerHTML);
+  const onClickSelected = e => {
+    setSelected(e.target.innerHTML);
+    onChangeSelected(e.target.innerHTML);
+  };
+
   return (
     <DropDownCategory onClick={onClickDropDownOn}>
       {selected || name}
@@ -89,6 +93,7 @@ const DropDown = ({ name, list }) => {
 DropDown.propTypes = {
   name: PropTypes.string.isRequired,
   list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  onChangeSelected: PropTypes.func.isRequired,
 };
 
 export default DropDown;

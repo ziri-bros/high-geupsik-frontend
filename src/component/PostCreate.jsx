@@ -94,13 +94,19 @@ const PostCreateContentInput = styled.textarea`
 
 const PostCreate = () => {
   const list = ['자유게시판', '정보게시판', '홍보게시판'];
+  const [dropDownSelected, setDropDownSelected] = useState('');
+  const onChangeSelected = selected => setDropDownSelected(selected);
 
   return (
     <PostCreateWrapper>
       <PostCreateExitButton>
         <img src="/images/icons/close_grey.png" alt="close" />
       </PostCreateExitButton>
-      <DropDown name="게시판 선택" list={list} />
+      <DropDown
+        name="게시판 선택"
+        list={list}
+        onChangeSelected={onChangeSelected}
+      />
       <PostCreateTitleInput placeholder="제목을 입력해주세요" />
       <PostCreateImgWrapper></PostCreateImgWrapper>
       <PostCreateImgUploadButton>
