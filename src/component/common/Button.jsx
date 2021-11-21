@@ -26,6 +26,12 @@ const ButtonBox = styled.div`
       margin: 0 11px 5px 11px;
     `}
 
+  margin: ${props => props.postBtn && '0 0 5px 0'};
+
+  height: 40px;
+  background: #5d6e1e;
+  border-radius: 5px;
+  cursor: pointer;
 
   /* 내 정보에 위치하는 로그아웃 버튼 디자인 */
   ${props =>
