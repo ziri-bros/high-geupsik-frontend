@@ -34,12 +34,12 @@ const IconItem = styled.div`
 `;
 
 const LogoutBtn = styled.button`
-  background : #868e96;
+  background: #868e96;
   color: white;
-  font-size:12px;
+  font-size: 12px;
   height: 30px;
   font-weight: bold;
-  padding:0 10px;
+  padding: 0 10px;
   margin-top: 10px;
   cursor: pointer;
 `;
@@ -49,15 +49,19 @@ const Header = ({ admin }) => (
     <LogoBox to="/home">
       <img src="/images/logo/logo.png" alt="logo" />
     </LogoBox>
-    { admin ? (
+    {admin ? (
       <LogoutBtn>로그아웃</LogoutBtn>
     ) : (
       <IconBox>
         <IconItem>
-          <img src="/images/icons/search.png" alt="search" />
+          <Link to="/search">
+            <img src="/images/icons/search.png" alt="search" />
+          </Link>
         </IconItem>
         <IconItem>
-          <img src="/images/icons/bell.png" alt="search" />
+          <Link to="/home">
+            <img src="/images/icons/bell.png" alt="search" />
+          </Link>
         </IconItem>
       </IconBox>
     )}

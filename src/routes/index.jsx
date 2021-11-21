@@ -12,6 +12,7 @@ import PostCreatePage from '../page/PostCreatePage';
 import AdminPage from '../page/AdminPage';
 import MatchPage from '../page/MatchPage';
 import HomePage from '../page/HomePage';
+import SearchPage from '../page/SearchPage';
 
 const RootRoute = () => (
   <>
@@ -24,6 +25,7 @@ const RootRoute = () => (
         <AuthPage type="signup" />
       </Route>
       <Route path="/home" component={HomePage} exact />
+      <Route path="/search" component={SearchPage} exact />
       <Route
         path={['/register', '/modify']}
         component={MyInfoDetailPage}
