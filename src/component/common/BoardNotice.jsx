@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
 const BoardNoticeWrapper = styled.div`
+  position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 96%;
+  width: 92.5%;
   height: auto;
   margin: 7px 0 4px 0;
   border: 0.5px solid #adadad;
@@ -17,7 +18,7 @@ const BoardNoticeWrapper = styled.div`
     font-size: 11px;
     font-weight: 700;
     margin: 2px 0 0 0;
-    :nth-child(3) {
+    :nth-of-type(2) {
       color: #626262;
       font-size: 11px;
       font-weight: 500;
