@@ -84,29 +84,37 @@ const SchoolFoodList = styled.div`
 
 // 예시 DB
 const exampleSchoolFood = {
-  year: '2021',
-  month: '11',
-  date: '21',
-  meal1: '식단1입니다',
-  meal2: '식단2입니다',
-  meal3: '식단3입니다',
+  success: true,
   menu: [
     {
       year: '2021',
       month: '11',
-      date: '22',
-      meal1: '식단4입니다',
-      meal2: '식단5입니다',
-      meal3: '식단6입니다',
+      date: '21',
+      meal1: '식단1입니다',
+      meal2: '식단2입니다',
+      meal3: '식단3입니다',
+      kcal: '1000kcal',
       menu: [
         {
           year: '2021',
           month: '11',
-          date: '23',
-          meal1: '식단7입니다',
-          meal2: '식단8입니다',
-          meal3: '식단9입니다',
-          menu: [],
+          date: '22',
+          meal1: '식단4입니다',
+          meal2: '식단5입니다',
+          meal3: '식단6입니다',
+          kcal: '2000kcal',
+          menu: [
+            {
+              year: '2021',
+              month: '11',
+              date: '23',
+              meal1: '식단7입니다',
+              meal2: '식단8입니다',
+              meal3: '식단9입니다',
+              kcal: '3000kcal',
+              menu: [],
+            },
+          ],
         },
       ],
     },
@@ -118,40 +126,17 @@ const HomePage = () => {
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
 
-  // const haveday31 = [0, 1, 3, 5, 7, 8, 10, 12];
-  // const haveday30 = [2, 4, 6, 9, 11];
+  console.log(exampleSchoolFood);
 
   const dateItem = new Date();
   // 초기 단 한번
   useEffect(() => {
-    console.log(exampleSchoolFood);
     setYear(dateItem.getFullYear());
     setMonth(dateItem.getMonth());
     setDate(dateItem.getDate());
   }, []);
-  // date변경, 즉 버튼 클릭 시
-  // useEffect(() => {
-  //   // month처리
-  //   if (haveday30.includes(month) && date < 1) {
-  //     setMonth(month - 1);
-  //     setDate(30);
-  //   }
-  //   if (haveday31.includes(month) && date < 1) {
-  //     if (month === 0) setMonth(11);
-  //     else setMonth(month - 1);
-  //     setDate(31);
-  //   }
-  //   if (haveday30.includes(month + 1) && date > 30) {
-  //     setMonth(month + 1);
-  //     setDate(1);
-  //   }
-  //   if (haveday31.includes(month + 1) && date > 31) {
-  //     if (month + 1 === 12) setMonth(0);
-  //     else setMonth(month + 1);
-  //     setDate(1);
-  //   }
-  //   // year처리
-  // }, [date]);
+
+  // 현재 날짜와 DB의 날짜를 비교해서 depth를 파악 후 오늘급식 띄우는게 우선.
 
   return (
     <>
