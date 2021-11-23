@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 
@@ -16,6 +17,10 @@ const Menu = styled.div`
     height: 20px;
     margin-right: 21px;
   }
+`;
+
+const Icon = styled.div`
+  cursor: pointer;  
 `;
 
 const Title = styled.div`
@@ -73,12 +78,15 @@ const MyInfoDetail = ({ path }) => {
   const [location, setLocation] = useState(null);
   const [area, setArea] = useState(null);
   const [school, setSchool] = useState(null);
+
   const fileInput = useRef(null);
+  const history = useHistory();
 
   const onChangeArea = (value) => setArea(value);
   const onChangeSchool = (value) => setSchool(value);
   const onChange = (e) => setImgData(e.target.value);
   const onClickBtn = () => fileInput.current.click();
+  const onMoveBack = () => history.goBack();
 
   // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
   useEffect(() => {
@@ -89,7 +97,13 @@ const MyInfoDetail = ({ path }) => {
   return (
     <RegisterUserInfoBox>
       <Menu>
-        <img src="/images/icons/left_arrow.png" alt="arrow" />
+        {location === 'register' ?
+          <img src="/images/icons/right_arrow.png" alt="arrow" />
+          : (
+            <Icon onClick={onMoveBack}>
+              <img src="/images/icons/left_arrow.png" alt="arrow" />
+            </Icon>
+          )}
         <Title>{location === 'register' ? '회원가입' : '내 정보 수정'}</Title>
       </Menu>
       <InputWrapper>
