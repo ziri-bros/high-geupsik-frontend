@@ -11,25 +11,33 @@ const BoardWrapper = styled.div`
   align-items: center;
   flex-direction: column;
   width: 100%;
-  height: 366px;
+  height: 100%;
   background-color: white;
   overflow: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const BoardContents = styled.div`
   display: flex;
   flex-direction: column;
-  width: 96%;
+  width: 95%;
+  min-width: 300px;
+  max-width: 460px;
   height: auto;
-  margin: 4px 0 4px 0;
+  margin: 7px 0 0 0;
   border: 0.5px solid #adadad;
   border-radius: 5px;
   background-color: white;
   cursor: pointer;
+  :last-of-type {
+    margin: 7px 0 7px 0;
+  }
   ${props =>
     props.noticeExistence &&
     css`
-      margin: 42px 0 0 0;
+      margin: 45px 0 0 0;
     `}
 `;
 
@@ -138,6 +146,35 @@ const BoardComponent = ({ noticeExistence, type, objects }) => {
             </BoardInnerWrapper>
             <BoardInnerWrapper>
               <ContentsContent>{objects.content}</ContentsContent>
+            </BoardInnerWrapper>
+            <BoardInnerWrapper>
+              <ContentsType>[type]자유게시판</ContentsType>
+              <ContentsInformationSet>
+                <img src="/images/icons/view.png" alt="view" />
+                <span>88</span>
+                <img src="/images/icons/heart.png" alt="heart" />
+                <span>12</span>
+                <img src="/images/icons/chat.png" alt="chat" />
+                <span>22</span>
+              </ContentsInformationSet>
+            </BoardInnerWrapper>
+          </BoardContents>
+        ) : (
+          <PostNotFound />
+        )}
+        {objects.title ? (
+          <BoardContents>
+            <BoardInnerWrapper>
+              <ContentsTitle>{objects.title}</ContentsTitle>
+              <ContentsDate>{objects.time}</ContentsDate>
+            </BoardInnerWrapper>
+            <BoardInnerWrapper>
+              <ContentsContent>{objects.content}</ContentsContent>
+              <img
+                className="content-img"
+                src="/images/icons/square.png"
+                alt=""
+              />
             </BoardInnerWrapper>
             <BoardInnerWrapper>
               <ContentsType>[type]자유게시판</ContentsType>
