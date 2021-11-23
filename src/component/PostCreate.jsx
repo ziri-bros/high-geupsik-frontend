@@ -145,7 +145,13 @@ const PostCreate = () => {
   const onChangeTitle = e => setTitle(e.target.value);
   const onChangeContent = e => setContent(e.target.value);
 
-  const onModalOn = () => setModalOn(!modalOn);
+  const onModalOn = () => {
+    if (title.length > 0 || content.length > 0 || images.length > 0) {
+      setModalOn(!modalOn);
+    } else {
+      history.goBack();
+    }
+  };
   const onConfirm = () => history.goBack();
 
   const addImages = e => {

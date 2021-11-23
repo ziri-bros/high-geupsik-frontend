@@ -14,7 +14,7 @@ const RegisterUserInfoBox = styled.div`
 const Menu = styled.div`
   display: flex;
 
-  img{
+  img {
     width: 20px;
     height: 20px;
     margin-right: 21px;
@@ -22,7 +22,7 @@ const Menu = styled.div`
 `;
 
 const Icon = styled.div`
-  cursor: pointer;  
+  cursor: pointer;
 `;
 
 const Title = styled.div`
@@ -37,18 +37,18 @@ const InputWrapper = styled.div`
 
 const InputText = styled.div`
   font-size: 14px;
-  color: ${props => props.blur ? '#a4a4a4' : '4f4f4f'};
+  color: ${props => (props.blur ? '#a4a4a4' : '4f4f4f')};
   margin-bottom: ${props => !props.blur && '3px'};
-  
-  span{
-    color: #E27070;
+
+  span {
+    color: #e27070;
     font-size: 16px;
     margin-left: 5px;
   }
 `;
 
 const ImageWrapper = styled.div`
-  display:flex;
+  display: flex;
   align-items: flex-start;
   font-size: 14px;
 `;
@@ -160,13 +160,13 @@ const MyInfoDetail = ({ path }) => {
   return (
     <RegisterUserInfoBox>
       <Menu>
-        {location === 'register' ?
+        {location === 'register' ? (
           <img src="/images/icons/right_arrow.png" alt="arrow" />
-          : (
-            <Icon onClick={onMoveBack}>
-              <img src="/images/icons/left_arrow.png" alt="arrow" />
-            </Icon>
-          )}
+        ) : (
+          <Icon onClick={onMoveBack}>
+            <img src="/images/icons/left_arrow.png" alt="arrow" />
+          </Icon>
+        )}
         <Title>{location === 'register' ? '회원가입' : '내 정보 수정'}</Title>
       </Menu>
       <InputWrapper>

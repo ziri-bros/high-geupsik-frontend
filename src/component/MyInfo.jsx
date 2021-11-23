@@ -15,8 +15,8 @@ const MyInfoBox = styled.div`
   border-radius: 5px;
   padding: 12px 0 12px 19px;
   margin-bottom: 7px;
-  
-  .where{
+
+  .where {
     display: flex;
     margin-top: 10px;
   }
@@ -30,14 +30,14 @@ const Name = styled.div`
 
 const Text = styled.div`
   font-size: 13px;
-  color: ${props => props.blur ? '#626262' : '#4f4f4f'};
+  color: ${props => (props.blur ? '#626262' : '#4f4f4f')};
   margin-right: ${props => props.area && '15px'};
 `;
 
 const MyPostMenuList = styled.div`
   display: flex;
   align-items: center;
-  margin: 34px 0 10px;  
+  margin: 34px 0 10px;
 `;
 
 const MyPostMenu = styled.div`
@@ -45,17 +45,19 @@ const MyPostMenu = styled.div`
   font-size: 16px;
   color: #4f4f4f;
   cursor: pointer;
-  
-  ${props => props.menuOn && css`
-    color: #5d6e1e;
-    font-weight: bold;
-  `}
+
+  ${props =>
+    props.menuOn &&
+    css`
+      color: #5d6e1e;
+      font-weight: bold;
+    `}
 `;
 
 const Bar = styled.div`
-  width:1px;
-  height:18px;
-  margin:0 10px;
+  width: 1px;
+  height: 18px;
+  margin: 0 10px;
   background: #4f4f4f;
 `;
 
@@ -124,21 +126,27 @@ const MyInfo = () => {
           <Text>성신여자고등학교</Text>
         </div>
       </MyInfoBox>
-      <Button onClick={onLogout} logoutBtn>로그아웃</Button>
+      <Button onClick={onLogout} logoutBtn>
+        로그아웃
+      </Button>
       <ButtonWrapper to="/modify">
         <Button>내 정보 수정</Button>
       </ButtonWrapper>
       <MyPostMenuList>
-        <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>내가 작성한 게시글</MyPostMenu>
+        <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
+          내가 작성한 게시글
+        </MyPostMenu>
         <Bar />
-        <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>내가 댓글 단 게시글</MyPostMenu>
+        <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>
+          내가 댓글 단 게시글
+        </MyPostMenu>
       </MyPostMenuList>
       {/* 게시글 없을 때 */}
-      {
-        examplePost ?
-          <BoardComponent objects={examplePost} /> :
-          <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
-      }
+      {examplePost ? (
+        <BoardComponent objects={examplePost} />
+      ) : (
+        <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
+      )}
     </MyInfoWrapper>
   );
 };
