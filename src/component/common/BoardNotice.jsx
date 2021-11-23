@@ -1,14 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
 
+const BoardHidingWrapper = styled.div`
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  background-color: white;
+  margin: 1px 0 0 0;
+  width: 95%;
+  height: 38px;
+  border-radius: 0 0 5px 5px;
+  outline: 1px solid white;
+`;
+
 const BoardNoticeWrapper = styled.div`
   position: absolute;
   display: flex;
   flex-direction: row;
   align-items: center;
-  width: 92.5%;
+  width: 100%;
   height: auto;
-  margin: 7px 0 4px 0;
   border: 0.5px solid #adadad;
   border-radius: 5px;
   background-color: white;
@@ -43,11 +55,13 @@ const BoardNotice = () => {
   return (
     <>
       {notice === 1 && (
-        <BoardNoticeWrapper>
-          <img src="/images/icons/pin.png" alt="" />
-          <span>공지</span>
-          <span>하고싶은말을 자유롭게 적어주세요</span>
-        </BoardNoticeWrapper>
+        <BoardHidingWrapper>
+          <BoardNoticeWrapper>
+            <img src="/images/icons/pin.png" alt="" />
+            <span>공지</span>
+            <span>하고싶은말을 자유롭게 적어주세요</span>
+          </BoardNoticeWrapper>
+        </BoardHidingWrapper>
       )}
     </>
   );
