@@ -107,7 +107,11 @@ const BoardPosting = ({ path }) => {
   return (
     <>
       {boardType === 'board' && (
-        <BoardComponent type={boardType} objects={examplePost} />
+        <BoardComponent
+          noticeExistence={`${true}`}
+          type={boardType}
+          objects={examplePost}
+        />
       )}
       {boardType === 'free' && (
         <BoardComponent type={boardType} objects={examplePost2} />

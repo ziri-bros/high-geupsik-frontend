@@ -7,12 +7,15 @@ import BoardComponent from './BoardComponent';
 const PreviewItem = styled.div`
   display: flex;
   flex-direction: column;
-  width: 96%;
+  width: 94%;
   height: auto;
-  margin: 4px 0 4px 0;
+  margin: 12px 0 0 0;
   border: 0.5px solid #adadad;
   border-radius: 5px;
   background-color: white;
+  :last-of-type {
+    margin: 12px 0 12px 0;
+  }
 `;
 
 const TitleWrapper = styled.div`
@@ -21,9 +24,16 @@ const TitleWrapper = styled.div`
   align-items: center;
   width: 94%;
   height: 40px;
-  margin: 10px 3%;
+  margin: 10px 0 0 15px;
   span {
     margin: 0 0 0 5px;
+  }
+  span:nth-of-type(2) {
+    display: flex;
+    font-size: 10px;
+    font-weight: 400;
+    color: #4f4f4f;
+    margin: 6px auto 0 10px;
   }
 `;
 
@@ -32,21 +42,25 @@ const IconItem = styled.div`
   cursor: pointer;
   img {
     margin: 5px 5px 0 0;
-    width: 30px;
-    height: 36px;
+    width: 26px;
+    height: 26px;
   }
 `;
 
 const SchoolFoodWrapper = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
   width: auto;
   height: auto;
   border-radius: 5px;
-  margin: 0 0 10px;
+  margin: 0 0 0 0;
   overflow-x: auto;
   &::-webkit-scrollbar {
     display: none;
+  }
+  @media only screen and (max-width: 400px) {
+    justify-content: flex-start;
   }
 `;
 
@@ -128,7 +142,7 @@ const BoardItem = styled.div`
   span:nth-of-type(2) {
     font-weight: 400;
     font-size: 11px;
-    margin: 1px 0 0 15px;
+    margin: 0 0 0 15px;
   }
 `;
 
@@ -193,6 +207,7 @@ const Preview = ({ type }) => (
       <PreviewItem>
         <TitleWrapper>
           <span>오늘의 급식</span>
+          <span>7월 22일</span>
           <IconItem>
             <Link to="/schoolfood">
               <img src="/images/icons/right_arrow.png" alt="right_arrow" />
@@ -265,7 +280,7 @@ const Preview = ({ type }) => (
           </IconItem>
         </TitleWrapper>
         <RecentPostWrapper>
-          <BoardComponent noticeExistence={`${false}`} objects={examplePost} />
+          <BoardComponent objects={examplePost} />
         </RecentPostWrapper>
       </PreviewItem>
     )}
