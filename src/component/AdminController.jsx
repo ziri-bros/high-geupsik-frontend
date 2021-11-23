@@ -134,6 +134,10 @@ const CloseIcon = styled.div`
 const ModalBtnWrapper = styled.div`
   display: flex;
   height: 42px;
+
+  div:nth-of-type(1){
+    border-right: 1px solid #adadad;
+  }
 `;
 
 const ModalBtn = styled.div`
@@ -144,7 +148,6 @@ const ModalBtn = styled.div`
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  border-right: ${props => props.first && '1px solid #adadad'};
 `;
 
 // 테스트용 더미데이터
@@ -185,14 +188,14 @@ const StudentInfo = ({ studentInfo, last }) => {
               {
                 modalOn === 'approve' ? (
                   <>
-                    <ModalBtn onClick={onCancel} first>취소</ModalBtn>
+                    <ModalBtn onClick={onCancel}>취소</ModalBtn>
                     <ModalBtn>확인</ModalBtn>
                   </>
                 )
                   :
                   (
                     <>
-                      <ModalBtn onClick={onCancel} first>취소</ModalBtn>
+                      <ModalBtn onClick={onCancel}>취소</ModalBtn>
                       <ModalBtn>확인</ModalBtn>
                     </>
                   )
