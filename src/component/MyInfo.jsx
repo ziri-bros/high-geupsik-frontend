@@ -110,6 +110,10 @@ const MyInfo = () => {
 
   const onClickWriteBtn = () => setMenuOn(true);
   const onClickCommentBtn = () => setMenuOn(false);
+
+  // 로그아웃 함수. 차후에 구현
+  const onLogout = () => {};
+
   return (
     <MyInfoWrapper>
       <MyInfoBox>
@@ -120,6 +124,7 @@ const MyInfo = () => {
           <Text>성신여자고등학교</Text>
         </div>
       </MyInfoBox>
+      <Button onClick={onLogout} logoutBtn>로그아웃</Button>
       <ButtonWrapper to="/modify">
         <Button>내 정보 수정</Button>
       </ButtonWrapper>
