@@ -15,8 +15,8 @@ const ButtonBox = styled.div`
   color: white;
   font-weight: bold;
 
-    /* 하단에 위치하는 버튼 디자인 */
-    ${props =>
+  /* 하단에 위치하는 버튼 디자인 */
+  ${props =>
     props.footer &&
     css`
       position: absolute;
@@ -42,13 +42,13 @@ const ButtonBox = styled.div`
       margin-bottom: 7px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
     `}
-
 `;
 
-const Button = ({ children, footer, onClick, logoutBtn }) => (
+const Button = ({ children, footer, onClick, postBtn, logoutBtn }) => (
   <ButtonBox
     footer={footer}
     onClick={onClick}
+    postBtn={postBtn}
     logoutBtn={logoutBtn}
   >
     {children}
@@ -59,8 +59,8 @@ Button.propTypes = {
   children: PropTypes.string.isRequired,
   footer: PropTypes.bool,
   onClick: PropTypes.func,
+  postBtn: PropTypes.bool,
   logoutBtn: PropTypes.string,
-
 };
 
 export default Button;
