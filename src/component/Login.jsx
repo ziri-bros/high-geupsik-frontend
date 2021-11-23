@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import { Link } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 const LoginBox = styled.div`
   margin-top: 70px;
@@ -26,7 +27,6 @@ const Profile = styled.div`
 const LoginButton = styled.div`
   width: 276px;
   height: 40px;
-  background-color: ${props => props.type === 'kakao' ? '#f9e54d' : '#FFFFFF'};
   border: 1px solid #ADADAD;
   border-radius: 12px;
   display: flex;
@@ -34,11 +34,23 @@ const LoginButton = styled.div`
   padding: 0 15px;
   margin-bottom: 10px;
   cursor: pointer;
+  background: #ffffff;
 
   img{
     width: 18px;
     height: 17.14px;
   }
+
+  background-color: ${props => props.type === 'kakao' && '#f9e54d'};
+  background-color: ${props => props.type === 'google' && '#FFFFFF'};
+  
+  ${props => props.type === 'naver' && css`
+    padding-left: 11px;
+    img{
+      width:24px;
+      height:23.14px;
+    }
+  `}
 `;
 
 const LoginText = styled.div`
@@ -72,6 +84,10 @@ const Login = ({ type }) => (
     <LoginButton type="kakao">
       <img src="/images/icons/kakao.png" alt="kakao" />
       <LoginText>{`카카오톡으로 ${type === 'login' ? '로그인' : '회원가입'}`}</LoginText>
+    </LoginButton>
+    <LoginButton type="naver">
+      <img src="/images/icons/naver.png" alt="naver" />
+      <LoginText>{`네이버로 ${type === 'login' ? '로그인' : '회원가입'}`}</LoginText>
     </LoginButton>
     <LoginButton type="google">
       <img src="/images/icons/google.png" alt="google" />
