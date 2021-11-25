@@ -5,7 +5,7 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
-import { imageUploader } from '../lib/api/auth';
+import { imageUploader, signUp } from '../lib/api/auth';
 import { API_BASE_URL } from '../constants';
 
 const RegisterUserInfoBox = styled.div`
@@ -109,14 +109,14 @@ const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
   const [location, setLocation] = useState(null);
   const [area, setArea] = useState(null);
-  const [school, setSchool] = useState(null);
+  const [schoolName, setSchoolName] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
 
   const fileInput = useRef(null);
   const history = useHistory();
 
   const onChangeArea = (value) => setArea(value);
-  const onChangeSchool = (value) => setSchool(value);
+  const onChangeSchoolName = (value) => setSchoolName(value);
   const onChangeImage = async (e) => {
     if (e.target.files[0] !== null) {
       const currentImgUrl = URL.createObjectURL(e.target.files[0]);
@@ -126,6 +126,29 @@ const MyInfoDetail = ({ path }) => {
       formData.append('imageList', e.target.files[0]);
       const response = await imageUploader(formData);
       setImgUrl(response.data[0].fileDownloadUri);
+    }
+  };
+
+  const onClickSubmit = async () => {
+    if (area === null || schoolName === null || imgUrl === null) {
+      alert('모든 값을 입력해주세요');
+      return;
+    }
+    const userCardReqDTO = {
+      schoolDTO: {
+        code: schoolCodes[schoolName],
+        name: schoolName,
+        region: offices[area].region,
+        regionCode: offices[area].code,
+      },
+      thumbnail: imgUrl,
+    };
+
+    try {
+      await signUp(userCardReqDTO);
+      history.push('/allow');
+    } catch (e) {
+      console.log('error', e);
     }
   };
 
@@ -156,7 +179,7 @@ const MyInfoDetail = ({ path }) => {
       </InputWrapper>
       <InputWrapper>
         <InputText>재학 중인 고등학교<span>*</span></InputText>
-        <DropDown name="재학 중인 고등학교 선택" list={schools} onChangeSelected={onChangeSchool} narrow school />
+        <DropDown name="재학 중인 고등학교 선택" list={schools} onChangeSelected={onChangeSchoolName} narrow school />
       </InputWrapper>
       {
         location === 'register' && (
@@ -172,7 +195,7 @@ const MyInfoDetail = ({ path }) => {
       }
       {
         location === 'register' ?
-          <Button footer>가입하기</Button> : <Button footer>저장하기</Button>
+          <Button onClick={onClickSubmit} footer>가입하기</Button> : <Button footer>저장하기</Button>
       }
     </RegisterUserInfoBox>
   );

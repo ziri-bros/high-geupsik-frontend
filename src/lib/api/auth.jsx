@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../constants';
 
-export const signUp = (schoolInfoDTO) => {
-  axios.post(`${API_BASE_URL}/login/schoolInfo`, schoolInfoDTO, {
+export const signUp = async (schoolInfoDTO) => {
+  await axios.post(`${API_BASE_URL}/login/cards`, schoolInfoDTO, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
