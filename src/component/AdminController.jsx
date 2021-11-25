@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { deleteUserCard, getUserCardList } from '../lib/api/admin';
+import { allowUserCard, deleteUserCard, getUserCardList } from '../lib/api/admin';
 import { API_BASE_URL } from '../constants';
 
 const AdminControllerWrapper = styled.div`
@@ -185,6 +185,15 @@ const StudentInfo = ({ studentInfo, last }) => {
     }
   };
 
+  const onConfirmUserCard = async () => {
+    try {
+      await allowUserCard(cardId);
+      setModalOn(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <StudentInfoWrapper last={last}>
       <Text>{username}<span>({email})</span></Text>
@@ -204,7 +213,7 @@ const StudentInfo = ({ studentInfo, last }) => {
                 modalOn === 'approve' ? (
                   <>
                     <ModalBtn onClick={onCancel}>취소</ModalBtn>
-                    <ModalBtn>확인</ModalBtn>
+                    <ModalBtn onClick={onConfirmUserCard}>확인</ModalBtn>
                   </>
                 )
                   :

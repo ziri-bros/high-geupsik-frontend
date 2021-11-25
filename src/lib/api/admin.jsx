@@ -17,3 +17,11 @@ export const deleteUserCard = async (cardId) => {
     },
   });
 };
+
+export const allowUserCard = async (cardId) => {
+  await axios.patch(`${API_BASE_URL}/admin/cards/${cardId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+};
