@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import axios from 'axios';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 
@@ -73,7 +74,34 @@ const ImageUploadButton = styled.div`
 
 */
 const areas = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
-const schools = ['안동고등학교', '영일고등학교', '우심고등학교', '청원고등학교'];
+const schools = ['서울과학고등학교', '한성과학고등학교', '대원외국어고등학교', '한영외국어고등학교'];
+
+const offices = {
+  서울특별시: { region: 'SEOUL', code: 'B10' },
+  부산광역시: { region: 'BUSAN', code: 'C10' },
+  대구광역시: { region: 'DAEGU', code: 'D10' },
+  인천광역시: { region: 'INCHEON', code: 'E10' },
+  광주광역시: { region: 'GWANGJU', code: 'F10' },
+  대전광역시: { region: 'DAEJEON', code: 'G10' },
+  울산광역시: { region: 'ULSAN', code: 'H10' },
+  세종특별시: { region: 'SEJONG', code: 'I10' },
+  경기도: { region: 'GYEONGGI', code: 'J10' },
+  강원도: { region: 'GANGWON', code: 'K10' },
+  충청북도: { region: 'CHUNGBUK', code: 'M10' },
+  충청남도: { region: 'CHUNGNAM', code: 'N10' },
+  전라북도: { region: 'JEONBUK', code: 'P10' },
+  전라남도: { region: 'JEONNAM', code: 'Q10' },
+  경상북도: { region: 'GYEONGBUK', code: 'R10' },
+  경상남도: { region: 'GYEONGNAM', code: 'S10' },
+  제주특별자치도: { region: 'JEJU', code: 'T10' },
+};
+
+const schoolCodes = {
+  서울과학고등학교: '7010084',
+  한성과학고등학교: '7010115',
+  대원외국어고등학교: '7010143',
+  한영외국어고등학교: '7010259',
+};
 
 const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
