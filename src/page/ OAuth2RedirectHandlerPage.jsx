@@ -17,8 +17,6 @@ const OAuth2RedirectHandlerPage = ({ location }) => {
   const role = getUrlParameter('role');
   const isSubmittedCard = getUrlParameter('isSubmittedCard');
 
-  console.log(jwt, role, isSubmittedCard);
-
   if (jwt) localStorage.setItem('ACCESS_TOKEN', jwt);
 
   if (role === 'ROLE_USER') return <Redirect to="/home" />;

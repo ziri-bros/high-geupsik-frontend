@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
+import { imageUploader } from '../lib/api/auth';
+import { API_BASE_URL } from '../constants';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -108,13 +110,25 @@ const MyInfoDetail = ({ path }) => {
   const [location, setLocation] = useState(null);
   const [area, setArea] = useState(null);
   const [school, setSchool] = useState(null);
+  const [imgUrl, setImgUrl] = useState(null);
 
   const fileInput = useRef(null);
   const history = useHistory();
 
   const onChangeArea = (value) => setArea(value);
   const onChangeSchool = (value) => setSchool(value);
-  const onChange = (e) => setImgData(e.target.value);
+  const onChangeImage = async (e) => {
+    if (e.target.files[0] !== null) {
+      const currentImgUrl = URL.createObjectURL(e.target.files[0]);
+      setImgData(currentImgUrl);
+
+      const formData = new FormData();
+      formData.append('imageList', e.target.files[0]);
+      const response = await imageUploader(formData);
+      setImgUrl(response.data[0].fileDownloadUri);
+    }
+  };
+
   const onClickBtn = () => fileInput.current.click();
   const onMoveBack = () => history.goBack();
 
@@ -149,7 +163,7 @@ const MyInfoDetail = ({ path }) => {
           <InputWrapper>
             <InputText>학생증 첨부<span>*</span></InputText>
             <ImageWrapper>
-              <input type="file" ref={fileInput} onChange={onChange} style={{ display: 'none' }} />
+              <input type="file" ref={fileInput} onChange={onChangeImage} style={{ display: 'none' }} />
               <ImageText>{imgData || '파일 없음'}</ImageText>
               <ImageUploadButton onClick={onClickBtn}>학생증 첨부</ImageUploadButton>
             </ImageWrapper>
