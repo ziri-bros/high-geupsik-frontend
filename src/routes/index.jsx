@@ -50,7 +50,7 @@ const RootRoute = () => (
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={MatchPage} exact />
-      <Route path="/oauth/redirect" component={OAuth2RedirectHandlerPage} exact />
+      <Route path="/oauth2/redirect" component={OAuth2RedirectHandlerPage} exact />
 
       {/* 관리자 전용 페이지 */}
       <Route path="/admin" component={AdminPage} exact />
