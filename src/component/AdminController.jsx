@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import axios from 'axios';
-import { getUserCardList } from '../lib/api/admin';
+import { deleteUserCard, getUserCardList } from '../lib/api/admin';
 import { API_BASE_URL } from '../constants';
 
 const AdminControllerWrapper = styled.div`
@@ -166,6 +166,8 @@ const studentInfos = [
 const StudentInfo = ({ studentInfo, last }) => {
   const { email, username } = studentInfo.userResDTO;
   const imageURL = studentInfo.thumbnail;
+  const cardId = studentInfo.id;
+
   const [modalOn, setModalOn] = useState(false);
   const [imgViewOn, setImgViewOn] = useState(false);
 
@@ -173,6 +175,15 @@ const StudentInfo = ({ studentInfo, last }) => {
   const onClickApprove = () => setModalOn('approve');
   const onClickView = () => setImgViewOn(!imgViewOn);
   const onCancel = () => setModalOn(false);
+
+  const onCancelUserCard = async () => {
+    try {
+      await deleteUserCard(cardId);
+      setModalOn(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <StudentInfoWrapper last={last}>
@@ -200,7 +211,7 @@ const StudentInfo = ({ studentInfo, last }) => {
                   (
                     <>
                       <ModalBtn onClick={onCancel}>취소</ModalBtn>
-                      <ModalBtn>확인</ModalBtn>
+                      <ModalBtn onClick={onCancelUserCard}>확인</ModalBtn>
                     </>
                   )
               }

@@ -9,3 +9,11 @@ export const getUserCardList = async (pageNumber = 1) => {
   });
   return response.data;
 };
+
+export const deleteUserCard = async (cardId) => {
+  await axios.delete(`${API_BASE_URL}/admin/cards/${cardId}`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+};
