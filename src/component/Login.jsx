@@ -35,6 +35,7 @@ const LoginButton = styled.div`
   margin-bottom: 10px;
   cursor: pointer;
   background: #ffffff;
+  color: black;
 
   img{
     width: 18px;
