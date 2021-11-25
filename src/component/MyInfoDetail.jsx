@@ -69,8 +69,10 @@ const ImageUploadButton = styled.div`
   border-radius: 5px;
   cursor: pointer;
 `;
+/*
 
-const areas = ['서울', '경기도', '경상북도', '경상남도'];
+*/
+const areas = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
 const schools = ['안동고등학교', '영일고등학교', '우심고등학교', '청원고등학교'];
 
 const MyInfoDetail = ({ path }) => {
