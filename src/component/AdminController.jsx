@@ -2,9 +2,7 @@ import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
-import axios from 'axios';
 import { allowUserCard, deleteUserCard, getUserCardList } from '../lib/api/admin';
-import { API_BASE_URL } from '../constants';
 
 const AdminControllerWrapper = styled.div`
   border-top: 1px solid #5D6E1E;

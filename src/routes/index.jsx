@@ -14,7 +14,7 @@ import MatchPage from '../page/MatchPage';
 import HomePage from '../page/HomePage';
 import SearchPage from '../page/SearchPage';
 import SchoolFoodPage from '../page/SchoolFoodPage';
-import OAuth2RedirectHandlerPage from '../page/ OAuth2RedirectHandlerPage';
+import OAuth2RedirectHandlerPage from '../page/OAuth2RedirectHandlerPage';
 
 const RootRoute = () => (
   <>

@@ -7,6 +7,7 @@ import Button from './common/Button';
 import DropDown from './common/DropDown';
 import { imageUploader, signUp } from '../lib/api/auth';
 import { API_BASE_URL } from '../constants';
+import Modal from './common/Modal';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -112,9 +113,12 @@ const MyInfoDetail = ({ path }) => {
   const [schoolName, setSchoolName] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
 
+  const [modalOn, setModalOn] = useState(true);
+
   const fileInput = useRef(null);
   const history = useHistory();
 
+  const onClickModalBtn = () => setModalOn(!modalOn);
   const onChangeArea = (value) => setArea(value);
   const onChangeSchoolName = (value) => setSchoolName(value);
   const onChangeImage = async (e) => {
@@ -131,7 +135,7 @@ const MyInfoDetail = ({ path }) => {
 
   const onClickSubmit = async () => {
     if (area === null || schoolName === null || imgUrl === null) {
-      alert('모든 값을 입력해주세요');
+      setModalOn(false);
       return;
     }
     const userCardReqDTO = {
@@ -196,6 +200,9 @@ const MyInfoDetail = ({ path }) => {
       {
         location === 'register' ?
           <Button onClick={onClickSubmit} footer>가입하기</Button> : <Button footer>저장하기</Button>
+      }
+      {
+        !modalOn && <Modal title="모든 정보를 입력해주세요" onConfirm={onClickModalBtn} single />
       }
     </RegisterUserInfoBox>
   );
