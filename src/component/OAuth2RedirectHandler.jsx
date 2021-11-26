@@ -2,7 +2,7 @@ import React from 'react';
 import { Redirect } from 'react-router-dom';
 import ReactRouterPropTypes from 'react-router-prop-types';
 
-const OAuth2RedirectHandlerPage = ({ location }) => {
+const OAuth2RedirectHandler = ({ location }) => {
   const getUrlParameter = (name) => {
     const replacedName = name.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
     const regex = new RegExp(`[\\?&]${replacedName}=([^&#]*)`);
@@ -25,8 +25,8 @@ const OAuth2RedirectHandlerPage = ({ location }) => {
   return <Redirect to="/allow" />;
 };
 
-OAuth2RedirectHandlerPage.propTypes = {
+OAuth2RedirectHandler.propTypes = {
   location: ReactRouterPropTypes.match.isRequired,
 };
 
-export default OAuth2RedirectHandlerPage;
+export default OAuth2RedirectHandler;

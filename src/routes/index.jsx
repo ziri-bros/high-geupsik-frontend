@@ -14,7 +14,7 @@ import MatchPage from '../page/MatchPage';
 import HomePage from '../page/HomePage';
 import SearchPage from '../page/SearchPage';
 import SchoolFoodPage from '../page/SchoolFoodPage';
-import OAuth2RedirectHandlerPage from '../page/OAuth2RedirectHandlerPage';
+import OAuth2RedirectHandler from '../component/OAuth2RedirectHandler';
 
 const RootRoute = () => (
   <>
@@ -50,7 +50,7 @@ const RootRoute = () => (
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={MatchPage} exact />
-      <Route path="/oauth2/redirect" component={OAuth2RedirectHandlerPage} exact />
+      <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} exact />
 
       {/* 관리자 전용 페이지 */}
       <Route path="/admin" component={AdminPage} exact />
