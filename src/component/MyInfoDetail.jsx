@@ -2,11 +2,9 @@ import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import axios from 'axios';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 import { imageUploader, signUp } from '../lib/api/auth';
-import { API_BASE_URL } from '../constants';
 import Modal from './common/Modal';
 
 const RegisterUserInfoBox = styled.div`
@@ -73,13 +71,8 @@ const ImageUploadButton = styled.div`
   border-radius: 5px;
   cursor: pointer;
 `;
-/*
 
-*/
-const areas = ['서울특별시', '부산광역시', '대구광역시', '인천광역시', '광주광역시', '대전광역시', '울산광역시', '세종특별시', '경기도', '강원도', '충청북도', '충청남도', '전라북도', '전라남도', '경상북도', '경상남도', '제주특별자치도'];
-const schools = ['서울과학고등학교', '한성과학고등학교', '대원외국어고등학교', '한영외국어고등학교'];
-
-const offices = {
+const areas = {
   서울특별시: { region: 'SEOUL', code: 'B10' },
   부산광역시: { region: 'BUSAN', code: 'C10' },
   대구광역시: { region: 'DAEGU', code: 'D10' },
@@ -112,7 +105,6 @@ const MyInfoDetail = ({ path }) => {
   const [area, setArea] = useState(null);
   const [schoolName, setSchoolName] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
-
   const [modalOn, setModalOn] = useState(true);
 
   const fileInput = useRef(null);
@@ -120,7 +112,10 @@ const MyInfoDetail = ({ path }) => {
 
   const onClickModalBtn = () => setModalOn(!modalOn);
   const onChangeArea = (value) => setArea(value);
+  const onClickImgBtn = () => fileInput.current.click();
+  const onMoveBack = () => history.goBack();
   const onChangeSchoolName = (value) => setSchoolName(value);
+
   const onChangeImage = async (e) => {
     if (e.target.files[0] !== null) {
       const currentImgUrl = URL.createObjectURL(e.target.files[0]);
@@ -134,7 +129,7 @@ const MyInfoDetail = ({ path }) => {
   };
 
   const onClickSubmit = async () => {
-    if (area === null || schoolName === null || imgUrl === null) {
+    if (!area || !schoolName || !imgUrl) {
       setModalOn(false);
       return;
     }
@@ -142,8 +137,8 @@ const MyInfoDetail = ({ path }) => {
       schoolDTO: {
         code: schoolCodes[schoolName],
         name: schoolName,
-        region: offices[area].region,
-        regionCode: offices[area].code,
+        region: areas[area].region,
+        regionCode: areas[area].code,
       },
       thumbnail: imgUrl,
     };
@@ -155,9 +150,6 @@ const MyInfoDetail = ({ path }) => {
       console.log('error', e);
     }
   };
-
-  const onClickBtn = () => fileInput.current.click();
-  const onMoveBack = () => history.goBack();
 
   // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
   useEffect(() => {
@@ -179,11 +171,11 @@ const MyInfoDetail = ({ path }) => {
       </Menu>
       <InputWrapper>
         <InputText>지역<span>*</span></InputText>
-        <DropDown name="지역 선택" list={areas} onChangeSelected={onChangeArea} narrow />
+        <DropDown name="지역 선택" list={Object.keys(areas)} onChangeSelected={onChangeArea} narrow />
       </InputWrapper>
       <InputWrapper>
         <InputText>재학 중인 고등학교<span>*</span></InputText>
-        <DropDown name="재학 중인 고등학교 선택" list={schools} onChangeSelected={onChangeSchoolName} narrow school />
+        <DropDown name="재학 중인 고등학교 선택" list={Object.keys(schoolCodes)} onChangeSelected={onChangeSchoolName} narrow school />
       </InputWrapper>
       {
         location === 'register' && (
@@ -192,7 +184,7 @@ const MyInfoDetail = ({ path }) => {
             <ImageWrapper>
               <input type="file" ref={fileInput} onChange={onChangeImage} style={{ display: 'none' }} />
               <ImageText>{imgData || '파일 없음'}</ImageText>
-              <ImageUploadButton onClick={onClickBtn}>학생증 첨부</ImageUploadButton>
+              <ImageUploadButton onClick={onClickImgBtn}>학생증 첨부</ImageUploadButton>
             </ImageWrapper>
           </InputWrapper>
         )
@@ -202,7 +194,7 @@ const MyInfoDetail = ({ path }) => {
           <Button onClick={onClickSubmit} footer>가입하기</Button> : <Button footer>저장하기</Button>
       }
       {
-        !modalOn && <Modal title="모든 정보를 입력해주세요" onConfirm={onClickModalBtn} single />
+        !modalOn && <Modal title="모든 정보를 입력해주세요." onConfirm={onClickModalBtn} single />
       }
     </RegisterUserInfoBox>
   );
