@@ -151,16 +151,6 @@ const ModalBtn = styled.div`
   cursor: pointer;
 `;
 
-// 테스트용 더미데이터
-const studentInfos = [
-  { id: 1, name: '김상록', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 2, name: '정명훈', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 3, name: '배서현', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 4, name: '이상민', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 5, name: '박성호', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 6, name: '차윤성', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-];
-
 const StudentInfo = ({ studentInfo, last }) => {
   const { email, username } = studentInfo.userResDTO;
   const imageURL = studentInfo.thumbnail;
@@ -227,8 +217,7 @@ const StudentInfo = ({ studentInfo, last }) => {
         </BlackBackground>
         )
       }
-      {
-        // 학생증 보기 모달 창
+      { // 학생증 보기 모달 창
         imgViewOn && (
           <BlackBackground>
             <DeleteModal>
@@ -257,13 +246,14 @@ const AdminController = () => {
 
     loadUserCardList();
   }, []);
+
   return (
     <AdminControllerWrapper>
       <Title>학생증 미 승인 리스트*</Title>
       <StudentInfoList>
         {
           userList && userList.map((user, index) => (
-            <StudentInfo studentInfo={user} last={index === studentInfos.length - 1} />))
+            <StudentInfo studentInfo={user} last={index === userList.length - 1} />))
         }
       </StudentInfoList>
     </AdminControllerWrapper>

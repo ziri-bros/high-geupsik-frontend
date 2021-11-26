@@ -64,6 +64,7 @@ const HeaderNavigation = () => (
         {list.name}
       </NavigationItem>
     ))}
+
   </HeaderNavigationBox>
 );
 
