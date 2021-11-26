@@ -12,6 +12,7 @@ const DropDownCategory = styled.div`
   border-radius: 8px;
   font-weight: 500;
   font-size: 16px;
+
   
 
   ${props => props.narrow && css`
@@ -46,14 +47,12 @@ const DropDownCategoryBox = styled.div`
   left: 0;
   top: 38px;
 
-  height: auto;
+  max-height:291px;
+  overflow-y:scroll;
+
   border: 1px solid #828282;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
-
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 
   background-color: white;
   z-index: 999;

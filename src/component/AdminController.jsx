@@ -1,7 +1,8 @@
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
+import { allowUserCard, deleteUserCard, getUserCardList } from '../lib/api/admin';
 
 const AdminControllerWrapper = styled.div`
   border-top: 1px solid #5D6E1E;
@@ -150,18 +151,11 @@ const ModalBtn = styled.div`
   cursor: pointer;
 `;
 
-// 테스트용 더미데이터
-const studentInfos = [
-  { id: 1, name: '김상록', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 2, name: '정명훈', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 3, name: '배서현', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 4, name: '이상민', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 5, name: '박성호', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-  { id: 6, name: '차윤성', email: 'evertree6031@naver.com', imageUrl: '/images/test/showme.png' },
-];
-
 const StudentInfo = ({ studentInfo, last }) => {
-  const { name, imageUrl, email } = studentInfo;
+  const { email, username } = studentInfo.userResDTO;
+  const imageURL = studentInfo.thumbnail;
+  const cardId = studentInfo.id;
+
   const [modalOn, setModalOn] = useState(false);
   const [imgViewOn, setImgViewOn] = useState(false);
 
@@ -170,9 +164,27 @@ const StudentInfo = ({ studentInfo, last }) => {
   const onClickView = () => setImgViewOn(!imgViewOn);
   const onCancel = () => setModalOn(false);
 
+  const onCancelUserCard = async () => {
+    try {
+      await deleteUserCard(cardId);
+      setModalOn(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onConfirmUserCard = async () => {
+    try {
+      await allowUserCard(cardId);
+      setModalOn(false);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <StudentInfoWrapper last={last}>
-      <Text>{name}<span>({email})</span></Text>
+      <Text>{username}<span>({email})</span></Text>
       <Button onClick={onClickView} view>학생증 보기</Button>
       <Button onClick={onClickApprove} approve>승인</Button>
       <Button onClick={onClickCancel} cancel>거부</Button>
@@ -182,21 +194,21 @@ const StudentInfo = ({ studentInfo, last }) => {
         <BlackBackground>
           <DeleteModal>
             <ModalTitle>
-              <div>{name}님의 학생증을 <span className="stress"> { modalOn === 'approve' ? '승인' : '거부'}</span>하시겠습니까?</div>
+              <div>{username}님의 학생증을 <span className="stress"> { modalOn === 'approve' ? '승인' : '거부'}</span>하시겠습니까?</div>
             </ModalTitle>
             <ModalBtnWrapper>
               {
                 modalOn === 'approve' ? (
                   <>
                     <ModalBtn onClick={onCancel}>취소</ModalBtn>
-                    <ModalBtn>확인</ModalBtn>
+                    <ModalBtn onClick={onConfirmUserCard}>확인</ModalBtn>
                   </>
                 )
                   :
                   (
                     <>
                       <ModalBtn onClick={onCancel}>취소</ModalBtn>
-                      <ModalBtn>확인</ModalBtn>
+                      <ModalBtn onClick={onCancelUserCard}>확인</ModalBtn>
                     </>
                   )
               }
@@ -205,13 +217,12 @@ const StudentInfo = ({ studentInfo, last }) => {
         </BlackBackground>
         )
       }
-      {
-        // 학생증 보기 모달 창
+      { // 학생증 보기 모달 창
         imgViewOn && (
           <BlackBackground>
             <DeleteModal>
               <ImgModal>
-                <img src={imageUrl} alt="이미지" />
+                <img src={imageURL} alt="이미지" />
                 <CloseIcon onClick={onClickView}>
                   <img src="/images/icons/close.png" alt="close" />
                 </CloseIcon>
@@ -224,17 +235,30 @@ const StudentInfo = ({ studentInfo, last }) => {
   );
 };
 
-const AdminController = () => (
-  <AdminControllerWrapper>
-    <Title>학생증 미 승인 리스트*</Title>
-    <StudentInfoList>
-      {
-      studentInfos.map((studentInfo, index) => (
-        <StudentInfo studentInfo={studentInfo} last={index === studentInfos.length - 1} />))
-      }
-    </StudentInfoList>
-  </AdminControllerWrapper>
-);
+const AdminController = () => {
+  const [userList, setUserList] = useState(null);
+
+  useEffect(() => {
+    const loadUserCardList = async () => {
+      const response = await getUserCardList();
+      setUserList(response.data.content);
+    };
+
+    loadUserCardList();
+  }, []);
+
+  return (
+    <AdminControllerWrapper>
+      <Title>학생증 미 승인 리스트*</Title>
+      <StudentInfoList>
+        {
+          userList && userList.map((user, index) => (
+            <StudentInfo studentInfo={user} last={index === userList.length - 1} />))
+        }
+      </StudentInfoList>
+    </AdminControllerWrapper>
+  );
+};
 
 StudentInfo.propTypes = {
   studentInfo: PropTypes.arrayOf(PropTypes.object).isRequired,

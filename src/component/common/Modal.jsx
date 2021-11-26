@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React from 'react';
 import PropTypes from 'prop-types';
+import { css } from '@emotion/react';
 
 const BlackBackground = styled.div`
   position: absolute;
@@ -34,10 +35,18 @@ const ModalTitle = styled.div`
 const ModalBtnWrapper = styled.div`
   display: flex;
   height: 42px;
-
+  
   div:nth-of-type(1){
     border-right: 1px solid #adadad;
   }
+
+  ${props => props.single && css`
+    justify-content: center;
+    div:nth-of-type(1){
+      border-right: 0; 
+    }
+  `}
+  
 `;
 
 const ModalBtn = styled.div`
@@ -50,13 +59,20 @@ const ModalBtn = styled.div`
   cursor: pointer;
 `;
 
-const Modal = ({ title, onCancel, onConfirm }) => (
+const Modal = ({ title, onCancel, onConfirm, single }) => (
   <BlackBackground>
     <DeleteModal>
       <ModalTitle>{title}</ModalTitle>
-      <ModalBtnWrapper>
-        <ModalBtn onClick={onCancel}>취소</ModalBtn>
-        <ModalBtn onClick={onConfirm}>확인</ModalBtn>
+      <ModalBtnWrapper single={single}>
+        {
+          single ? <ModalBtn onClick={onConfirm}>확인</ModalBtn>
+            : (
+              <>
+                <ModalBtn onClick={onCancel}>취소</ModalBtn>
+                <ModalBtn onClick={onConfirm}>확인</ModalBtn>
+              </>
+            )
+}
       </ModalBtnWrapper>
     </DeleteModal>
   </BlackBackground>
@@ -64,8 +80,9 @@ const Modal = ({ title, onCancel, onConfirm }) => (
 
 Modal.propTypes = {
   title: PropTypes.string.isRequired,
-  onCancel: PropTypes.func.isRequired,
+  onCancel: PropTypes.func,
   onConfirm: PropTypes.func.isRequired,
+  single: PropTypes.string.isRequired,
 };
 
 export default Modal;
