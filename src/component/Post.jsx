@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
+import { getPost } from '../lib/api/board';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -168,18 +169,33 @@ const PostLikedButton = styled.div`
   }
 `;
 
-const Post = ({ data }) => {
+const Post = ({ boardId }) => {
   const [morePopOff, setMorePopOff] = useState(false);
+  const [data, setData] = useState();
 
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
 
+  useEffect(() => {
+    const loadPost = async () => {
+      const response = await getPost(boardId);
+      setData(response.data);
+    };
+    loadPost();
+    console.log(data);
+  });
+
+  // const checkIsMe
+
   return (
     <>
-      {morePopOff && (
-        <MoreButtonPop type={data.isMe} morePopHandle={morePopOn} />
-      )}
+      {/* {morePopOff && (
+        <MoreButtonPop
+          // type={data.isMe}
+          morePopHandle={morePopOn}
+        />
+      )} */}
       <PostMainBox>
         <PostWrapper>
           <LeftArrow>
@@ -194,34 +210,34 @@ const Post = ({ data }) => {
               </PostMoreButton>
             </PostTitleWrapper>
             <PostSubTitleWrapper>
-              <PostSubTitle>{data.time}</PostSubTitle>
+              <PostSubTitle>{data.createdDate}</PostSubTitle>
               <PostSubTitle>|</PostSubTitle>
               <View>
                 <img src="/images/icons/view.png" alt="view" />
               </View>
-              <PostSubTitle>{data.view}</PostSubTitle>
+              <PostSubTitle>123</PostSubTitle>
             </PostSubTitleWrapper>
           </PostMainWrapper>
 
           <PostContentsWrapper>
             <PostContents>{data.content}</PostContents>
-            <PostImages>
-              {data.images.map((img, index) => (
-                <img src={img} alt={index} />
-              ))}
-            </PostImages>
+            {/* <PostImages>
+                {data.uploadFileDTOList.map(img => (
+                  <img src={img.fileDownloadUri} alt={img.fileName} />
+                ))}
+              </PostImages> */}
           </PostContentsWrapper>
 
-          <PostCommentsWrapper>
+          {/* <PostCommentsWrapper>
             <PostCommentsNumberWrapper>
               <PostCommentsIconWrapper>
                 <PostCommentsLikedNumber>
                   <img src="/images/icons/heart.png" alt="heart" />
-                  {data.like}
+                  {data.likeCount}
                 </PostCommentsLikedNumber>
                 <PostCommentsNumber>
                   <img src="/images/icons/chat.png" alt="comment" />
-                  {data.totalCommentCount}
+                  {data.commentCount}
                 </PostCommentsNumber>
               </PostCommentsIconWrapper>
               <PostLikedButton isLiked={data.liked}>
@@ -236,17 +252,18 @@ const Post = ({ data }) => {
             {data.comments.map(comment => (
               <Comment comments={comment} morePopHandle={morePopOn} />
             ))}
-          </PostCommentsWrapper>
+          </PostCommentsWrapper> */}
         </PostWrapper>
 
         <CommentInput />
       </PostMainBox>
+      )
     </>
   );
 };
 
 Post.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  boardId: PropTypes.number.isRequired,
 };
 
 export default Post;
