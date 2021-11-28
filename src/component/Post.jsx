@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
@@ -100,8 +101,8 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 200px;
-    height: 200px;
+    width: 420px;
+    height: 420px;
     margin-top: 20px;
   }
 `;
@@ -171,11 +172,15 @@ const PostLikedButton = styled.div`
 
 const Post = ({ boardId }) => {
   const [morePopOff, setMorePopOff] = useState(false);
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
+
+  const history = useHistory();
 
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
+
+  const onGoBack = () => history.goBack();
 
   useEffect(() => {
     const loadPost = async () => {
@@ -183,81 +188,80 @@ const Post = ({ boardId }) => {
       setData(response.data);
     };
     loadPost();
-    console.log(data);
-  });
-
-  // const checkIsMe
+  }, []);
 
   return (
     <>
-      {/* {morePopOff && (
-        <MoreButtonPop
-          // type={data.isMe}
-          morePopHandle={morePopOn}
-        />
-      )} */}
-      <PostMainBox>
-        <PostWrapper>
-          <LeftArrow>
-            <img src="/images/icons/left_arrow.png" alt="left_arrow" />
-          </LeftArrow>
+      {data && (
+        <>
+          {morePopOff && (
+            <MoreButtonPop
+              // type={data.isMe}
+              morePopHandle={morePopOn}
+            />
+          )}
+          <PostMainBox>
+            <PostWrapper>
+              <LeftArrow onClick={onGoBack}>
+                <img src="/images/icons/left_arrow.png" alt="left_arrow" />
+              </LeftArrow>
 
-          <PostMainWrapper>
-            <PostTitleWrapper>
-              <PostMainTitle>{data.title}</PostMainTitle>
-              <PostMoreButton onClick={morePopOn}>
-                <img src="/images/icons/more.png" alt="more" />
-              </PostMoreButton>
-            </PostTitleWrapper>
-            <PostSubTitleWrapper>
-              <PostSubTitle>{data.createdDate}</PostSubTitle>
-              <PostSubTitle>|</PostSubTitle>
-              <View>
-                <img src="/images/icons/view.png" alt="view" />
-              </View>
-              <PostSubTitle>123</PostSubTitle>
-            </PostSubTitleWrapper>
-          </PostMainWrapper>
+              <PostMainWrapper>
+                <PostTitleWrapper>
+                  <PostMainTitle>{data.title}</PostMainTitle>
+                  <PostMoreButton onClick={morePopOn}>
+                    <img src="/images/icons/more.png" alt="more" />
+                  </PostMoreButton>
+                </PostTitleWrapper>
+                <PostSubTitleWrapper>
+                  <PostSubTitle>{data.createdDate}</PostSubTitle>
+                  <PostSubTitle>|</PostSubTitle>
+                  <View>
+                    <img src="/images/icons/view.png" alt="view" />
+                  </View>
+                  <PostSubTitle>123</PostSubTitle>
+                </PostSubTitleWrapper>
+              </PostMainWrapper>
 
-          <PostContentsWrapper>
-            <PostContents>{data.content}</PostContents>
-            {/* <PostImages>
-                {data.uploadFileDTOList.map(img => (
-                  <img src={img.fileDownloadUri} alt={img.fileName} />
+              <PostContentsWrapper>
+                <PostContents>{data.content}</PostContents>
+                <PostImages>
+                  {data.uploadFileDTOList.map(img => (
+                    <img src={img.fileDownloadUri} alt={img.fileName} />
+                  ))}
+                </PostImages>
+              </PostContentsWrapper>
+
+              {/* <PostCommentsWrapper>
+                <PostCommentsNumberWrapper>
+                  <PostCommentsIconWrapper>
+                    <PostCommentsLikedNumber>
+                      <img src="/images/icons/heart.png" alt="heart" />
+                      {data.likeCount}
+                    </PostCommentsLikedNumber>
+                    <PostCommentsNumber>
+                      <img src="/images/icons/chat.png" alt="comment" />
+                      {data.commentCount}
+                    </PostCommentsNumber>
+                  </PostCommentsIconWrapper>
+                  <PostLikedButton isLiked={data.liked}>
+                    {data.liked ? (
+                      <img src="/images/icons/filledHeart.png" alt="liked" />
+                    ) : (
+                      <img src="/images/icons/emptyHeart.png" alt="like" />
+                    )}
+                    좋아요
+                  </PostLikedButton>
+                </PostCommentsNumberWrapper>
+                {data.comments.map(comment => (
+                  <Comment comments={comment} morePopHandle={morePopOn} />
                 ))}
-              </PostImages> */}
-          </PostContentsWrapper>
-
-          {/* <PostCommentsWrapper>
-            <PostCommentsNumberWrapper>
-              <PostCommentsIconWrapper>
-                <PostCommentsLikedNumber>
-                  <img src="/images/icons/heart.png" alt="heart" />
-                  {data.likeCount}
-                </PostCommentsLikedNumber>
-                <PostCommentsNumber>
-                  <img src="/images/icons/chat.png" alt="comment" />
-                  {data.commentCount}
-                </PostCommentsNumber>
-              </PostCommentsIconWrapper>
-              <PostLikedButton isLiked={data.liked}>
-                {data.liked ? (
-                  <img src="/images/icons/filledHeart.png" alt="liked" />
-                ) : (
-                  <img src="/images/icons/emptyHeart.png" alt="like" />
-                )}
-                좋아요
-              </PostLikedButton>
-            </PostCommentsNumberWrapper>
-            {data.comments.map(comment => (
-              <Comment comments={comment} morePopHandle={morePopOn} />
-            ))}
-          </PostCommentsWrapper> */}
-        </PostWrapper>
-
-        <CommentInput />
-      </PostMainBox>
-      )
+              </PostCommentsWrapper> */}
+            </PostWrapper>
+            <CommentInput />
+          </PostMainBox>
+        </>
+      )}
     </>
   );
 };

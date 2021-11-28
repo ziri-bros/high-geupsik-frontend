@@ -11,12 +11,12 @@ const PostPage = ({ boardId }) => (
     <Header />
     <HeaderNavigation />
     <BoardNaviagtion />
-    <Post boardId={14}></Post>
+    <Post boardId={18}></Post>
   </Wrapper>
 );
 
 export default PostPage;
 
 PostPage.propTypes = {
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.number,
 };
