@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 import Modal from './common/Modal';
+import { postNewPost } from '../lib/api/board';
 
 const PostCreateMainBox = styled.div`
   overflow-y: auto;
@@ -141,7 +142,16 @@ const PostCreate = () => {
   const [modalOn, setModalOn] = useState(false);
   const history = useHistory();
 
-  const onChangeSelected = selected => setDropDownSelected(selected);
+  const onChangeSelected = selected => {
+    if (selected === '자유게시판') {
+      setDropDownSelected('FREE');
+    } else if (selected === '정보게시판') {
+      setDropDownSelected('INFORMATION');
+    } else if (selected === '홍보게시판') {
+      setDropDownSelected('PROMOTION');
+    }
+    console.log(dropDownSelected);
+  };
   const onChangeTitle = e => setTitle(e.target.value);
   const onChangeContent = e => setContent(e.target.value);
 
@@ -173,7 +183,20 @@ const PostCreate = () => {
     setImages([...filteredImgs]);
   };
 
-  const onSubmit = () => {};
+  const onSubmit = async () => {
+    const boardReqDTO = {
+      category: dropDownSelected,
+      content,
+      title,
+      uploadFileDTOList: [],
+    };
+    try {
+      const response = await postNewPost(boardReqDTO);
+      console.log(response);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <>
