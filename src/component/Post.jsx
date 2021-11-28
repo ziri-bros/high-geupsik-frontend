@@ -93,6 +93,7 @@ const PostContentsWrapper = styled.div`
 const PostContents = styled.div`
   font-weight: normal;
   font-size: 16px;
+  white-space: pre-line;
 `;
 
 const PostImages = styled.div`
