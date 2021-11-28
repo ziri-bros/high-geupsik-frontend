@@ -21,7 +21,6 @@ export const postNewPost = async boardReqDTO => {
     data: boardReqDTO,
     method: 'post',
     headers: {
-      'Content-Type': 'multipart/form-data',
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });

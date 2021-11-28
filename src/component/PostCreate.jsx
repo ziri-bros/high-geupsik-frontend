@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 import Modal from './common/Modal';
+import { imageUploader } from '../lib/api/auth';
 import { postNewPost } from '../lib/api/board';
 
 const PostCreateMainBox = styled.div`
@@ -139,19 +140,22 @@ const PostCreate = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [images, setImages] = useState([]);
+  const [resImages, setResImages] = useState([]);
   const [modalOn, setModalOn] = useState(false);
   const history = useHistory();
 
   const onChangeSelected = selected => {
     if (selected === '자유게시판') {
       setDropDownSelected('FREE');
-    } else if (selected === '정보게시판') {
+    }
+    if (selected === '정보게시판') {
       setDropDownSelected('INFORMATION');
-    } else if (selected === '홍보게시판') {
+    }
+    if (selected === '홍보게시판') {
       setDropDownSelected('PROMOTION');
     }
-    console.log(dropDownSelected);
   };
+
   const onChangeTitle = e => setTitle(e.target.value);
   const onChangeContent = e => setContent(e.target.value);
 
@@ -164,23 +168,35 @@ const PostCreate = () => {
   };
   const onConfirm = () => history.goBack();
 
-  const addImages = e => {
-    const imgs = [...e.target.files];
-    const imgsUrl = [...images];
+  const addImages = async e => {
+    if (e.target.files !== null) {
+      const imgs = [...e.target.files];
+      const imgsUrl = [...images];
+      const formData = new FormData();
 
-    imgs.forEach(img => {
-      const currentImgUrl = URL.createObjectURL(img);
-      imgsUrl.push(currentImgUrl);
-    });
-    setImages(imgsUrl);
+      imgs.forEach(img => {
+        const currentImgUrl = URL.createObjectURL(img);
+        imgsUrl.push(currentImgUrl);
+        formData.append('imageList', img);
+      });
+      setImages(imgsUrl);
+
+      const response = await imageUploader(formData);
+      setResImages(response.data);
+    }
   };
 
   const onClickDeleteImages = e => {
     const imgs = [...images];
+    const resImgs = [...resImages];
 
     const filteredImgs = imgs.filter((img, idx) => idx !== Number(e.target.id));
+    const filteredResImgs = resImgs.filter(
+      (img, idx) => idx !== Number(e.target.id),
+    );
 
     setImages([...filteredImgs]);
+    setResImages([...filteredResImgs]);
   };
 
   const onSubmit = async () => {
@@ -188,11 +204,11 @@ const PostCreate = () => {
       category: dropDownSelected,
       content,
       title,
-      uploadFileDTOList: [],
+      uploadFileDTOList: resImages,
     };
     try {
       const response = await postNewPost(boardReqDTO);
-      console.log(response);
+      response.success && history.push(`/boards/${response.data}`);
     } catch (e) {
       console.log(e);
     }
