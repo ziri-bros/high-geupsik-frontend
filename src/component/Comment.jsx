@@ -105,7 +105,7 @@ const Comment = ({ comment, boardId, userId, onClickLoad }) => {
     setMorePopOff(!morePopOff);
   };
 
-  const checkIsMe = () => userId === comment.writerId;
+  const isMe = () => userId === comment.writerId;
 
   return (
     <>
@@ -114,7 +114,7 @@ const Comment = ({ comment, boardId, userId, onClickLoad }) => {
           boardId={boardId}
           commentId={comment.id}
           type="comment"
-          isMe={checkIsMe()}
+          isMe={isMe()}
           onClickLoad={onClickLoad}
           morePopHandle={morePopOn}
         />
