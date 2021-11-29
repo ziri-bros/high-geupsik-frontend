@@ -13,6 +13,9 @@ const HomeWrapper = styled.div`
   height: 100%;
   background-color: #e5e5e5;
   overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 `;
 
 const HomePage = () => (
