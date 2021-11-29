@@ -120,6 +120,7 @@ const MyInfo = () => {
     localStorage.removeItem('ACCESS_TOKEN');
     history.push('/');
   };
+  const onUpdate = () => history.push('/register');
 
   return (
     info ? (
@@ -136,7 +137,7 @@ const MyInfo = () => {
           로그아웃
         </Button>
         <ButtonWrapper to="/modify">
-          <Button>내 정보 수정</Button>
+          <Button onClick={onUpdate}>내 정보 수정</Button>
         </ButtonWrapper>
         <MyPostMenuList>
           <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
