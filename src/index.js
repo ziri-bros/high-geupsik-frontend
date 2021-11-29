@@ -4,7 +4,7 @@ import './index.css';
 import { BrowserRouter } from 'react-router-dom';
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { Provider, useSelector } from 'react-redux';
+import { Provider } from 'react-redux';
 import App from './App';
 import rootReducer from './store';
 import { getUserInfo } from './store/userInfo';
