@@ -162,7 +162,8 @@ const PostLikedButton = styled.div`
   font-weight: 500;
   font-size: 14px;
 
-  border: 1px solid #adadad;
+  border: ${props =>
+    props.isLiked ? '1px solid #e27070' : '1px solid #adadad'};
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 
@@ -189,15 +190,6 @@ const Post = ({ boardId }) => {
 
   const onGoBack = () => history.goBack();
 
-  const onClickLike = async () => {
-    try {
-      await postLike(boardId);
-      setLike(!like);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
   const isMe = () => info.id === data.writerId;
 
@@ -210,13 +202,23 @@ const Post = ({ boardId }) => {
       setComments(commentsData.data);
 
       const likeData = await getLike(boardId);
-      setLike(likeData.data);
+      setLike(likeData.data.likeFlag);
     } catch (e) {
       console.log(e);
     }
   };
 
   const onClickLoad = () => load();
+
+  const onClickLike = async () => {
+    try {
+      await postLike(boardId);
+      setLike(!like);
+      load();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // 초기 load 렌더링
   useEffect(() => {
