@@ -6,6 +6,7 @@ import { css } from '@emotion/react';
 import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
 import { getBoardList } from '../../lib/api/board';
+import { parseTime } from '../../utils/parseTime';
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -106,24 +107,22 @@ const ContentsInformationSet = styled.span`
   }
 `;
 
-const BoardComponent = ({ noticeExistence, type, typeKorean }) => {
+const BoardComponent = ({ noticeExistence, type }) => {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     const loadBoard = async () => {
-      const response = await getBoardList(type, 1, 'SEOUL');
+      const response = await getBoardList(type, 1);
       console.log(response.data);
+
       if (response.success) {
-        console.log(response.data);
         setData(response.data.content);
-        console.log(data);
       }
     };
 
     loadBoard();
   }, []);
 
-  console.log(data);
   return (
     <>
       <BoardWrapper>
@@ -136,7 +135,7 @@ const BoardComponent = ({ noticeExistence, type, typeKorean }) => {
             >
               <BoardInnerWrapper>
                 <ContentsTitle>{elem.title}</ContentsTitle>
-                <ContentsDate>{elem.createdDate}</ContentsDate>
+                <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
               </BoardInnerWrapper>
               <BoardInnerWrapper>
                 <ContentsContent>{elem.content}</ContentsContent>
@@ -145,7 +144,7 @@ const BoardComponent = ({ noticeExistence, type, typeKorean }) => {
                 )}
               </BoardInnerWrapper>
               <BoardInnerWrapper>
-                <ContentsType>{typeKorean}게시판</ContentsType>
+                <ContentsType>{`${elem.category} 게시판`}</ContentsType>
                 <ContentsInformationSet>
                   <img src="/images/icons/view.png" alt="view" />
                   <span>999</span>
@@ -168,7 +167,6 @@ const BoardComponent = ({ noticeExistence, type, typeKorean }) => {
 BoardComponent.propTypes = {
   noticeExistence: PropTypes.string,
   type: PropTypes.string,
-  typeKorean: PropTypes.string,
 };
 
 export default BoardComponent;

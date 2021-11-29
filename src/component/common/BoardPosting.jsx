@@ -16,28 +16,14 @@ const BoardPosting = ({ path }) => {
   return (
     <>
       {boardType === 'AUTH' && (
-        <BoardComponent
-          noticeExistence={`${true}`}
-          type={boardType}
-          typeKorean="전체"
-        />
+        <BoardComponent noticeExistence={`${true}`} type="" />
       )}
       {boardType === 'FREE' && (
-        <BoardComponent
-          noticeExistence={`${true}`}
-          type={boardType}
-          typeKorean="자유"
-        />
+        <BoardComponent noticeExistence={`${true}`} type={boardType} />
       )}
-      {boardType === 'INFORMATION' && (
-        <BoardComponent type={boardType} typeKorean="정보" />
-      )}
-      {boardType === 'HOT' && (
-        <BoardComponent type={boardType} typeKorean="인기" />
-      )}
-      {boardType === 'PROMOTION' && (
-        <BoardComponent type={boardType} typeKorean="홍보" />
-      )}
+      {boardType === 'INFORMATION' && <BoardComponent type={boardType} />}
+      {boardType === 'HOT' && <BoardComponent type={boardType} />}
+      {boardType === 'PROMOTION' && <BoardComponent type={boardType} />}
     </>
   );
 };
