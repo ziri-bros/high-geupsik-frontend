@@ -115,6 +115,7 @@ const MyInfo = () => {
 
   const onClickWriteBtn = () => setMenuOn(true);
   const onClickCommentBtn = () => setMenuOn(false);
+
   const onLogout = () => {
     localStorage.removeItem('ACCESS_TOKEN');
     history.push('/');

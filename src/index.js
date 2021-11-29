@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, useHistory } from 'react-router-dom';
 import { createStore } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { Provider } from 'react-redux';
@@ -15,7 +15,10 @@ const store = createStore(rootReducer, composeWithDevTools());
 function loadUser() {
   try {
     const user = localStorage.getItem('ACCESS_TOKEN');
-    if (!user) return; // 사용자가 로그인이 안된 경우
+
+    if (!user) {
+      return;
+    }
 
     const loadAPI = async () => {
       const response = await getCurrentUserInfo();
