@@ -5,6 +5,7 @@ import { css } from '@emotion/react';
 
 import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
+import { getBoardList } from '../../lib/api/board';
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -37,6 +38,7 @@ const BoardContents = styled.div`
   ${props =>
     props.noticeExistence &&
     css`
+    :nth-of-type(2){
       margin: 45px 0 0 0;
     `}
 `;
@@ -103,7 +105,17 @@ const ContentsInformationSet = styled.span`
 `;
 
 const BoardComponent = ({ noticeExistence, type, objects }) => {
-  const [tmp, setTmp] = useState();
+  const [title, setTitle] = useState();
+
+  useEffect(() => {
+    const loadBoard = async () => {
+      const response = await getBoardList('AUTH', 1, 'SEOUL');
+      console.log(response);
+      console.log(title);
+    };
+
+    loadBoard();
+  }, []);
 
   return (
     <>
@@ -112,118 +124,7 @@ const BoardComponent = ({ noticeExistence, type, objects }) => {
         {objects.title ? (
           <BoardContents noticeExistence={noticeExistence}>
             <BoardInnerWrapper>
-              <ContentsTitle>{objects.title}</ContentsTitle>
-              <ContentsDate>{objects.time}</ContentsDate>
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsContent>{objects.content}</ContentsContent>
-              <img
-                className="content-img"
-                src="/images/icons/square.png"
-                alt=""
-              />
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsType>[type]자유게시판</ContentsType>
-              <ContentsInformationSet>
-                <img src="/images/icons/view.png" alt="view" />
-                <span>88</span>
-                <img src="/images/icons/heart.png" alt="heart" />
-                <span>12</span>
-                <img src="/images/icons/chat.png" alt="chat" />
-                <span>22</span>
-              </ContentsInformationSet>
-            </BoardInnerWrapper>
-          </BoardContents>
-        ) : (
-          <PostNotFound />
-        )}
-        {objects.title ? (
-          <BoardContents>
-            <BoardInnerWrapper>
-              <ContentsTitle>{objects.title}</ContentsTitle>
-              <ContentsDate>{objects.time}</ContentsDate>
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsContent>{objects.content}</ContentsContent>
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsType>[type]자유게시판</ContentsType>
-              <ContentsInformationSet>
-                <img src="/images/icons/view.png" alt="view" />
-                <span>88</span>
-                <img src="/images/icons/heart.png" alt="heart" />
-                <span>12</span>
-                <img src="/images/icons/chat.png" alt="chat" />
-                <span>22</span>
-              </ContentsInformationSet>
-            </BoardInnerWrapper>
-          </BoardContents>
-        ) : (
-          <PostNotFound />
-        )}
-        {objects.title ? (
-          <BoardContents>
-            <BoardInnerWrapper>
-              <ContentsTitle>{objects.title}</ContentsTitle>
-              <ContentsDate>{objects.time}</ContentsDate>
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsContent>{objects.content}</ContentsContent>
-              <img
-                className="content-img"
-                src="/images/icons/square.png"
-                alt=""
-              />
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsType>[type]자유게시판</ContentsType>
-              <ContentsInformationSet>
-                <img src="/images/icons/view.png" alt="view" />
-                <span>88</span>
-                <img src="/images/icons/heart.png" alt="heart" />
-                <span>12</span>
-                <img src="/images/icons/chat.png" alt="chat" />
-                <span>22</span>
-              </ContentsInformationSet>
-            </BoardInnerWrapper>
-          </BoardContents>
-        ) : (
-          <PostNotFound />
-        )}
-        {objects.title ? (
-          <BoardContents>
-            <BoardInnerWrapper>
-              <ContentsTitle>{objects.title}</ContentsTitle>
-              <ContentsDate>{objects.time}</ContentsDate>
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsContent>{objects.content}</ContentsContent>
-              <img
-                className="content-img"
-                src="/images/icons/square.png"
-                alt=""
-              />
-            </BoardInnerWrapper>
-            <BoardInnerWrapper>
-              <ContentsType>[type]자유게시판</ContentsType>
-              <ContentsInformationSet>
-                <img src="/images/icons/view.png" alt="view" />
-                <span>88</span>
-                <img src="/images/icons/heart.png" alt="heart" />
-                <span>12</span>
-                <img src="/images/icons/chat.png" alt="chat" />
-                <span>22</span>
-              </ContentsInformationSet>
-            </BoardInnerWrapper>
-          </BoardContents>
-        ) : (
-          <PostNotFound />
-        )}
-        {objects.title ? (
-          <BoardContents>
-            <BoardInnerWrapper>
-              <ContentsTitle>{objects.title}</ContentsTitle>
+              <ContentsTitle>{title}</ContentsTitle>
               <ContentsDate>{objects.time}</ContentsDate>
             </BoardInnerWrapper>
             <BoardInnerWrapper>
