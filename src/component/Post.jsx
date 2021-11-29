@@ -175,10 +175,10 @@ const PostLikedButton = styled.div`
 `;
 
 const Post = ({ boardId }) => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
-  const [isMe, setIsMe] = useState(null);
 
   const history = useHistory();
 
@@ -192,19 +192,20 @@ const Post = ({ boardId }) => {
     const postData = await getPost(boardId);
     const commentsData = await getComments(boardId);
     setData(postData.data);
-    setIsMe(postData.data.useCount);
     setComments(commentsData.data);
   };
 
   const onClickLoad = () => load();
 
+  // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
   const checkIsMe = () => {
-    if (isMe === -1) {
+    if (info.id === data.writerId) {
       return true;
     }
     return false;
   };
 
+  // 초기 load 렌더링
   useEffect(() => {
     load();
   }, []);
