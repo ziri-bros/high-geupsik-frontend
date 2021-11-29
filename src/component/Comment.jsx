@@ -1,13 +1,14 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Cocomment from './Cocomment';
+import MoreButtonPop from './common/MoreButtonPop';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
   width: 100%;
   height: 100px;
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -98,50 +99,82 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comments, morePopHandle }) => (
-  <>
-    <CommentWrapper>
-      <CommentMainWrapper>
-        <CommentNameButtonWrapper>
-          <CommentName>{comments.name}</CommentName>
-          <CommentMoreButton onClick={morePopHandle}>
-            <img src="/images/icons/more.png" alt="more" />
-          </CommentMoreButton>
-        </CommentNameButtonWrapper>
-        <CommentTime>{comments.time}</CommentTime>
-      </CommentMainWrapper>
-      <CommentSubWrapper>
-        <CommentContents>{comments.content}</CommentContents>
-      </CommentSubWrapper>
-      <CommentIconWrapper>
-        <CommentLikeButton>
-          {comments.goodCount > 0 ? (
-            <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
-          ) : (
-            <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
-          )}
-          {comments.goodCount}
-        </CommentLikeButton>
-        <CommentNumber>
-          {comments.cocomments.length > 0 ? (
-            <img src="/images/icons/comment-green.png" alt="comment" />
-          ) : (
-            <img src="/images/icons/comment-grey.png" alt="comment" />
-          )}
-          {comments.cocomments.length}
-        </CommentNumber>
-      </CommentIconWrapper>
-    </CommentWrapper>
-    {comments.cocomments.length > 0 &&
-      comments.cocomments.map(cocomment => (
-        <Cocomment cocomments={cocomment} morePopHandle={morePopHandle} />
-      ))}
-  </>
-);
+const Comment = ({ comment, boardId, isMe, onClickLoad }) => {
+  const [morePopOff, setMorePopOff] = useState(false);
+  const morePopOn = () => {
+    setMorePopOff(!morePopOff);
+  };
+
+  return (
+    <>
+      {morePopOff && (
+        <MoreButtonPop
+          boardId={boardId}
+          commentId={comment.id}
+          type="comment"
+          isMe={isMe}
+          onClickLoad={onClickLoad}
+          morePopHandle={morePopOn}
+        />
+      )}
+      <>
+        <CommentWrapper>
+          <CommentMainWrapper>
+            <CommentNameButtonWrapper>
+              <CommentName>
+                {comment.userCount === -1
+                  ? '익명 (글쓴이)'
+                  : `익명 ${comment.userCount}`}
+              </CommentName>
+              <CommentMoreButton onClick={morePopOn}>
+                <img src="/images/icons/more.png" alt="more" />
+              </CommentMoreButton>
+            </CommentNameButtonWrapper>
+            {/* <CommentTime>{comment.time}</CommentTime> */}
+          </CommentMainWrapper>
+          <CommentSubWrapper>
+            <CommentContents>{comment.content}</CommentContents>
+          </CommentSubWrapper>
+          <CommentIconWrapper>
+            <CommentLikeButton>
+              {comment.likeCount > 0 ? (
+                <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
+              ) : (
+                <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
+              )}
+              {comment.likeCount}
+            </CommentLikeButton>
+            <CommentNumber>
+              {comment.commentResDTOList.length > 0 ? (
+                <img src="/images/icons/comment-green.png" alt="comment" />
+              ) : (
+                <img src="/images/icons/comment-grey.png" alt="comment" />
+              )}
+              {comment.commentResDTOList.length}
+            </CommentNumber>
+          </CommentIconWrapper>
+        </CommentWrapper>
+        {comment.commentResDTOList.length > 0 &&
+          comment.commentResDTOList.map(cocomment => (
+            <Cocomment cocomments={cocomment} />
+          ))}
+      </>
+    </>
+  );
+};
 
 Comment.propTypes = {
-  comments: PropTypes.arrayOf,
-  morePopHandle: PropTypes.func,
+  comment: PropTypes.shape({
+    commentResDTOList: PropTypes.arrayOf(PropTypes.object),
+    content: PropTypes.string,
+    id: PropTypes.number,
+    likeCount: PropTypes.number,
+    userCount: PropTypes.number,
+    writerId: PropTypes.number,
+  }).isRequired,
+  boardId: PropTypes.number.isRequired,
+  isMe: PropTypes.func,
+  onClickLoad: PropTypes.func,
 };
 
 export default Comment;

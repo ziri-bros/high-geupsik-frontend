@@ -13,6 +13,7 @@ module.exports = {
     'react/jsx-props-no-spreading': 0,
     'react/require-default-props': 0,
     'no-unused-vars': 0,
+    'no-unused-expressions': 0,
     'arrow-parens': 0,
     'implicit-arrow-linebreak': 0,
     'import/prefer-default-export': 0,

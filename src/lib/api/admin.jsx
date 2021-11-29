@@ -12,7 +12,7 @@ export const getUserCardList = async (pageNumber = 1) => {
   return response.data;
 };
 
-export const deleteUserCard = async (userId) => {
+export const deleteUserCard = async userId => {
   await axios({
     url: `${API_BASE_URL}/admin/users/${userId}`,
     method: 'patch',
@@ -22,7 +22,7 @@ export const deleteUserCard = async (userId) => {
   });
 };
 
-export const allowUserCard = async (userId) => {
+export const allowUserCard = async userId => {
   await axios({
     url: `${API_BASE_URL}/admin/users/${userId}/authorize`,
     method: 'patch',

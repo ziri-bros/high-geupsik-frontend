@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
+import { getLike, getPost, postLike } from '../lib/api/board';
+import { getComments } from '../lib/api/comment';
+import { parseTime } from '../utils/parseTime';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -91,6 +96,7 @@ const PostContentsWrapper = styled.div`
 const PostContents = styled.div`
   font-weight: normal;
   font-size: 16px;
+  white-space: pre-line;
 `;
 
 const PostImages = styled.div`
@@ -99,8 +105,8 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 200px;
-    height: 200px;
+    width: 420px;
+    height: 420px;
     margin-top: 20px;
   }
 `;
@@ -168,85 +174,141 @@ const PostLikedButton = styled.div`
   }
 `;
 
-const Post = ({ data }) => {
+const Post = ({ boardId }) => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
+  const [data, setData] = useState(null);
+  const [comments, setComments] = useState(null);
+  const [like, setLike] = useState(null);
+
+  const history = useHistory();
 
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
 
+  const onGoBack = () => history.goBack();
+
+  const onClickLike = async () => {
+    try {
+      await postLike(boardId);
+      setLike(!like);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
+  const checkIsMe = () => info.id === data.writerId;
+
+  const load = async () => {
+    try {
+      const postData = await getPost(boardId);
+      setData(postData.data);
+
+      const commentsData = await getComments(boardId);
+      setComments(commentsData.data);
+
+      const likeData = await getLike(boardId);
+      setLike(likeData.data);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickLoad = () => load();
+
+  // 초기 load 렌더링
+  useEffect(() => {
+    load();
+  }, []);
+
   return (
     <>
-      {morePopOff && (
-        <MoreButtonPop type={data.isMe} morePopHandle={morePopOn} />
+      {data && (
+        <>
+          {morePopOff && (
+            <MoreButtonPop
+              boardId={boardId}
+              type="post"
+              isMe={checkIsMe}
+              morePopHandle={morePopOn}
+            />
+          )}
+          <PostMainBox>
+            <PostWrapper>
+              <LeftArrow onClick={onGoBack}>
+                <img src="/images/icons/left_arrow.png" alt="left_arrow" />
+              </LeftArrow>
+
+              <PostMainWrapper>
+                <PostTitleWrapper>
+                  <PostMainTitle>{data.title}</PostMainTitle>
+                  <PostMoreButton onClick={morePopOn}>
+                    <img src="/images/icons/more.png" alt="more" />
+                  </PostMoreButton>
+                </PostTitleWrapper>
+                <PostSubTitleWrapper>
+                  <PostSubTitle>{parseTime(data.createdDate)}</PostSubTitle>
+                  <PostSubTitle>|</PostSubTitle>
+                  <View>
+                    <img src="/images/icons/view.png" alt="view" />
+                  </View>
+                  <PostSubTitle>123</PostSubTitle>
+                </PostSubTitleWrapper>
+              </PostMainWrapper>
+
+              <PostContentsWrapper>
+                <PostContents>{data.content}</PostContents>
+                <PostImages>
+                  {data.uploadFileDTOList.map(img => (
+                    <img src={img.fileDownloadUri} alt={img.fileName} />
+                  ))}
+                </PostImages>
+              </PostContentsWrapper>
+
+              <PostCommentsWrapper>
+                <PostCommentsNumberWrapper>
+                  <PostCommentsIconWrapper>
+                    <PostCommentsLikedNumber>
+                      <img src="/images/icons/heart.png" alt="heart" />
+                      {data.likeCount}
+                    </PostCommentsLikedNumber>
+                    <PostCommentsNumber>
+                      <img src="/images/icons/chat.png" alt="comment" />
+                      {data.commentCount}
+                    </PostCommentsNumber>
+                  </PostCommentsIconWrapper>
+                  <PostLikedButton isLiked={like} onClick={onClickLike}>
+                    {like ? (
+                      <img src="/images/icons/filledHeart.png" alt="liked" />
+                    ) : (
+                      <img src="/images/icons/emptyHeart.png" alt="like" />
+                    )}
+                    좋아요
+                  </PostLikedButton>
+                </PostCommentsNumberWrapper>
+                {comments &&
+                  comments.map(comment => (
+                    <Comment
+                      comment={comment}
+                      boardId={boardId}
+                      isMe={checkIsMe}
+                      onClickLoad={onClickLoad}
+                    />
+                  ))}
+              </PostCommentsWrapper>
+            </PostWrapper>
+            <CommentInput boardId={boardId} onClickLoad={onClickLoad} />
+          </PostMainBox>
+        </>
       )}
-      <PostMainBox>
-        <PostWrapper>
-          <LeftArrow>
-            <img src="/images/icons/left_arrow.png" alt="left_arrow" />
-          </LeftArrow>
-
-          <PostMainWrapper>
-            <PostTitleWrapper>
-              <PostMainTitle>{data.title}</PostMainTitle>
-              <PostMoreButton onClick={morePopOn}>
-                <img src="/images/icons/more.png" alt="more" />
-              </PostMoreButton>
-            </PostTitleWrapper>
-            <PostSubTitleWrapper>
-              <PostSubTitle>{data.time}</PostSubTitle>
-              <PostSubTitle>|</PostSubTitle>
-              <View>
-                <img src="/images/icons/view.png" alt="view" />
-              </View>
-              <PostSubTitle>{data.view}</PostSubTitle>
-            </PostSubTitleWrapper>
-          </PostMainWrapper>
-
-          <PostContentsWrapper>
-            <PostContents>{data.content}</PostContents>
-            <PostImages>
-              {data.images.map((img, index) => (
-                <img src={img} alt={index} />
-              ))}
-            </PostImages>
-          </PostContentsWrapper>
-
-          <PostCommentsWrapper>
-            <PostCommentsNumberWrapper>
-              <PostCommentsIconWrapper>
-                <PostCommentsLikedNumber>
-                  <img src="/images/icons/heart.png" alt="heart" />
-                  {data.like}
-                </PostCommentsLikedNumber>
-                <PostCommentsNumber>
-                  <img src="/images/icons/chat.png" alt="comment" />
-                  {data.totalCommentCount}
-                </PostCommentsNumber>
-              </PostCommentsIconWrapper>
-              <PostLikedButton isLiked={data.liked}>
-                {data.liked ? (
-                  <img src="/images/icons/filledHeart.png" alt="liked" />
-                ) : (
-                  <img src="/images/icons/emptyHeart.png" alt="like" />
-                )}
-                좋아요
-              </PostLikedButton>
-            </PostCommentsNumberWrapper>
-            {data.comments.map(comment => (
-              <Comment comments={comment} morePopHandle={morePopOn} />
-            ))}
-          </PostCommentsWrapper>
-        </PostWrapper>
-
-        <CommentInput />
-      </PostMainBox>
     </>
   );
 };
 
 Post.propTypes = {
-  data: PropTypes.objectOf(PropTypes.object).isRequired,
+  boardId: PropTypes.number.isRequired,
 };
 
 export default Post;

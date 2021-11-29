@@ -1,12 +1,18 @@
-import React, { forwardRef, useState } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { useHistory } from 'react-router-dom';
+import { deletePost } from '../../lib/api/board';
+import { deleteComments } from '../../lib/api/comment';
 
 const MoreButtonPopBackground = styled.div`
   width: 100%;
   height: 100%;
   margin: 0 auto;
   position: absolute;
+
+  top: 0;
+  left: 0;
 
   display: flex;
   flex-direction: column;
@@ -157,39 +163,79 @@ const MoreButtonPopCancelButton = styled.div`
   cursor: pointer;
 `;
 
-const MoreButtonPop = ({ type, morePopHandle }) => (
-  <MoreButtonPopBackground>
-    <MoreButtonWrapper>
-      <MoreButtonPopActionWrapper>
-        {type ? (
-          <>
-            <MoreButtonPopReviseButton>수정</MoreButtonPopReviseButton>
-            <MoreButtonPopDeleteButton>삭제</MoreButtonPopDeleteButton>
-          </>
-        ) : (
-          <MoreButtonPopLetterSendButton>
-            쪽지 보내기
-          </MoreButtonPopLetterSendButton>
-        )}
+const MoreButtonPop = ({
+  boardId,
+  commentId,
+  isMe,
+  type,
+  morePopHandle,
+  onClickLoad,
+}) => {
+  const history = useHistory();
 
-        {/* <MoreButtonPopLetterAllDeleteButton>
+  const onClickRevise = () => {};
+
+  const onClickDelete = async () => {
+    if (type === 'post') {
+      try {
+        await deletePost(boardId);
+        morePopHandle();
+        history.goBack();
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const response = await deleteComments(boardId, commentId);
+        console.log(response);
+        morePopHandle();
+        onClickLoad();
+      } catch (e) {
+        console.log(e);
+      }
+    }
+  };
+
+  return (
+    <MoreButtonPopBackground>
+      <MoreButtonWrapper>
+        <MoreButtonPopActionWrapper>
+          {isMe ? (
+            <>
+              <MoreButtonPopReviseButton>수정</MoreButtonPopReviseButton>
+              <MoreButtonPopDeleteButton onClick={onClickDelete}>
+                삭제
+              </MoreButtonPopDeleteButton>
+            </>
+          ) : (
+            <MoreButtonPopLetterSendButton>
+              쪽지 보내기
+            </MoreButtonPopLetterSendButton>
+          )}
+
+          {/* <MoreButtonPopLetterAllDeleteButton>
             쪽지 전체 삭제
           </MoreButtonPopLetterAllDeleteButton>
           <MoreButtonPopLetterBlockButton>차단</MoreButtonPopLetterBlockButton>
           <MoreButtonPopLetterReportButton>
             신고
           </MoreButtonPopLetterReportButton> */}
-      </MoreButtonPopActionWrapper>
-      <MoreButtonPopCancelButton onClick={morePopHandle}>
-        취소
-      </MoreButtonPopCancelButton>
-    </MoreButtonWrapper>
-  </MoreButtonPopBackground>
-);
+        </MoreButtonPopActionWrapper>
+        <MoreButtonPopCancelButton onClick={morePopHandle}>
+          취소
+        </MoreButtonPopCancelButton>
+      </MoreButtonWrapper>
+    </MoreButtonPopBackground>
+  );
+};
 
 MoreButtonPop.propTypes = {
-  type: PropTypes.bool,
-  morePopHandle: PropTypes.func,
+  boardId: PropTypes.number,
+  commentId: PropTypes.number,
+  isMe: PropTypes.func.isRequired,
+  type: PropTypes.string.isRequired,
+  morePopHandle: PropTypes.func.isRequired,
+  onClickLoad: PropTypes.func,
 };
 
 export default MoreButtonPop;

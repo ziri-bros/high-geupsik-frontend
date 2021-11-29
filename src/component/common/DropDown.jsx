@@ -121,9 +121,9 @@ const DropDown = ({ name, list, onChangeSelected, narrow, school }) => {
 
 DropDown.propTypes = {
   name: PropTypes.string.isRequired,
-  narrow: PropTypes.string.isRequired,
-  school: PropTypes.string.isRequired,
-  list: PropTypes.arrayOf(PropTypes.object).isRequired,
+  narrow: PropTypes.string,
+  school: PropTypes.string,
+  list: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeSelected: PropTypes.func.isRequired,
 };
 
