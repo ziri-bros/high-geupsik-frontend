@@ -14,12 +14,12 @@ const CommentInputWrapper = styled.div`
 `;
 
 const Input = styled.input`
-  width: 85%;
+  width: 90%;
   height: 40px;
   background: #ffffff;
   border-radius: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
+  padding: 0 10px;
+  margin-left: 15px;
 
   font-weight: normal;
   font-size: 14px;
@@ -33,7 +33,7 @@ const Input = styled.input`
 
 const CommentButton = styled.div`
   cursor: pointer;
-  margin-left: 10px;
+  margin: 3px 0 0 5px;
 
   img {
     width: 32px;

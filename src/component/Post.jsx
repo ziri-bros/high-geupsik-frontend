@@ -105,62 +105,21 @@ const PostImages = styled.div`
   }
 `;
 
-const PostLikeButton = styled.div`
-  margin-top: 20px;
-  width: 100px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
-  color: #626262;
-  font-weight: 500;
-  font-size: 16px;
-
-  border: 1px solid #adadad;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-
-  cursor: pointer;
-
-  img {
-    width: 28px;
-    height: 28px;
-  }
-`;
-
-const PostLikedButton = styled.div`
-  margin-top: 20px;
-  width: 100px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-
-  color: #e27070;
-  font-weight: 500;
-  font-size: 16px;
-
-  border: 1px solid #adadad;
-  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-
-  cursor: pointer;
-
-  img {
-    width: 28px;
-    height: 28px;
-  }
-`;
-
 const PostCommentsWrapper = styled.div``;
 
 const PostCommentsNumberWrapper = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 20px;
+  justify-content: space-between;
+
+  margin-top: 30px;
   padding-bottom: 20px;
   border-bottom: 2px solid #adadad;
+`;
+
+const PostCommentsIconWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const PostCommentsLikedNumber = styled.div`
@@ -183,6 +142,29 @@ const PostCommentsNumber = styled.div`
     margin-right: 5px;
     width: 30px;
     height: 30px;
+  }
+`;
+
+const PostLikedButton = styled.div`
+  width: 85px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+
+  color: ${props => (props.isLiked ? '#e27070' : '#626262')};
+  font-weight: 500;
+  font-size: 14px;
+
+  border: 1px solid #adadad;
+  box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+
+  cursor: pointer;
+
+  img {
+    width: 24px;
+    height: 24px;
   }
 `;
 
@@ -228,29 +210,28 @@ const Post = ({ data }) => {
                 <img src={img} alt={index} />
               ))}
             </PostImages>
-            {data.liked ? (
-              <PostLikedButton>
-                <img src="/images/icons/filledHeart.png" alt="liked" />
-                좋아요
-              </PostLikedButton>
-            ) : (
-              <PostLikeButton>
-                <img src="/images/icons/emptyHeart.png" alt="like" />
-                좋아요
-              </PostLikeButton>
-            )}
           </PostContentsWrapper>
 
           <PostCommentsWrapper>
             <PostCommentsNumberWrapper>
-              <PostCommentsLikedNumber>
-                <img src="/images/icons/heart.png" alt="heart" />
-                {data.like}
-              </PostCommentsLikedNumber>
-              <PostCommentsNumber>
-                <img src="/images/icons/chat.png" alt="comment" />
-                {data.totalCommentCount}
-              </PostCommentsNumber>
+              <PostCommentsIconWrapper>
+                <PostCommentsLikedNumber>
+                  <img src="/images/icons/heart.png" alt="heart" />
+                  {data.like}
+                </PostCommentsLikedNumber>
+                <PostCommentsNumber>
+                  <img src="/images/icons/chat.png" alt="comment" />
+                  {data.totalCommentCount}
+                </PostCommentsNumber>
+              </PostCommentsIconWrapper>
+              <PostLikedButton isLiked={data.liked}>
+                {data.liked ? (
+                  <img src="/images/icons/filledHeart.png" alt="liked" />
+                ) : (
+                  <img src="/images/icons/emptyHeart.png" alt="like" />
+                )}
+                좋아요
+              </PostLikedButton>
             </PostCommentsNumberWrapper>
             {data.comments.map(comment => (
               <Comment comments={comment} morePopHandle={morePopOn} />

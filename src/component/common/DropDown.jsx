@@ -13,16 +13,18 @@ const DropDownCategory = styled.div`
   font-weight: 500;
   font-size: 16px;
 
-  
+  ${props =>
+    props.narrow &&
+    css`
+      width: 152px;
+      font-size: 14px;
+    `}
 
-  ${props => props.narrow && css`
-    width: 152px;
-    font-size: 14px;
-  `}
-
-  ${props => props.school && css`
-    width: 230px;
-  `}
+  ${props =>
+    props.school &&
+    css`
+      width: 230px;
+    `}
 
 
   display: flex;
@@ -47,8 +49,8 @@ const DropDownCategoryBox = styled.div`
   left: 0;
   top: 38px;
 
-  max-height:291px;
-  overflow-y:scroll;
+  max-height: 291px;
+  overflow-y: auto;
 
   border: 1px solid #828282;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
@@ -73,17 +75,17 @@ const DropDownContents = styled.div`
     background: rgba(244, 255, 193, 0.3);
   }
 
+  ${props =>
+    props.narrow &&
+    css`
+      color: #a4a4a4;
+      font-size: 14px;
 
-  ${props => props.narrow && css`
-    color: #a4a4a4;
-    font-size: 14px;
-
-
-    &:hover {
-      color: black;
-      font-weight: 600;
-    }
-  `}
+      &:hover {
+        color: black;
+        font-weight: 600;
+      }
+    `}
 `;
 
 const DropDown = ({ name, list, onChangeSelected, narrow, school }) => {
@@ -97,13 +99,19 @@ const DropDown = ({ name, list, onChangeSelected, narrow, school }) => {
   };
 
   return (
-    <DropDownCategory onClick={onClickDropDownOn} narrow={narrow} school={school}>
+    <DropDownCategory
+      onClick={onClickDropDownOn}
+      narrow={narrow}
+      school={school}
+    >
       {selected || name}
       <img src="/images/icons/drop_down.png" alt="drop_down" />
       {dropDownOn && (
         <DropDownCategoryBox narrow>
           {list.map(li => (
-            <DropDownContents onClick={onClickSelected} narrow>{li}</DropDownContents>
+            <DropDownContents onClick={onClickSelected} narrow>
+              {li}
+            </DropDownContents>
           ))}
         </DropDownCategoryBox>
       )}
