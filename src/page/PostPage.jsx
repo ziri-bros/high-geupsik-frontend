@@ -1,22 +1,25 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import ReactRouterPropTypes from 'react-router-prop-types';
 import BoardNaviagtion from '../component/common/BoardNavigation';
 import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import Post from '../component/Post';
 
-const PostPage = ({ boardId }) => (
-  <Wrapper>
-    <Header />
-    <HeaderNavigation />
-    <BoardNaviagtion />
-    <Post boardId={boardId}></Post>
-  </Wrapper>
-);
+const PostPage = ({ match }) => {
+  const { boardId } = match.params;
+  return (
+    <Wrapper>
+      <Header />
+      <HeaderNavigation />
+      <BoardNaviagtion />
+      <Post boardId={boardId}></Post>
+    </Wrapper>
+  );
+};
 
 export default PostPage;
 
 PostPage.propTypes = {
-  boardId: PropTypes.number,
+  match: ReactRouterPropTypes.match.isRequired,
 };
