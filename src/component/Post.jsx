@@ -189,22 +189,6 @@ const Post = ({ boardId }) => {
 
   const onGoBack = () => history.goBack();
 
-  const load = async () => {
-    try {
-      const postData = await getPost(boardId);
-      const commentsData = await getComments(boardId);
-      const likeData = await getLike(boardId);
-
-      setData(postData.data);
-      setComments(commentsData.data);
-      setLike(likeData.data);
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  const onClickLoad = () => load();
-
   const onClickLike = async () => {
     try {
       await postLike(boardId);
@@ -215,12 +199,24 @@ const Post = ({ boardId }) => {
   };
 
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
-  const checkIsMe = () => {
-    if (info.id === data.writerId) {
-      return true;
+  const checkIsMe = () => info.id === data.writerId;
+
+  const load = async () => {
+    try {
+      const postData = await getPost(boardId);
+      setData(postData.data);
+
+      const commentsData = await getComments(boardId);
+      setComments(commentsData.data);
+
+      const likeData = await getLike(boardId);
+      setLike(likeData.data);
+    } catch (e) {
+      console.log(e);
     }
-    return false;
   };
+
+  const onClickLoad = () => load();
 
   // 초기 load 렌더링
   useEffect(() => {

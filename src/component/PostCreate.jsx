@@ -190,9 +190,11 @@ const PostCreate = () => {
     const imgs = [...images];
     const resImgs = [...resImages];
 
-    const filteredImgs = imgs.filter((img, idx) => idx !== Number(e.target.id));
+    const filteredImgs = imgs.filter(
+      (_, idx) => idx !== parseInt(e.target.id, 10),
+    );
     const filteredResImgs = resImgs.filter(
-      (img, idx) => idx !== Number(e.target.id),
+      (_, idx) => idx !== parseInt(e.target.id, 10),
     );
 
     setImages([...filteredImgs]);
