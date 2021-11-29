@@ -35,3 +35,15 @@ export const getCurrentUserInfo = async () => {
   });
   return response;
 };
+
+export const updateUserInfo = async (schoolDTO) => {
+  const response = await axios({
+    url: `${API_BASE_URL}/users`,
+    method: 'patch',
+    data: schoolDTO,
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+  return response;
+};

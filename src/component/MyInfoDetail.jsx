@@ -2,11 +2,12 @@ import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
-import { imageUploader, signUp } from '../lib/api/auth';
+import { getCurrentUserInfo, imageUploader, signUp, updateUserInfo } from '../lib/api/auth';
 import Modal from './common/Modal';
+import { getUserInfo } from '../store/userInfo';
 
 const RegisterUserInfoBox = styled.div`
   margin: 15px 0 0 22px;
@@ -110,11 +111,18 @@ const MyInfoDetail = ({ path }) => {
 
   const fileInput = useRef(null);
   const history = useHistory();
+  const dispatch = useDispatch();
 
   let defaultArea = '지역 선택';
   let defaultSchool = '재학 중인 고등학교 선택';
 
   const info = useSelector(({ userInfo }) => userInfo.info);
+
+  if (info) {
+    const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
+    defaultArea = Object.keys(areas)[idx];
+    defaultSchool = info.schoolDTO.name;
+  }
 
   useEffect(() => {
     if (info) {
@@ -128,14 +136,6 @@ const MyInfoDetail = ({ path }) => {
     if (path === '/modify') setLocation('modify');
     if (path === '/register') setLocation('register');
   }, []);
-
-  if (info) {
-    const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
-    defaultArea = Object.keys(areas)[idx];
-    defaultSchool = info.schoolDTO.name;
-  }
-
-  console.log(area, schoolName);
 
   const onClickModalBtn = () => setModalOn(!modalOn);
   const onChangeArea = (value) => setArea(value);
@@ -178,8 +178,27 @@ const MyInfoDetail = ({ path }) => {
     }
   };
 
-  const onClickUpdate = () => {
+  const onClickUpdate = async () => {
+    const schoolDTO = {
+      code: schoolCodes[schoolName],
+      name: schoolName,
+      region: areas[area].region,
+      regionCode: areas[area].code,
+    };
 
+    try {
+      await updateUserInfo(schoolDTO);
+
+      const loadAPI = async () => {
+        const response = await getCurrentUserInfo();
+        dispatch(getUserInfo(response.data.data));
+      };
+      loadAPI();
+
+      history.push('/myInfo');
+    } catch (e) {
+      console.log('error', e);
+    }
   };
 
   return (
@@ -227,7 +246,8 @@ const MyInfoDetail = ({ path }) => {
       }
       {
         location === 'register' ?
-          <Button onClick={onClickSubmit} footer>가입하기</Button> : <Button footer>저장하기</Button>
+          <Button onClick={onClickSubmit} footer>가입하기</Button>
+          : <Button onClick={onClickUpdate} footer>저장하기</Button>
       }
       {
         !modalOn && <Modal title="모든 정보를 입력해주세요." onConfirm={onClickModalBtn} single />
