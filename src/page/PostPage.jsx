@@ -11,7 +11,7 @@ const PostPage = ({ boardId }) => (
     <Header />
     <HeaderNavigation />
     <BoardNaviagtion />
-    <Post boardId={18}></Post>
+    <Post boardId={19}></Post>
   </Wrapper>
 );
 

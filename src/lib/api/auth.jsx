@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../constants';
 
-export const signUp = async (userReqDTO) => {
+export const signUp = async userReqDTO => {
   await axios({
     url: `${API_BASE_URL}/login/cards`,
     data: userReqDTO,
@@ -12,7 +12,7 @@ export const signUp = async (userReqDTO) => {
   });
 };
 
-export const imageUploader = async (imageList) => {
+export const imageUploader = async imageList => {
   const response = await axios({
     url: `${API_BASE_URL}/images`,
     data: imageList,

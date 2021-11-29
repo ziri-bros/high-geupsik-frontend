@@ -232,7 +232,7 @@ const MoreButtonPop = ({
 MoreButtonPop.propTypes = {
   boardId: PropTypes.number,
   commentId: PropTypes.number,
-  isMe: PropTypes.bool.isRequired,
+  isMe: PropTypes.func.isRequired,
   type: PropTypes.string.isRequired,
   morePopHandle: PropTypes.func.isRequired,
   onClickLoad: PropTypes.func,

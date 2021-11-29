@@ -173,7 +173,7 @@ Comment.propTypes = {
     writerId: PropTypes.number,
   }).isRequired,
   boardId: PropTypes.number.isRequired,
-  isMe: PropTypes.bool,
+  isMe: PropTypes.func,
   onClickLoad: PropTypes.func,
 };
 
