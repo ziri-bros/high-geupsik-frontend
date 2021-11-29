@@ -99,11 +99,13 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comment, boardId, isMe, onClickLoad }) => {
+const Comment = ({ comment, boardId, userId, onClickLoad }) => {
   const [morePopOff, setMorePopOff] = useState(false);
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
+
+  const checkIsMe = () => userId === comment.writerId;
 
   return (
     <>
@@ -112,7 +114,7 @@ const Comment = ({ comment, boardId, isMe, onClickLoad }) => {
           boardId={boardId}
           commentId={comment.id}
           type="comment"
-          isMe={isMe}
+          isMe={checkIsMe()}
           onClickLoad={onClickLoad}
           morePopHandle={morePopOn}
         />
@@ -173,7 +175,7 @@ Comment.propTypes = {
     writerId: PropTypes.number,
   }).isRequired,
   boardId: PropTypes.number.isRequired,
-  isMe: PropTypes.func,
+  userId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
 };
 

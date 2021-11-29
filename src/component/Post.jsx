@@ -231,7 +231,7 @@ const Post = ({ boardId }) => {
             <MoreButtonPop
               boardId={boardId}
               type="post"
-              isMe={checkIsMe}
+              isMe={checkIsMe()}
               morePopHandle={morePopOn}
             />
           )}
@@ -293,7 +293,7 @@ const Post = ({ boardId }) => {
                     <Comment
                       comment={comment}
                       boardId={boardId}
-                      isMe={checkIsMe}
+                      userId={info.id}
                       onClickLoad={onClickLoad}
                     />
                   ))}
