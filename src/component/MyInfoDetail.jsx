@@ -246,8 +246,8 @@ const MyInfoDetail = ({ path }) => {
       }
       {
         location === 'register' ?
-          <Button onClick={onClickSubmit} footer>가입하기</Button>
-          : <Button onClick={onClickUpdate} footer>저장하기</Button>
+          <Button onClick={onClickSubmit} infoBtn>가입하기</Button>
+          : <Button onClick={onClickUpdate} infoBtn>저장하기</Button>
       }
       {
         !modalOn && <Modal title="모든 정보를 입력해주세요." onConfirm={onClickModalBtn} single />
