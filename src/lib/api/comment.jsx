@@ -27,13 +27,14 @@ export const postComments = async (boardId, commentReqDTO) => {
 
 // 게시글의 boardId, 댓글의 commentId를 받아 댓글 삭제를 요청한다.
 export const deleteComments = async (boardId, commentId) => {
-  await axios({
+  const response = await axios({
     url: `${API_BASE_URL}/boards/${boardId}/comments/${commentId}`,
     method: 'delete',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
+  return response.data;
 };
 
 // 게시글의 boardId, 댓글 정보인 commentReqDTO(content), 대댓글을 달려는 댓글의 Id인 parentId를 받아 대댓글을 단다.

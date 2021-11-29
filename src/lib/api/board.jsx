@@ -78,16 +78,25 @@ export const deletePost = async boardId => {
 
 // 게시글 좋아요 버튼을 누를 시 boardId 받아서 요청한다.
 // 좋아요 취소할때도 똑같이 요청하면 된다.
-// return response.success true 이면 버튼색깔 바꿔주자.
 export const postLike = async boardId => {
-  const response = await axios({
+  await axios({
     url: `${API_BASE_URL}/boards/${boardId}/like`,
     method: 'post',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
-  return response.success;
+};
+
+export const getLike = async boardId => {
+  const response = await axios({
+    url: `${API_BASE_URL}/boards/${boardId}/like`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+  return response.data;
 };
 
 // 내가 쓴 게시글 리스트 받아오기

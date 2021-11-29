@@ -6,7 +6,7 @@ import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
-import { getPost } from '../lib/api/board';
+import { getLike, getPost, postLike } from '../lib/api/board';
 import { getComments } from '../lib/api/comment';
 import { parseTime } from '../utils/parseTime';
 
@@ -179,6 +179,7 @@ const Post = ({ boardId }) => {
   const [morePopOff, setMorePopOff] = useState(false);
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
+  const [like, setLike] = useState(null);
 
   const history = useHistory();
 
@@ -189,13 +190,29 @@ const Post = ({ boardId }) => {
   const onGoBack = () => history.goBack();
 
   const load = async () => {
-    const postData = await getPost(boardId);
-    const commentsData = await getComments(boardId);
-    setData(postData.data);
-    setComments(commentsData.data);
+    try {
+      const postData = await getPost(boardId);
+      const commentsData = await getComments(boardId);
+      const likeData = await getLike(boardId);
+
+      setData(postData.data);
+      setComments(commentsData.data);
+      setLike(likeData.data);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const onClickLoad = () => load();
+
+  const onClickLike = async () => {
+    try {
+      await postLike(boardId);
+      setLike(!like);
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
   const checkIsMe = () => {
@@ -266,14 +283,14 @@ const Post = ({ boardId }) => {
                       {data.commentCount}
                     </PostCommentsNumber>
                   </PostCommentsIconWrapper>
-                  {/* <PostLikedButton isLiked={data.liked}>
-                    {data.liked ? (
+                  <PostLikedButton isLiked={like} onClick={onClickLike}>
+                    {like ? (
                       <img src="/images/icons/filledHeart.png" alt="liked" />
                     ) : (
                       <img src="/images/icons/emptyHeart.png" alt="like" />
                     )}
                     좋아요
-                  </PostLikedButton> */}
+                  </PostLikedButton>
                 </PostCommentsNumberWrapper>
                 {comments &&
                   comments.map(comment => (
