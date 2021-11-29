@@ -2,7 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import BoardComponent from './common/BoardComponent';
 import Button from './common/Button';
 import PostNotFound from './common/PostNotFound';
@@ -111,12 +111,14 @@ const examplePost = {
 const MyInfo = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [menuOn, setMenuOn] = useState(true);
+  const history = useHistory();
 
   const onClickWriteBtn = () => setMenuOn(true);
   const onClickCommentBtn = () => setMenuOn(false);
-
-  // 로그아웃 함수. 차후에 구현
-  const onLogout = () => {};
+  const onLogout = () => {
+    localStorage.removeItem('ACCESS_TOKEN');
+    history.push('/');
+  };
 
   return (
     info ? (
