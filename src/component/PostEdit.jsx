@@ -6,7 +6,7 @@ import Button from './common/Button';
 import DropDown from './common/DropDown';
 import Modal from './common/Modal';
 import { imageUploader } from '../lib/api/auth';
-import { getEditPost, postNewPost, putEditPost } from '../lib/api/board';
+import { getEditPost, putEditPost } from '../lib/api/board';
 
 const PostCreateMainBox = styled.div`
   overflow-y: auto;
@@ -223,12 +223,14 @@ const PostEdit = ({ boardId }) => {
       try {
         const response = await getEditPost(boardId);
         console.log(response.data);
+        setTitle(response.data.title);
+        setContent(response.data.content);
       } catch (e) {
         console.log(e);
       }
-      loadPost();
     };
-  });
+    loadPost();
+  }, []);
 
   return (
     <>
@@ -251,6 +253,7 @@ const PostEdit = ({ boardId }) => {
           />
           <PostCreateTitleInput
             placeholder="제목을 입력해주세요"
+            value={title}
             onChange={onChangeTitle}
           />
           <PostCreateImgWrapper>
@@ -283,6 +286,7 @@ const PostEdit = ({ boardId }) => {
             placeholder="내용을 입력해주세요"
             onChange={onChangeContent}
             isImgs={images.length}
+            value={content}
           />
           <Button footer postBtn onClick={onSubmit}>
             등록
