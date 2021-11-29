@@ -24,3 +24,14 @@ export const imageUploader = async (imageList) => {
   });
   return response.data;
 };
+
+export const getCurrentUserInfo = async () => {
+  const response = await axios({
+    url: `${API_BASE_URL}/users`,
+    method: 'get',
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+  return response;
+};
