@@ -1,7 +1,8 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Link, useHistory } from 'react-router-dom';
 import BoardComponent from './common/BoardComponent';
 import Button from './common/Button';
 import PostNotFound from './common/PostNotFound';
@@ -108,46 +109,56 @@ const examplePost = {
 };
 
 const MyInfo = () => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
   const [menuOn, setMenuOn] = useState(true);
+  const history = useHistory();
 
   const onClickWriteBtn = () => setMenuOn(true);
   const onClickCommentBtn = () => setMenuOn(false);
 
-  // 로그아웃 함수. 차후에 구현
-  const onLogout = () => {};
+  const onLogout = () => {
+    localStorage.removeItem('ACCESS_TOKEN');
+    history.push('/');
+  };
+  const onUpdate = () => history.push('/register');
 
   return (
-    <MyInfoWrapper>
-      <MyInfoBox>
-        <Name>이름</Name>
-        <Text blur>asdf1234@gmail.com</Text>
-        <div className="where">
-          <Text area>서울</Text>
-          <Text>성신여자고등학교</Text>
-        </div>
-      </MyInfoBox>
-      <Button onClick={onLogout} logoutBtn>
-        로그아웃
-      </Button>
-      <ButtonWrapper to="/modify">
-        <Button>내 정보 수정</Button>
-      </ButtonWrapper>
-      <MyPostMenuList>
-        <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
-          내가 작성한 게시글
-        </MyPostMenu>
-        <Bar />
-        <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>
-          내가 댓글 단 게시글
-        </MyPostMenu>
-      </MyPostMenuList>
-      {/* 게시글 없을 때 */}
-      {examplePost ? (
-        <BoardComponent objects={examplePost} />
-      ) : (
-        <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
-      )}
-    </MyInfoWrapper>
+    info ? (
+      <MyInfoWrapper>
+        <MyInfoBox>
+          <Name>{info.userResDTO.username}</Name>
+          <Text blur>{info.userResDTO.email}</Text>
+          <div className="where">
+            <Text area>{info.schoolDTO.region}</Text>
+            <Text>{info.schoolDTO.name}</Text>
+          </div>
+        </MyInfoBox>
+        <Button onClick={onLogout} logoutBtn>
+          로그아웃
+        </Button>
+        <ButtonWrapper to="/modify">
+          <Button onClick={onUpdate}>내 정보 수정</Button>
+        </ButtonWrapper>
+        <MyPostMenuList>
+          <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
+            내가 작성한 게시글
+          </MyPostMenu>
+          <Bar />
+          <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>
+            내가 댓글 단 게시글
+          </MyPostMenu>
+        </MyPostMenuList>
+        {/* 게시글 없을 때 */}
+        {examplePost ? (
+          <BoardComponent objects={examplePost} />
+        ) : (
+          <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
+        )}
+      </MyInfoWrapper>
+    ) : (
+      <>
+      </>
+    )
   );
 };
 

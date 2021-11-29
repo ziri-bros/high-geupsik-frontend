@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 import { imageUploader, signUp } from '../lib/api/auth';
@@ -110,10 +111,36 @@ const MyInfoDetail = ({ path }) => {
   const fileInput = useRef(null);
   const history = useHistory();
 
+  let defaultArea = '지역 선택';
+  let defaultSchool = '재학 중인 고등학교 선택';
+
+  const info = useSelector(({ userInfo }) => userInfo.info);
+
+  useEffect(() => {
+    if (info) {
+      setArea(defaultArea);
+      setSchoolName(defaultSchool);
+    }
+  }, [info]);
+
+  // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
+  useEffect(() => {
+    if (path === '/modify') setLocation('modify');
+    if (path === '/register') setLocation('register');
+  }, []);
+
+  if (info) {
+    const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
+    defaultArea = Object.keys(areas)[idx];
+    defaultSchool = info.schoolDTO.name;
+  }
+
+  console.log(area, schoolName);
+
   const onClickModalBtn = () => setModalOn(!modalOn);
   const onChangeArea = (value) => setArea(value);
   const onClickImgBtn = () => fileInput.current.click();
-  const onMoveBack = () => history.goBack();
+  const onMoveBack = () => history.push('/myInfo');
   const onChangeSchoolName = (value) => setSchoolName(value);
 
   const onChangeImage = async (e) => {
@@ -133,29 +160,27 @@ const MyInfoDetail = ({ path }) => {
       setModalOn(false);
       return;
     }
-    const userCardReqDTO = {
+    const userReqDTO = {
       schoolDTO: {
         code: schoolCodes[schoolName],
         name: schoolName,
         region: areas[area].region,
         regionCode: areas[area].code,
       },
-      thumbnail: imgUrl,
+      studentCardImage: imgUrl,
     };
 
     try {
-      await signUp(userCardReqDTO);
+      await signUp(userReqDTO);
       history.push('/allow');
     } catch (e) {
       console.log('error', e);
     }
   };
 
-  // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
-  useEffect(() => {
-    if (path === '/modify') setLocation('modify');
-    if (path === '/register') setLocation('register');
-  }, []);
+  const onClickUpdate = () => {
+
+  };
 
   return (
     <RegisterUserInfoBox>
@@ -171,11 +196,22 @@ const MyInfoDetail = ({ path }) => {
       </Menu>
       <InputWrapper>
         <InputText>지역<span>*</span></InputText>
-        <DropDown name="지역 선택" list={Object.keys(areas)} onChangeSelected={onChangeArea} narrow />
+        <DropDown
+          name={defaultArea}
+          list={Object.keys(areas)}
+          onChangeSelected={onChangeArea}
+          narrow
+        />
       </InputWrapper>
       <InputWrapper>
         <InputText>재학 중인 고등학교<span>*</span></InputText>
-        <DropDown name="재학 중인 고등학교 선택" list={Object.keys(schoolCodes)} onChangeSelected={onChangeSchoolName} narrow school />
+        <DropDown
+          name={defaultSchool}
+          list={Object.keys(schoolCodes)}
+          onChangeSelected={onChangeSchoolName}
+          narrow
+          school
+        />
       </InputWrapper>
       {
         location === 'register' && (

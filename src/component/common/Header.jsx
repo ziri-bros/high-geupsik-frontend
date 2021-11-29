@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserInfo } from '../../lib/api/auth';
@@ -50,12 +50,17 @@ const LogoutBtn = styled.button`
 const Header = ({ admin }) => {
   const info = useSelector(({ userInfo }) => (userInfo.info));
   const dispatch = useDispatch();
+  const history = useHistory();
 
   useEffect(() => {
     const loadUser = () => {
       try {
         const user = localStorage.getItem('ACCESS_TOKEN');
-        if (!user) return; // 사용자가 로그인이 안된 경우
+
+        if (!user) {
+          history.push('/');
+          return;
+        }
 
         const loadAPI = async () => {
           const response = await getCurrentUserInfo();
