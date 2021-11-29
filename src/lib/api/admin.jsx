@@ -24,7 +24,7 @@ export const deleteUserCard = async (userId) => {
 
 export const allowUserCard = async (userId) => {
   await axios({
-    url: `${API_BASE_URL}/admin/users/${userId}/authroize`,
+    url: `${API_BASE_URL}/admin/users/${userId}/authorize`,
     method: 'patch',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,

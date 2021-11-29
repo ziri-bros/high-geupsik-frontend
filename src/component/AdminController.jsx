@@ -152,9 +152,7 @@ const ModalBtn = styled.div`
 `;
 
 const StudentInfo = ({ studentInfo, last }) => {
-  const { email, username } = studentInfo.userResDTO;
-  const imageURL = studentInfo.thumbnail;
-  const cardId = studentInfo.id;
+  const { email, username, studentCardImage, userId } = studentInfo;
 
   const [modalOn, setModalOn] = useState(false);
   const [imgViewOn, setImgViewOn] = useState(false);
@@ -166,7 +164,7 @@ const StudentInfo = ({ studentInfo, last }) => {
 
   const onCancelUserCard = async () => {
     try {
-      await deleteUserCard(cardId);
+      await deleteUserCard(userId);
       setModalOn(false);
     } catch (e) {
       console.log(e);
@@ -175,7 +173,7 @@ const StudentInfo = ({ studentInfo, last }) => {
 
   const onConfirmUserCard = async () => {
     try {
-      await allowUserCard(cardId);
+      await allowUserCard(userId);
       setModalOn(false);
     } catch (e) {
       console.log(e);
@@ -222,7 +220,7 @@ const StudentInfo = ({ studentInfo, last }) => {
           <BlackBackground>
             <DeleteModal>
               <ImgModal>
-                <img src={imageURL} alt="이미지" />
+                <img src={studentCardImage} alt="이미지" />
                 <CloseIcon onClick={onClickView}>
                   <img src="/images/icons/close.png" alt="close" />
                 </CloseIcon>
