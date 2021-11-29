@@ -175,10 +175,10 @@ const PostLikedButton = styled.div`
 `;
 
 const Post = ({ boardId }) => {
-  const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
+  const [isMe, setIsMe] = useState(null);
 
   const history = useHistory();
 
@@ -188,17 +188,26 @@ const Post = ({ boardId }) => {
 
   const onGoBack = () => history.goBack();
 
+  const load = async () => {
+    const postData = await getPost(boardId);
+    const commentsData = await getComments(boardId);
+    setData(postData.data);
+    setIsMe(postData.data.useCount);
+    setComments(commentsData.data);
+  };
+
+  const onClickLoad = () => load();
+
+  const checkIsMe = () => {
+    if (isMe === -1) {
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
-    const load = async () => {
-      const postData = await getPost(boardId);
-      const commentsData = await getComments(boardId);
-      setData(postData.data);
-      setComments(commentsData.data);
-    };
     load();
   }, []);
-
-  console.log(comments);
 
   return (
     <>
@@ -206,7 +215,9 @@ const Post = ({ boardId }) => {
         <>
           {morePopOff && (
             <MoreButtonPop
-              // type={data.isMe}
+              boardId={boardId}
+              type="post"
+              isMe={checkIsMe}
               morePopHandle={morePopOn}
             />
           )}
@@ -265,11 +276,16 @@ const Post = ({ boardId }) => {
                 </PostCommentsNumberWrapper>
                 {comments &&
                   comments.map(comment => (
-                    <Comment comment={comment} morePopHandle={morePopOn} />
+                    <Comment
+                      comment={comment}
+                      boardId={boardId}
+                      isMe={checkIsMe}
+                      onClickLoad={onClickLoad}
+                    />
                   ))}
               </PostCommentsWrapper>
             </PostWrapper>
-            <CommentInput boardId={boardId} />
+            <CommentInput boardId={boardId} onClickLoad={onClickLoad} />
           </PostMainBox>
         </>
       )}
