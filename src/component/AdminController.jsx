@@ -151,7 +151,7 @@ const ModalBtn = styled.div`
   cursor: pointer;
 `;
 
-const StudentInfo = ({ studentInfo, last }) => {
+const StudentInfo = ({ studentInfo, last, loadUserCardList }) => {
   const { email, username, studentCardImage, userId } = studentInfo;
 
   const [modalOn, setModalOn] = useState(false);
@@ -165,6 +165,7 @@ const StudentInfo = ({ studentInfo, last }) => {
   const onCancelUserCard = async () => {
     try {
       await deleteUserCard(userId);
+      loadUserCardList();
       setModalOn(false);
     } catch (e) {
       console.log(e);
@@ -174,6 +175,7 @@ const StudentInfo = ({ studentInfo, last }) => {
   const onConfirmUserCard = async () => {
     try {
       await allowUserCard(userId);
+      loadUserCardList();
       setModalOn(false);
     } catch (e) {
       console.log(e);
@@ -236,12 +238,12 @@ const StudentInfo = ({ studentInfo, last }) => {
 const AdminController = () => {
   const [userList, setUserList] = useState(null);
 
-  useEffect(() => {
-    const loadUserCardList = async () => {
-      const response = await getUserCardList();
-      setUserList(response.data.content);
-    };
+  const loadUserCardList = async () => {
+    const response = await getUserCardList();
+    setUserList(response.data.content);
+  };
 
+  useEffect(() => {
     loadUserCardList();
   }, []);
 
@@ -251,7 +253,12 @@ const AdminController = () => {
       <StudentInfoList>
         {
           userList && userList.map((user, index) => (
-            <StudentInfo studentInfo={user} last={index === userList.length - 1} />))
+            <StudentInfo
+              loadUserCardList={loadUserCardList}
+              studentInfo={user}
+              last={index === userList.length - 1}
+            />
+          ))
         }
       </StudentInfoList>
     </AdminControllerWrapper>
@@ -261,6 +268,7 @@ const AdminController = () => {
 StudentInfo.propTypes = {
   studentInfo: PropTypes.arrayOf(PropTypes.object).isRequired,
   last: PropTypes.string.isRequired,
+  loadUserCardList: PropTypes.func.isRequired,
 };
 
 export default AdminController;
