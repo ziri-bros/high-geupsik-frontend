@@ -19,11 +19,22 @@ const ButtonBox = styled.div`
   ${props =>
     props.footer &&
     css`
+      margin-top:60px;
+
+        /* 모바일용 폰트 크기 적용 */
+      @media only screen and (max-width: 385px) {
+        margin-top:15px;
+      }
+    `}
+
+  /* 하단에 위치하는 버튼 디자인 */
+  ${props =>
+    props.infoBtn &&
+    css`
       position: absolute;
-      bottom: 0;
       left: 0;
       right: 0;
-      margin: 0 11px 5px 11px;
+      margin:35px 35px 0;
     `}
 
   margin: ${props => props.postBtn && '0 0 5px 0'};
@@ -44,12 +55,13 @@ const ButtonBox = styled.div`
     `}
 `;
 
-const Button = ({ children, footer, onClick, postBtn, logoutBtn }) => (
+const Button = ({ children, footer, onClick, postBtn, logoutBtn, infoBtn }) => (
   <ButtonBox
     footer={footer}
     onClick={onClick}
     postBtn={postBtn}
     logoutBtn={logoutBtn}
+    infoBtn={infoBtn}
   >
     {children}
   </ButtonBox>
@@ -61,6 +73,7 @@ Button.propTypes = {
   onClick: PropTypes.func,
   postBtn: PropTypes.bool,
   logoutBtn: PropTypes.string,
+  infoBtn: PropTypes.string,
 };
 
 export default Button;
