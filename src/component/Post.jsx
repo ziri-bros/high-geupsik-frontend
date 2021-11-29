@@ -199,7 +199,7 @@ const Post = ({ boardId }) => {
   };
 
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
-  const checkIsMe = () => info.id === data.writerId;
+  const isMe = () => info.id === data.writerId;
 
   const load = async () => {
     try {
@@ -231,7 +231,7 @@ const Post = ({ boardId }) => {
             <MoreButtonPop
               boardId={boardId}
               type="post"
-              isMe={checkIsMe}
+              isMe={isMe()}
               morePopHandle={morePopOn}
             />
           )}
@@ -293,7 +293,7 @@ const Post = ({ boardId }) => {
                     <Comment
                       comment={comment}
                       boardId={boardId}
-                      isMe={checkIsMe}
+                      userId={info.id}
                       onClickLoad={onClickLoad}
                     />
                   ))}

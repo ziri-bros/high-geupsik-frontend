@@ -187,7 +187,6 @@ const MoreButtonPop = ({
     } else {
       try {
         const response = await deleteComments(boardId, commentId);
-        console.log(response);
         morePopHandle();
         onClickLoad();
       } catch (e) {

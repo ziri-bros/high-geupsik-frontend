@@ -45,7 +45,7 @@ const RootRoute = () => (
         component={BoardPage}
         exact
       />
-      <Route path="/board/post" component={PostPage} exact />
+      <Route path="/boards/:boardId" component={PostPage} exact />
       <Route path="/postCreate" component={PostCreatePage} exact />
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />
