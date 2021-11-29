@@ -117,9 +117,17 @@ const MyInfoDetail = ({ path }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
 
   useEffect(() => {
-    setArea(defaultArea);
-    setSchoolName(defaultSchool);
+    if (info) {
+      setArea(defaultArea);
+      setSchoolName(defaultSchool);
+    }
   }, [info]);
+
+  // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
+  useEffect(() => {
+    if (path === '/modify') setLocation('modify');
+    if (path === '/register') setLocation('register');
+  }, []);
 
   if (info) {
     const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
@@ -152,29 +160,27 @@ const MyInfoDetail = ({ path }) => {
       setModalOn(false);
       return;
     }
-    const userCardReqDTO = {
+    const userReqDTO = {
       schoolDTO: {
         code: schoolCodes[schoolName],
         name: schoolName,
         region: areas[area].region,
         regionCode: areas[area].code,
       },
-      thumbnail: imgUrl,
+      studentCardImage: imgUrl,
     };
 
     try {
-      await signUp(userCardReqDTO);
+      await signUp(userReqDTO);
       history.push('/allow');
     } catch (e) {
       console.log('error', e);
     }
   };
 
-  // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
-  useEffect(() => {
-    if (path === '/modify') setLocation('modify');
-    if (path === '/register') setLocation('register');
-  }, []);
+  const onClickUpdate = () => {
+
+  };
 
   return (
     <RegisterUserInfoBox>
@@ -198,7 +204,7 @@ const MyInfoDetail = ({ path }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputText>재 학 중인 고등학교<span>*</span></InputText>
+        <InputText>재학 중인 고등학교<span>*</span></InputText>
         <DropDown
           name={defaultSchool}
           list={Object.keys(schoolCodes)}
