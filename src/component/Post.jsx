@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
 import { getPost } from '../lib/api/board';
+import { getComments } from '../lib/api/comment';
+import { parseTime } from '../utils/parseTime';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -172,8 +175,10 @@ const PostLikedButton = styled.div`
 `;
 
 const Post = ({ boardId }) => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
   const [data, setData] = useState(null);
+  const [comments, setComments] = useState(null);
 
   const history = useHistory();
 
@@ -184,12 +189,16 @@ const Post = ({ boardId }) => {
   const onGoBack = () => history.goBack();
 
   useEffect(() => {
-    const loadPost = async () => {
-      const response = await getPost(boardId);
-      setData(response.data);
+    const load = async () => {
+      const postData = await getPost(boardId);
+      const commentsData = await getComments(boardId);
+      setData(postData.data);
+      setComments(commentsData.data);
     };
-    loadPost();
+    load();
   }, []);
+
+  console.log(comments);
 
   return (
     <>
@@ -215,7 +224,7 @@ const Post = ({ boardId }) => {
                   </PostMoreButton>
                 </PostTitleWrapper>
                 <PostSubTitleWrapper>
-                  <PostSubTitle>{data.createdDate}</PostSubTitle>
+                  <PostSubTitle>{parseTime(data.createdDate)}</PostSubTitle>
                   <PostSubTitle>|</PostSubTitle>
                   <View>
                     <img src="/images/icons/view.png" alt="view" />
@@ -233,7 +242,7 @@ const Post = ({ boardId }) => {
                 </PostImages>
               </PostContentsWrapper>
 
-              {/* <PostCommentsWrapper>
+              <PostCommentsWrapper>
                 <PostCommentsNumberWrapper>
                   <PostCommentsIconWrapper>
                     <PostCommentsLikedNumber>
@@ -245,21 +254,22 @@ const Post = ({ boardId }) => {
                       {data.commentCount}
                     </PostCommentsNumber>
                   </PostCommentsIconWrapper>
-                  <PostLikedButton isLiked={data.liked}>
+                  {/* <PostLikedButton isLiked={data.liked}>
                     {data.liked ? (
                       <img src="/images/icons/filledHeart.png" alt="liked" />
                     ) : (
                       <img src="/images/icons/emptyHeart.png" alt="like" />
                     )}
                     좋아요
-                  </PostLikedButton>
+                  </PostLikedButton> */}
                 </PostCommentsNumberWrapper>
-                {data.comments.map(comment => (
-                  <Comment comments={comment} morePopHandle={morePopOn} />
-                ))}
-              </PostCommentsWrapper> */}
+                {comments &&
+                  comments.map(comment => (
+                    <Comment comment={comment} morePopHandle={morePopOn} />
+                  ))}
+              </PostCommentsWrapper>
             </PostWrapper>
-            <CommentInput />
+            <CommentInput boardId={boardId} />
           </PostMainBox>
         </>
       )}

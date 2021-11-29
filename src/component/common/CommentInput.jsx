@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
+import { postComments } from '../../lib/api/comment';
 
 const CommentInputWrapper = styled.div`
   margin-top: 20px;
@@ -41,11 +43,22 @@ const CommentButton = styled.div`
   }
 `;
 
-const CommentInput = () => {
+const CommentInput = ({ boardId }) => {
   const [comment, setComment] = useState('');
 
   const onChangeComment = e => {
     setComment(e.target.value);
+  };
+
+  const onClickSubmitComments = async () => {
+    const commentReqDTO = {
+      content: comment,
+    };
+    try {
+      await postComments(boardId, commentReqDTO);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -57,11 +70,15 @@ const CommentInput = () => {
         value={comment}
         onChange={onChangeComment}
       />
-      <CommentButton>
+      <CommentButton onClick={onClickSubmitComments}>
         <img src="/images/icons/send_green.png" alt="send" />
       </CommentButton>
     </CommentInputWrapper>
   );
+};
+
+CommentInput.propTypes = {
+  boardId: PropTypes.number.isRequired,
 };
 
 export default CommentInput;

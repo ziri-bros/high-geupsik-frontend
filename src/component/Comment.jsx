@@ -7,7 +7,7 @@ const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
   width: 100%;
   height: 100px;
-  width:100%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -98,50 +98,61 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comments, morePopHandle }) => (
+const Comment = ({ comment, morePopHandle }) => (
   <>
     <CommentWrapper>
       <CommentMainWrapper>
         <CommentNameButtonWrapper>
-          <CommentName>{comments.name}</CommentName>
+          <CommentName>
+            {comment.userCount === -1
+              ? '익명 (글쓴이)'
+              : `익명 ${comment.userCount}`}
+          </CommentName>
           <CommentMoreButton onClick={morePopHandle}>
             <img src="/images/icons/more.png" alt="more" />
           </CommentMoreButton>
         </CommentNameButtonWrapper>
-        <CommentTime>{comments.time}</CommentTime>
+        {/* <CommentTime>{comment.time}</CommentTime> */}
       </CommentMainWrapper>
       <CommentSubWrapper>
-        <CommentContents>{comments.content}</CommentContents>
+        <CommentContents>{comment.content}</CommentContents>
       </CommentSubWrapper>
       <CommentIconWrapper>
         <CommentLikeButton>
-          {comments.goodCount > 0 ? (
+          {comment.likeCount > 0 ? (
             <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
           ) : (
             <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
           )}
-          {comments.goodCount}
+          {comment.likeCount}
         </CommentLikeButton>
         <CommentNumber>
-          {comments.cocomments.length > 0 ? (
+          {comment.commentResDTOList.length > 0 ? (
             <img src="/images/icons/comment-green.png" alt="comment" />
           ) : (
             <img src="/images/icons/comment-grey.png" alt="comment" />
           )}
-          {comments.cocomments.length}
+          {comment.commentResDTOList.length}
         </CommentNumber>
       </CommentIconWrapper>
     </CommentWrapper>
-    {comments.cocomments.length > 0 &&
-      comments.cocomments.map(cocomment => (
+    {comment.commentResDTOList.length > 0 &&
+      comment.commentResDTOList.map(cocomment => (
         <Cocomment cocomments={cocomment} morePopHandle={morePopHandle} />
       ))}
   </>
 );
 
 Comment.propTypes = {
-  comments: PropTypes.arrayOf,
-  morePopHandle: PropTypes.func,
+  comment: PropTypes.shape({
+    commentResDTOList: PropTypes.arrayOf(PropTypes.object),
+    content: PropTypes.string,
+    id: PropTypes.number,
+    likeCount: PropTypes.number,
+    userCount: PropTypes.number,
+    writerId: PropTypes.number,
+  }).isRequired,
+  morePopHandle: PropTypes.func.isRequired,
 };
 
 export default Comment;
