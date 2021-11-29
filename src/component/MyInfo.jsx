@@ -126,8 +126,8 @@ const MyInfo = () => {
     info ? (
       <MyInfoWrapper>
         <MyInfoBox>
-          <Name>{info.userResDTO.username}</Name>
-          <Text blur>{info.userResDTO.email}</Text>
+          <Name>{info.username}</Name>
+          <Text blur>{info.email}</Text>
           <div className="where">
             <Text area>{info.schoolDTO.region}</Text>
             <Text>{info.schoolDTO.name}</Text>
