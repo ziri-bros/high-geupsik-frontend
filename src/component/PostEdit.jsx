@@ -143,6 +143,7 @@ const PostEdit = ({ boardId }) => {
   const [images, setImages] = useState([]);
   const [resImages, setResImages] = useState([]);
   const [modalOn, setModalOn] = useState(false);
+  const [editCategory, setEditCategory] = useState('');
   const history = useHistory();
 
   const onChangeSelected = selected => {
@@ -153,6 +154,21 @@ const PostEdit = ({ boardId }) => {
       setDropDownSelected('INFORMATION');
     }
     if (selected === '홍보게시판') {
+      setDropDownSelected('PROMOTION');
+    }
+  };
+
+  const loadEditCategory = category => {
+    if (category === 'FREE') {
+      setEditCategory('자유게시판');
+      setDropDownSelected('FREE');
+    }
+    if (category === 'INFORMATION') {
+      setEditCategory('정보게시판');
+      setDropDownSelected('INFORMATION');
+    }
+    if (category === 'PROMOTION') {
+      setEditCategory('홍보게시판');
       setDropDownSelected('PROMOTION');
     }
   };
@@ -180,10 +196,16 @@ const PostEdit = ({ boardId }) => {
         imgsUrl.push(currentImgUrl);
         formData.append('imageList', img);
       });
-      setImages(imgsUrl);
 
-      const response = await imageUploader(formData);
-      setResImages(response.data);
+      try {
+        const response = await imageUploader(formData);
+        if (response.success) {
+          setImages(imgsUrl);
+          setResImages([...resImages, ...response.data]);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
 
@@ -202,6 +224,28 @@ const PostEdit = ({ boardId }) => {
     setResImages([...filteredResImgs]);
   };
 
+  // 게시글 편집 정보 받아오기
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const response = await getEditPost(boardId);
+        loadEditCategory(response.data.category);
+        setTitle(response.data.title);
+        setContent(response.data.content);
+        setResImages(response.data.uploadFileDTOList);
+
+        const imgArr = [];
+        response.data.uploadFileDTOList.forEach(val => {
+          imgArr.push(val.fileDownloadUri);
+        });
+        setImages([...imgArr]);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    loadPost();
+  }, []);
+
   const onSubmit = async () => {
     const boardReqDTO = {
       category: dropDownSelected,
@@ -216,21 +260,6 @@ const PostEdit = ({ boardId }) => {
       console.log(e);
     }
   };
-
-  // 게시글 편집 정보 받아오기
-  useEffect(() => {
-    const loadPost = async () => {
-      try {
-        const response = await getEditPost(boardId);
-        console.log(response.data);
-        setTitle(response.data.title);
-        setContent(response.data.content);
-      } catch (e) {
-        console.log(e);
-      }
-    };
-    loadPost();
-  }, []);
 
   return (
     <>
@@ -250,6 +279,7 @@ const PostEdit = ({ boardId }) => {
             name="게시판 선택"
             list={list}
             onChangeSelected={onChangeSelected}
+            categorySelected={editCategory}
           />
           <PostCreateTitleInput
             placeholder="제목을 입력해주세요"

@@ -105,8 +105,7 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    width: 420px;
-    height: 420px;
+    max-width: 420px;
     margin-top: 20px;
   }
 `;

@@ -19,11 +19,11 @@ const ButtonBox = styled.div`
   ${props =>
     props.footer &&
     css`
-      margin-top:60px;
+      margin-top: 60px;
 
-        /* 모바일용 폰트 크기 적용 */
+      /* 모바일용 폰트 크기 적용 */
       @media only screen and (max-width: 385px) {
-        margin-top:15px;
+        margin-top: 15px;
       }
     `}
 
@@ -34,10 +34,10 @@ const ButtonBox = styled.div`
       position: absolute;
       left: 0;
       right: 0;
-      margin:35px 35px 0;
+      margin: 35px 35px 0;
     `}
 
-  margin: ${props => props.postBtn && '0 0 5px 0'};
+  margin: ${props => props.postBtn && '-50px 0 0 0'};
 
   height: 40px;
   background: #5d6e1e;

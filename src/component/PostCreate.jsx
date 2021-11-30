@@ -179,12 +179,21 @@ const PostCreate = () => {
         imgsUrl.push(currentImgUrl);
         formData.append('imageList', img);
       });
-      setImages(imgsUrl);
 
-      const response = await imageUploader(formData);
-      setResImages(response.data);
+      try {
+        const response = await imageUploader(formData);
+        if (response.success) {
+          setImages(imgsUrl);
+          setResImages(response.data);
+        }
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
+
+  console.log(images);
+  console.log(resImages);
 
   const onClickDeleteImages = e => {
     const imgs = [...images];
