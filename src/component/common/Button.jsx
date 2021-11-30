@@ -50,7 +50,20 @@ const ButtonBox = styled.div`
   ${props =>
     props.logoutBtn &&
     css`
+      width: 94%;
+      margin: 5px 0;
       background: white;
+      color: black;
+      margin-bottom: 7px;
+      box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+    `}
+
+  ${props =>
+    props.modifyBtn &&
+    css`
+      width: 100%;
+      margin: 5px 0;
+      background: #5d6e1e;
       color: black;
       margin-bottom: 7px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);

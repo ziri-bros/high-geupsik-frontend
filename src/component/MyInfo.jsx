@@ -1,32 +1,47 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import BoardComponent from './common/BoardComponent';
 import Button from './common/Button';
 import PostNotFound from './common/PostNotFound';
+import { getMyPostList } from '../lib/api/board';
 
 const MyInfoWrapper = styled.div`
-  margin: 20px 10px;
-`;
-
-const MyInfoBox = styled.div`
-  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-  border-radius: 5px;
-  padding: 12px 0 12px 19px;
-  margin-bottom: 7px;
-
-  .where {
-    display: flex;
-    margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: auto;
+  background-color: white;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
-const Name = styled.div`
-  font-size: 16px;
-  font-weight: 500;
-  color: #4f4f4f;
+const MyInfoBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 94%;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
+  padding: 12px 0 12px 19px;
+  margin: 10px;
+`;
+
+const TextWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  margin: 10px 0;
+  span {
+    margin: 0 10px;
+  }
+  .name {
+    font-size: 15px;
+    font-weight: 600;
+  }
 `;
 
 const Text = styled.div`
@@ -38,11 +53,20 @@ const Text = styled.div`
 
 const MyPostMenuList = styled.div`
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-  margin: 34px 0 10px;
+  margin: 20px 0 0 3%;
+`;
+
+const PostMenuListWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  height: auto;
 `;
 
 const MyPostMenu = styled.div`
+  display: flex;
+
   font-weight: normal;
   font-size: 16px;
   color: #4f4f4f;
@@ -63,55 +87,27 @@ const Bar = styled.div`
   background: #4f4f4f;
 `;
 
-const ButtonWrapper = styled(Link)``;
+const MyPostWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 300px;
+  border-radius: 5px;
+  background-color: black;
+  margin: 0 0 0 10px;
+`;
 
-// 예시 DB
-const examplePost = {
-  title: '제목입니다',
-  time: '21/7/23 11:34',
-  view: '100',
-  content: '점심메뉴 추천 좀',
-  images: ['/images/icons/square.png', '/images/icons/square.png'],
-  like: 5,
-  liked: true,
-  totalCommentCount: 4,
-  isMe: true,
-  comments: [
-    {
-      name: '익명1',
-      time: '21/7/23 11:50',
-      content: '냉모밀 먹어라',
-      goodCount: 0,
-      cocomments: [],
-    },
-    {
-      name: '익명2',
-      time: '21/7/23 11:50',
-      content: '치킨 먹어라',
-      goodCount: 2,
-      cocomments: [
-        {
-          name: '익명(글쓴이)',
-          time: '21/7/23 11:50',
-          content: '추천 고마워',
-          goodCount: 0,
-          cocommentsCount: 1,
-        },
-        {
-          name: '익명2',
-          time: '21/7/23 11:50',
-          content: '맛있게 먹어',
-          goodCount: 1,
-          cocommentsCount: 0,
-        },
-      ],
-    },
-  ],
-};
+const ButtonWrapper = styled(Link)`
+  width: 94%;
+`;
 
 const MyInfo = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [menuOn, setMenuOn] = useState(true);
+  const [data, setData] = useState(null);
+
   const history = useHistory();
 
   const onClickWriteBtn = () => setMenuOn(true);
@@ -123,25 +119,43 @@ const MyInfo = () => {
   };
   const onUpdate = () => history.push('/register');
 
-  return (
-    info ? (
-      <MyInfoWrapper>
-        <MyInfoBox>
-          <Name>{info.username}</Name>
-          <Text blur>{info.email}</Text>
-          <div className="where">
-            <Text rightMargin>{info.schoolDTO.region}</Text>
-            <Text rightMargin>{info.schoolDTO.name}</Text>
-            <Text grade>{info.grade}학년</Text>
-            <Text>{info.classNum}반</Text>
-          </div>
-        </MyInfoBox>
-        <Button onClick={onLogout} logoutBtn>
-          로그아웃
+  useEffect(() => {
+    const loadBoard = async () => {
+      const response = await getMyPostList();
+
+      if (response.success) {
+        setData(response.data);
+      }
+    };
+
+    loadBoard();
+  }, []);
+
+  return info ? (
+    <MyInfoWrapper>
+      <MyInfoBox>
+        <TextWrapper>
+          <Text>
+            <span className="name">{info.username}</span>
+            <span>{info.email}</span>
+          </Text>
+        </TextWrapper>
+        <TextWrapper>
+          <Text area>
+            <span>{info.schoolDTO.region}</span>
+            <span>{info.schoolDTO.name}</span>
+          </Text>
+        </TextWrapper>
+      </MyInfoBox>
+      <Button onClick={onLogout} logoutBtn>
+        로그아웃
+      </Button>
+      <ButtonWrapper to="/modify">
+        <Button onClick={onUpdate} modifyBtn>
+          내 정보 수정
         </Button>
-        <ButtonWrapper to="/modify">
-          <Button onClick={onUpdate}>내 정보 수정</Button>
-        </ButtonWrapper>
+      </ButtonWrapper>
+      <PostMenuListWrapper>
         <MyPostMenuList>
           <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
             내가 작성한 게시글
@@ -151,17 +165,19 @@ const MyInfo = () => {
             내가 댓글 단 게시글
           </MyPostMenu>
         </MyPostMenuList>
-        {/* 게시글 없을 때 */}
-        {examplePost ? (
-          <BoardComponent objects={examplePost} />
+      </PostMenuListWrapper>
+
+      {/* 게시글 없을 때 */}
+      <MyPostWrapper>
+        {data ? (
+          <BoardComponent myPost />
         ) : (
           <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
         )}
-      </MyInfoWrapper>
-    ) : (
-      <>
-      </>
-    )
+      </MyPostWrapper>
+    </MyInfoWrapper>
+  ) : (
+    <></>
   );
 };
 
