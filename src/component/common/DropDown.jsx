@@ -49,7 +49,8 @@ const DropDownCategoryBox = styled.div`
   left: 0;
   top: 38px;
 
-  max-height: 291px;
+  /* max-height: 291px; */
+  max-height: 169px;
   overflow-y: auto;
 
   border: 1px solid #828282;

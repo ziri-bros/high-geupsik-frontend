@@ -101,11 +101,16 @@ const schoolCodes = {
   한영외국어고등학교: '7010259',
 };
 
+const grades = ['1학년', '2학년', '3학년'];
+const classes = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
+
 const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
   const [location, setLocation] = useState(null);
   const [area, setArea] = useState(null);
   const [schoolName, setSchoolName] = useState(null);
+  const [grade, setGrade] = useState(null);
+  const [classNum, setClassNum] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [modalOn, setModalOn] = useState(true);
 
@@ -115,6 +120,8 @@ const MyInfoDetail = ({ path }) => {
 
   let defaultArea = '지역 선택';
   let defaultSchool = '재학 중인 고등학교 선택';
+  const defaultGrade = '학년 선택';
+  const defaultClass = '분반 선택';
 
   const info = useSelector(({ userInfo }) => userInfo.info);
 
@@ -122,12 +129,16 @@ const MyInfoDetail = ({ path }) => {
     const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
     defaultArea = Object.keys(areas)[idx];
     defaultSchool = info.schoolDTO.name;
+    // defaultGrade = info.studentCardDTO.grade;
+    // defaultClass = info.studentCardDTO.classNum;
   }
 
   useEffect(() => {
     if (info) {
       setArea(defaultArea);
       setSchoolName(defaultSchool);
+      setGrade(defaultGrade);
+      setClassNum(defaultClass);
     }
   }, [info]);
 
@@ -138,10 +149,12 @@ const MyInfoDetail = ({ path }) => {
   }, []);
 
   const onClickModalBtn = () => setModalOn(!modalOn);
-  const onChangeArea = (value) => setArea(value);
   const onClickImgBtn = () => fileInput.current.click();
   const onMoveBack = () => history.push('/myInfo');
+  const onChangeArea = (value) => setArea(value);
   const onChangeSchoolName = (value) => setSchoolName(value);
+  const onChangeGrade = (value) => setGrade(value);
+  const onChangeClassNum = (value) => setClassNum(value);
 
   const onChangeImage = async (e) => {
     if (e.target.files[0] !== null) {
@@ -156,18 +169,22 @@ const MyInfoDetail = ({ path }) => {
   };
 
   const onClickSubmit = async () => {
-    if (!area || !schoolName || !imgUrl) {
+    if (!area || !schoolName || !imgUrl || !grade || !classNum) {
       setModalOn(false);
       return;
     }
     const userReqDTO = {
+      studentCardDTO: {
+        grade: grades.findIndex(value => value === grade) + 1,
+        classNum: classes.findIndex(value => value === classNum) + 1,
+        studentCardImage: imgUrl,
+      },
       schoolDTO: {
         code: schoolCodes[schoolName],
         name: schoolName,
         region: areas[area].region,
         regionCode: areas[area].code,
       },
-      studentCardImage: imgUrl,
     };
 
     try {
@@ -185,7 +202,7 @@ const MyInfoDetail = ({ path }) => {
       region: areas[area].region,
       regionCode: areas[area].code,
     };
-
+    //
     try {
       await updateUserInfo(schoolDTO);
 
@@ -230,6 +247,24 @@ const MyInfoDetail = ({ path }) => {
           onChangeSelected={onChangeSchoolName}
           narrow
           school
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <InputText>학년<span>*</span></InputText>
+        <DropDown
+          name={defaultGrade}
+          list={grades}
+          onChangeSelected={onChangeGrade}
+          narrow
+        />
+      </InputWrapper>
+      <InputWrapper>
+        <InputText>반<span>*</span></InputText>
+        <DropDown
+          name={defaultClass}
+          list={classes}
+          onChangeSelected={onChangeClassNum}
+          narrow
         />
       </InputWrapper>
       {
