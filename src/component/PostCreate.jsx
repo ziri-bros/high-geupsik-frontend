@@ -244,6 +244,7 @@ const PostCreate = () => {
           <PostCreateTitleInput
             placeholder="제목을 입력해주세요"
             onChange={onChangeTitle}
+            maxLength="22"
           />
           <PostCreateImgWrapper>
             {images.map((img, idx) => (

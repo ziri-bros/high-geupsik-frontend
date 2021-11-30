@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import MoreButtonPop from './common/MoreButtonPop';
+import { parseTime } from '../utils/parseTime';
+import { postCommentsLike } from '../lib/api/comment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -92,62 +95,103 @@ const CommentLikeButton = styled.div`
   }
 `;
 
-const CommentNumber = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  color: #626262;
-  cursor: pointer;
+const Cocomment = ({
+  cocomment,
+  boardId,
+  userId,
+  onClickLoad,
+  getEditComment,
+}) => {
+  const [morePopOff, setMorePopOff] = useState(false);
+  const [commentLike, setCommentLike] = useState(cocomment.userLike);
 
-  img {
-    width: 24px;
-    height: 24px;
-    margin-right: 3px;
-  }
-`;
+  const morePopOn = () => {
+    setMorePopOff(!morePopOff);
+  };
 
-const Cocomment = ({ cocomments, morePopHandle }) => (
-  <CommentWrapper>
-    <CommentMainWrapper>
-      <CommentNameButtonWrapper>
-        <CommentArrow>
-          <img src="/images/icons/return.png" alt="return" />
-        </CommentArrow>
-        <CommentName>{cocomments.name}</CommentName>
-        <CommentMoreButton onClick={morePopHandle}>
-          <img src="/images/icons/more.png" alt="more" />
-        </CommentMoreButton>
-      </CommentNameButtonWrapper>
-      <CommentTime>{cocomments.time}</CommentTime>
-    </CommentMainWrapper>
-    <CommentSubWrapper>
-      <CommentContents>{cocomments.content}</CommentContents>
-    </CommentSubWrapper>
-    <CommentIconWrapper>
-      <CommentLikeButton>
-        {cocomments.goodCount > 0 ? (
-          <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
-        ) : (
-          <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
-        )}
-        {cocomments.goodCount}
-      </CommentLikeButton>
-      <CommentNumber>
-        {cocomments.cocommentsCount > 0 ? (
-          <img src="/images/icons/comment-green.png" alt="comment" />
-        ) : (
-          <img src="/images/icons/comment-grey.png" alt="comment" />
-        )}
-        {cocomments.cocommentsCount}
-      </CommentNumber>
-    </CommentIconWrapper>
-  </CommentWrapper>
-);
+  const isMe = () => userId === cocomment.writerId;
+
+  const onClickCommentLikeBtn = async () => {
+    try {
+      await postCommentsLike(cocomment.id);
+      setCommentLike(!commentLike);
+      onClickLoad();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickCommentEdit = () => {
+    getEditComment(cocomment);
+  };
+
+  return (
+    <>
+      {morePopOff && (
+        <MoreButtonPop
+          boardId={boardId}
+          commentId={cocomment.id}
+          type="comment"
+          isMe={isMe()}
+          onClickLoad={onClickLoad}
+          onClickCommentEdit={onClickCommentEdit}
+          morePopHandle={morePopOn}
+        />
+      )}
+      <>
+        <CommentWrapper>
+          <CommentMainWrapper>
+            <CommentNameButtonWrapper>
+              <CommentArrow>
+                <img src="/images/icons/return.png" alt="return" />
+              </CommentArrow>
+              <CommentName>
+                {cocomment.writerId === userId
+                  ? '익명 (글쓴이)'
+                  : `익명 ${cocomment.anonymousId}`}
+              </CommentName>
+              <CommentMoreButton onClick={morePopOn}>
+                <img src="/images/icons/more.png" alt="more" />
+              </CommentMoreButton>
+            </CommentNameButtonWrapper>
+            <CommentTime>{parseTime(cocomment.createdDate)}</CommentTime>
+          </CommentMainWrapper>
+          <CommentSubWrapper>
+            <CommentContents>{cocomment.content}</CommentContents>
+          </CommentSubWrapper>
+          <CommentIconWrapper>
+            <CommentLikeButton onClick={onClickCommentLikeBtn}>
+              {commentLike ? (
+                <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
+              ) : (
+                <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
+              )}
+              {cocomment.likeCount}
+            </CommentLikeButton>
+          </CommentIconWrapper>
+        </CommentWrapper>
+      </>
+    </>
+  );
+};
 
 Cocomment.propTypes = {
-  cocomments: PropTypes.arrayOf,
-  morePopHandle: PropTypes.func,
+  cocomment: PropTypes.shape({
+    content: PropTypes.string,
+    id: PropTypes.number,
+    likeCount: PropTypes.number,
+    parent: PropTypes.bool,
+    anonymousId: PropTypes.number,
+    writerId: PropTypes.number,
+    createdDate: PropTypes.string,
+    deleted: PropTypes.bool,
+    replyCount: PropTypes.number,
+    userLike: PropTypes.bool,
+  }).isRequired,
+  boardId: PropTypes.number.isRequired,
+  userId: PropTypes.number.isRequired,
+  onClickLoad: PropTypes.func,
+  getEditComment: PropTypes.func,
 };
 
 export default Cocomment;

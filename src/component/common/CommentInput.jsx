@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { postComments } from '../../lib/api/comment';
+import { postComments, putEditComments } from '../../lib/api/comment';
 
 const CommentInputWrapper = styled.form`
   margin-top: 20px;
@@ -43,17 +43,31 @@ const CommentButton = styled.button`
   }
 `;
 
-const CommentInput = ({ boardId, onClickLoad }) => {
+const CommentInput = ({
+  boardId,
+  onClickLoad,
+  editCommentValue,
+  commentParentId,
+}) => {
   const [comment, setComment] = useState('');
+  const [isEditComment, setIsEditComment] = useState(false);
+  const [parentId, setParentId] = useState(null);
 
   const onClickSubmitComments = async event => {
     event.preventDefault();
-    const commentReqDTO = {
+    let dto = {
       content: comment,
     };
+    if (parentId) {
+      dto = { ...dto, parentId };
+    }
     try {
-      await postComments(boardId, commentReqDTO);
+      isEditComment
+        ? await putEditComments(editCommentValue.id, dto)
+        : await postComments(boardId, dto);
       setComment('');
+      setIsEditComment(false);
+      setParentId(null);
       onClickLoad();
     } catch (e) {
       console.log(e);
@@ -64,6 +78,17 @@ const CommentInput = ({ boardId, onClickLoad }) => {
     setComment(e.target.value);
   };
 
+  useEffect(() => {
+    setParentId(commentParentId);
+
+    if (editCommentValue) {
+      setComment(editCommentValue.content);
+      setIsEditComment(true);
+    }
+  }, [commentParentId, editCommentValue]);
+
+  console.log(parentId);
+
   return (
     <CommentInputWrapper>
       <Input
@@ -72,6 +97,7 @@ const CommentInput = ({ boardId, onClickLoad }) => {
         name="comment"
         value={comment}
         onChange={onChangeComment}
+        id="comment-input"
       />
       <CommentButton onClick={onClickSubmitComments}>
         <img src="/images/icons/send_green.png" alt="send" />
@@ -81,8 +107,10 @@ const CommentInput = ({ boardId, onClickLoad }) => {
 };
 
 CommentInput.propTypes = {
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
   onClickLoad: PropTypes.func.isRequired,
+  editCommentValue: PropTypes.objectOf(PropTypes.object),
+  commentParentId: PropTypes.number,
 };
 
 export default CommentInput;

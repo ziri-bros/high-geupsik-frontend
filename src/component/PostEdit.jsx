@@ -332,7 +332,7 @@ const PostEdit = ({ boardId }) => {
 };
 
 PostEdit.propTypes = {
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
 };
 
 export default PostEdit;
