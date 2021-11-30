@@ -32,22 +32,17 @@ const MyInfoBox = styled.div`
 
 const TextWrapper = styled.div`
   display: flex;
-  align-items: center;
-  flex-direction: row;
   margin: 10px 0;
-  span {
-    margin: 0 10px;
-  }
-  .name {
-    font-size: 15px;
-    font-weight: 600;
-  }
+
+  ${props => props.mainInfo && css`
+    flex-direction:column;
+  `}
 `;
 
 const Text = styled.div`
   font-size: 13px;
   color: ${props => (props.blur ? '#626262' : '#4f4f4f')};
-  margin-right: ${props => props.rightMargin && '15px'};
+  margin-right: ${props => props.rightMargin && '12px'};
   margin-right: ${props => props.grade && '5px'};
 `;
 
@@ -134,17 +129,15 @@ const MyInfo = () => {
   return info ? (
     <MyInfoWrapper>
       <MyInfoBox>
-        <TextWrapper>
-          <Text>
-            <span className="name">{info.username}</span>
-            <span>{info.email}</span>
-          </Text>
+        <TextWrapper mainInfo>
+          <Text>{info.username}</Text>
+          <Text>{info.email}</Text>
         </TextWrapper>
         <TextWrapper>
-          <Text area>
-            <span>{info.schoolDTO.region}</span>
-            <span>{info.schoolDTO.name}</span>
-          </Text>
+          <Text rightMargin>{info.schoolDTO.region}</Text>
+          <Text rightMargin>{info.schoolDTO.name}</Text>
+          <Text grade>{info.grade}학년</Text>
+          <Text>{info.classNum}반</Text>
         </TextWrapper>
       </MyInfoBox>
       <Button onClick={onLogout} logoutBtn>
