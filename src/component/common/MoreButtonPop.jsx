@@ -203,9 +203,6 @@ const MoreButtonPop = ({
     }
   };
 
-  console.log(typeof isMe);
-  console.log(typeof boardId);
-
   return (
     <MoreButtonPopBackground>
       <MoreButtonWrapper>
