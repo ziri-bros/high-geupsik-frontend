@@ -173,7 +173,11 @@ const MoreButtonPop = ({
 }) => {
   const history = useHistory();
 
-  const onClickRevise = () => {};
+  const onClickRevise = async () => {
+    if (type === 'post') {
+      history.push(`/boards/edit/${boardId}`);
+    }
+  };
 
   const onClickDelete = async () => {
     if (type === 'post') {
@@ -201,7 +205,9 @@ const MoreButtonPop = ({
         <MoreButtonPopActionWrapper>
           {isMe ? (
             <>
-              <MoreButtonPopReviseButton>수정</MoreButtonPopReviseButton>
+              <MoreButtonPopReviseButton onClick={onClickRevise}>
+                수정
+              </MoreButtonPopReviseButton>
               <MoreButtonPopDeleteButton onClick={onClickDelete}>
                 삭제
               </MoreButtonPopDeleteButton>

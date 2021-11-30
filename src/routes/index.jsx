@@ -15,6 +15,7 @@ import HomePage from '../page/HomePage';
 import SearchPage from '../page/SearchPage';
 import SchoolFoodPage from '../page/SchoolFoodPage';
 import OAuth2RedirectHandler from '../component/OAuth2RedirectHandler';
+import PostEditPage from '../page/PostEditPage';
 
 const RootRoute = () => (
   <>
@@ -46,6 +47,7 @@ const RootRoute = () => (
         exact
       />
       <Route path="/boards/:boardId" component={PostPage} exact />
+      <Route path="/boards/edit/:boardId" component={PostEditPage} exact />
       <Route path="/postCreate" component={PostCreatePage} exact />
       <Route path="/myInfo" component={MyInfoPage} exact />
       <Route path="/schedule" component={SchedulePage} exact />

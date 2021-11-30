@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
 import Modal from './common/Modal';
 import { imageUploader } from '../lib/api/auth';
-import { postNewPost } from '../lib/api/board';
+import { getEditPost, putEditPost } from '../lib/api/board';
 
 const PostCreateMainBox = styled.div`
   overflow-y: auto;
@@ -134,7 +135,7 @@ const PostCreateContentTextarea = styled.textarea`
   }
 `;
 
-const PostCreate = () => {
+const PostEdit = ({ boardId }) => {
   const list = ['자유게시판', '정보게시판', '홍보게시판'];
   const [dropDownSelected, setDropDownSelected] = useState('');
   const [title, setTitle] = useState('');
@@ -142,16 +143,36 @@ const PostCreate = () => {
   const [images, setImages] = useState([]);
   const [resImages, setResImages] = useState([]);
   const [modalOn, setModalOn] = useState(false);
+  const [editCategory, setEditCategory] = useState('');
   const history = useHistory();
 
   const onChangeSelected = selected => {
     if (selected === '자유게시판') {
       setDropDownSelected('FREE');
+      return;
     }
     if (selected === '정보게시판') {
       setDropDownSelected('INFORMATION');
+      return;
     }
     if (selected === '홍보게시판') {
+      setDropDownSelected('PROMOTION');
+    }
+  };
+
+  const loadEditCategory = category => {
+    if (category === 'FREE') {
+      setEditCategory('자유게시판');
+      setDropDownSelected('FREE');
+      return;
+    }
+    if (category === 'INFORMATION') {
+      setEditCategory('정보게시판');
+      setDropDownSelected('INFORMATION');
+      return;
+    }
+    if (category === 'PROMOTION') {
+      setEditCategory('홍보게시판');
       setDropDownSelected('PROMOTION');
     }
   };
@@ -184,7 +205,7 @@ const PostCreate = () => {
         const response = await imageUploader(formData);
         if (response.success) {
           setImages(imgsUrl);
-          setResImages(response.data);
+          setResImages([...resImages, ...response.data]);
         }
       } catch (err) {
         console.log(err);
@@ -207,6 +228,28 @@ const PostCreate = () => {
     setResImages([...filteredResImgs]);
   };
 
+  // 게시글 편집 정보 받아오기
+  useEffect(() => {
+    const loadPost = async () => {
+      try {
+        const response = await getEditPost(boardId);
+        loadEditCategory(response.data.category);
+        setTitle(response.data.title);
+        setContent(response.data.content);
+        setResImages(response.data.uploadFileDTOList);
+
+        const imgArr = [];
+        response.data.uploadFileDTOList.forEach(val => {
+          imgArr.push(val.fileDownloadUri);
+        });
+        setImages([...imgArr]);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    loadPost();
+  }, []);
+
   const onSubmit = async () => {
     const boardReqDTO = {
       category: dropDownSelected,
@@ -215,7 +258,7 @@ const PostCreate = () => {
       uploadFileDTOList: resImages,
     };
     try {
-      const response = await postNewPost(boardReqDTO);
+      const response = await putEditPost(boardId, boardReqDTO);
       response.success && history.push(`/boards/${response.data}`);
     } catch (e) {
       console.log(e);
@@ -240,9 +283,11 @@ const PostCreate = () => {
             name="게시판 선택"
             list={list}
             onChangeSelected={onChangeSelected}
+            categorySelected={editCategory}
           />
           <PostCreateTitleInput
             placeholder="제목을 입력해주세요"
+            value={title}
             onChange={onChangeTitle}
           />
           <PostCreateImgWrapper>
@@ -275,6 +320,7 @@ const PostCreate = () => {
             placeholder="내용을 입력해주세요"
             onChange={onChangeContent}
             isImgs={images.length}
+            value={content}
           />
           <Button footer postBtn onClick={onSubmit}>
             등록
@@ -285,4 +331,8 @@ const PostCreate = () => {
   );
 };
 
-export default PostCreate;
+PostEdit.propTypes = {
+  boardId: PropTypes.number.isRequired,
+};
+
+export default PostEdit;

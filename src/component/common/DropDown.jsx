@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
@@ -88,15 +88,27 @@ const DropDownContents = styled.div`
     `}
 `;
 
-const DropDown = ({ name, list, onChangeSelected, narrow, school }) => {
+const DropDown = ({
+  name,
+  list,
+  onChangeSelected,
+  narrow,
+  school,
+  categorySelected,
+}) => {
   const [dropDownOn, setDropDownOn] = useState(false);
-  const [selected, setSelected] = useState();
+  const [selected, setSelected] = useState(null);
 
   const onClickDropDownOn = () => setDropDownOn(!dropDownOn);
   const onClickSelected = e => {
     setSelected(e.target.innerHTML);
     onChangeSelected(e.target.innerHTML);
   };
+
+  // 게시글 편집 할 때 categorySelected를 넣어놔준다.
+  useEffect(() => {
+    categorySelected && setSelected(categorySelected);
+  }, [categorySelected]);
 
   return (
     <DropDownCategory
@@ -125,6 +137,7 @@ DropDown.propTypes = {
   school: PropTypes.string,
   list: PropTypes.arrayOf(PropTypes.string).isRequired,
   onChangeSelected: PropTypes.func.isRequired,
+  categorySelected: PropTypes.string,
 };
 
 export default DropDown;
