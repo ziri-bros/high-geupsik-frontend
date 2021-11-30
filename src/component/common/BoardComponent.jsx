@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { css } from '@emotion/react';
 import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
-import { getBoardList } from '../../lib/api/board';
+import { getBoardList, getMyPostList } from '../../lib/api/board';
 import { parseTime } from '../../utils/parseTime';
 
 const BoardWrapper = styled.div`
@@ -107,57 +107,100 @@ const ContentsInformationSet = styled.span`
   }
 `;
 
-const BoardComponent = ({ noticeExistence, type }) => {
-  const [data, setData] = useState(null);
+const BoardComponent = ({ noticeExistence, myPost, type }) => {
+  const [normalPost, setNormalPost] = useState(null);
+  const [myWritePost, setMyWritePost] = useState(null);
 
   useEffect(() => {
     const loadBoard = async () => {
-      const response = await getBoardList(type, 1);
-
-      if (response.success) {
-        setData(response.data.content);
+      const responseToNormalPost = await getBoardList(type, 1);
+      if (responseToNormalPost.success) {
+        setNormalPost(responseToNormalPost.data.content);
       }
     };
-
     loadBoard();
+  }, []);
+
+  useEffect(() => {
+    const loadBoard2 = async () => {
+      const responseMyWritePost = await getMyPostList(type, 1);
+      if (responseMyWritePost.success) {
+        setMyWritePost(responseMyWritePost.data);
+      }
+    };
+    loadBoard2();
   }, []);
 
   return (
     <>
       <BoardWrapper>
         {noticeExistence === 'true' && <BoardNotice />}
-        {data ? (
-          data.map(elem => (
-            <BoardContents
-              to={`/boards/${elem.id}`}
-              noticeExistence={noticeExistence}
-            >
-              <BoardInnerWrapper>
-                <ContentsTitle>{elem.title}</ContentsTitle>
-                <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
-              </BoardInnerWrapper>
-              <BoardInnerWrapper>
-                <ContentsContent>{elem.content}</ContentsContent>
-                {elem.thumbnail && (
-                  <img className="content-img" src={elem.thumbnail} alt="" />
-                )}
-              </BoardInnerWrapper>
-              <BoardInnerWrapper>
-                <ContentsType>{`${elem.category} 게시판`}</ContentsType>
-                <ContentsInformationSet>
-                  <img src="/images/icons/view.png" alt="view" />
-                  <span>999</span>
-                  <img src="/images/icons/heart.png" alt="heart" />
-                  <span>{elem.likeCount}</span>
-                  <img src="/images/icons/chat.png" alt="chat" />
-                  <span>{elem.commentCount}</span>
-                </ContentsInformationSet>
-              </BoardInnerWrapper>
-            </BoardContents>
-          ))
-        ) : (
-          <></>
-        )}
+        {myPost !== true &&
+          (normalPost ? (
+            normalPost.map(elem => (
+              <BoardContents
+                to={`/boards/${elem.id}`}
+                noticeExistence={noticeExistence}
+              >
+                <BoardInnerWrapper>
+                  <ContentsTitle>{elem.title}</ContentsTitle>
+                  <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
+                </BoardInnerWrapper>
+                <BoardInnerWrapper>
+                  <ContentsContent>{elem.content}</ContentsContent>
+                  {elem.thumbnail && (
+                    <img className="content-img" src={elem.thumbnail} alt="" />
+                  )}
+                </BoardInnerWrapper>
+                <BoardInnerWrapper>
+                  <ContentsType>{`${elem.category} 게시판`}</ContentsType>
+                  <ContentsInformationSet>
+                    <img src="/images/icons/view.png" alt="view" />
+                    <span>999</span>
+                    <img src="/images/icons/heart.png" alt="heart" />
+                    <span>{elem.likeCount}</span>
+                    <img src="/images/icons/chat.png" alt="chat" />
+                    <span>{elem.commentCount}</span>
+                  </ContentsInformationSet>
+                </BoardInnerWrapper>
+              </BoardContents>
+            ))
+          ) : (
+            <></>
+          ))}
+        {myPost === true &&
+          (myWritePost ? (
+            myWritePost.map(elem => (
+              <BoardContents
+                to={`/boards/${elem.id}`}
+                noticeExistence={noticeExistence}
+              >
+                <BoardInnerWrapper>
+                  <ContentsTitle>{elem.title}</ContentsTitle>
+                  <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
+                </BoardInnerWrapper>
+                <BoardInnerWrapper>
+                  <ContentsContent>{elem.content}</ContentsContent>
+                  {elem.thumbnail && (
+                    <img className="content-img" src={elem.thumbnail} alt="" />
+                  )}
+                </BoardInnerWrapper>
+                <BoardInnerWrapper>
+                  <ContentsType>{`${elem.category} 게시판`}</ContentsType>
+                  <ContentsInformationSet>
+                    <img src="/images/icons/view.png" alt="view" />
+                    <span>999</span>
+                    <img src="/images/icons/heart.png" alt="heart" />
+                    <span>{elem.likeCount}</span>
+                    <img src="/images/icons/chat.png" alt="chat" />
+                    <span>{elem.commentCount}</span>
+                  </ContentsInformationSet>
+                </BoardInnerWrapper>
+              </BoardContents>
+            ))
+          ) : (
+            <></>
+          ))}
       </BoardWrapper>
     </>
   );
@@ -165,6 +208,7 @@ const BoardComponent = ({ noticeExistence, type }) => {
 
 BoardComponent.propTypes = {
   noticeExistence: PropTypes.string,
+  myPost: PropTypes.bool,
   type: PropTypes.string,
 };
 

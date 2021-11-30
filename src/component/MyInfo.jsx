@@ -6,7 +6,7 @@ import { Link, useHistory } from 'react-router-dom';
 import BoardComponent from './common/BoardComponent';
 import Button from './common/Button';
 import PostNotFound from './common/PostNotFound';
-import { getBoardList } from '../lib/api/board';
+import { getMyPostList } from '../lib/api/board';
 
 const MyInfoWrapper = styled.div`
   display: flex;
@@ -120,10 +120,10 @@ const MyInfo = () => {
 
   useEffect(() => {
     const loadBoard = async () => {
-      const response = await getBoardList();
+      const response = await getMyPostList();
 
       if (response.success) {
-        setData(response.data.content);
+        setData(response.data);
       }
     };
 
@@ -169,7 +169,7 @@ const MyInfo = () => {
       {/* 게시글 없을 때 */}
       <MyPostWrapper>
         {data ? (
-          <BoardComponent myPost="true" />
+          <BoardComponent myPost />
         ) : (
           <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
         )}
