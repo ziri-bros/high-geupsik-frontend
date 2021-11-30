@@ -80,14 +80,14 @@ const CommentInput = ({
 
   useEffect(() => {
     setParentId(commentParentId);
+  }, [commentParentId]);
 
+  useEffect(() => {
     if (editCommentValue) {
       setComment(editCommentValue.content);
       setIsEditComment(true);
     }
-  }, [commentParentId, editCommentValue]);
-
-  console.log(parentId);
+  }, [editCommentValue]);
 
   return (
     <CommentInputWrapper>
