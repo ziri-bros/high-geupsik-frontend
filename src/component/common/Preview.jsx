@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import { Link } from 'react-router-dom';
 import BoardComponent from './BoardComponent';
 import { getBoardList } from '../../lib/api/board';
@@ -162,15 +162,45 @@ const RecentPostWrapper = styled.div`
 
 const Preview = ({ type }) => {
   const [firstContentObject, setFirstContentObject] = useState({
-    free: null,
-    free_id: null,
-    information: null,
-    information_id: null,
-    hot: null,
-    hot_id: null,
-    promotion: null,
-    promotion_id: null,
+    free: '',
+    free_id: '',
+    information: '',
+    information_id: '',
+    hot: '',
+    hot_id: '',
+    promotion: '',
+    promotion_id: '',
   });
+
+  function checkLength(string) {
+    let returnString = '';
+    const sizeSingle = /[a-z|~!^*()_+|<>?:{}]/;
+    const sizeDouble = /[0-9]/;
+    const sizeTriple = /[A-Z|@&#$%|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+
+    let tmp = 0;
+    let moreText = false;
+
+    for (let n = 0; n < string.length; n += 1) {
+      sizeSingle.test(string[n]) === true ? (tmp += 1) : <></>;
+      sizeDouble.test(string[n]) === true ? (tmp += 2.2) : <></>;
+      sizeTriple.test(string[n]) === true ? (tmp += 3) : <></>;
+      returnString += string[n];
+
+      if (string[n + 1] === undefined) {
+        break;
+      }
+      if (tmp > 90) {
+        moreText = true;
+        break;
+      }
+    }
+
+    if (moreText) {
+      return `${returnString}...`;
+    }
+    return returnString;
+  }
 
   if (type === 'board') {
     useEffect(() => {
@@ -181,32 +211,35 @@ const Preview = ({ type }) => {
         const PROMOTION = await getBoardList('PROMOTION', 1);
 
         setFirstContentObject({
-          free:
-            FREE.data.totalElements !== 0 ? FREE.data.content[0].content : null,
-          free_id:
-            FREE.data.totalElements !== 0 ? FREE.data.content[0].id : null,
+          free_title:
+            FREE.data.totalElements !== 0
+              ? checkLength(FREE.data.content[0].title)
+              : '',
+          free_id: FREE.data.totalElements !== 0 ? FREE.data.content[0].id : '',
 
-          information:
+          information_title:
             INFORMATION.data.totalElements !== 0
-              ? INFORMATION.data.content[0].content
-              : null,
+              ? checkLength(INFORMATION.data.content[0].title)
+              : '',
           information_id:
             INFORMATION.data.totalElements !== 0
               ? INFORMATION.data.content[0].id
-              : null,
+              : '',
 
-          hot:
-            HOT.data.totalElements !== 0 ? HOT.data.content[0].content : null,
-          hot_id: HOT.data.totalElements !== 0 ? HOT.data.content[0].id : null,
+          hot_title:
+            HOT.data.totalElements !== 0
+              ? checkLength(HOT.data.content[0].title)
+              : '',
+          hot_id: HOT.data.totalElements !== 0 ? HOT.data.content[0].id : '',
 
-          promotion:
+          promotion_title:
             PROMOTION.data.totalElements !== 0
-              ? PROMOTION.data.content[0].content
-              : null,
+              ? checkLength(PROMOTION.data.content[0].title)
+              : '',
           promotion_id:
             PROMOTION.data.totalElements !== 0
               ? PROMOTION.data.content[0].id
-              : null,
+              : '',
         });
       };
 
@@ -286,7 +319,7 @@ const Preview = ({ type }) => {
                 <span>자유 게시판</span>
               </Link>
               <Link to={`/boards/${firstContentObject.free_id}`}>
-                <span>{firstContentObject.free}</span>
+                <span>{firstContentObject.free_title}</span>
               </Link>
             </BoardItem>
             <BoardItem>
@@ -294,7 +327,7 @@ const Preview = ({ type }) => {
                 <span>정보 게시판</span>
               </Link>
               <Link to={`/boards/${firstContentObject.information_id}`}>
-                <span>{firstContentObject.information}</span>
+                <span>{firstContentObject.information_title}</span>
               </Link>
             </BoardItem>
             <BoardItem>
@@ -302,7 +335,7 @@ const Preview = ({ type }) => {
                 <span>인기 게시판</span>
               </Link>
               <Link to={`/boards/${firstContentObject.hot_id}`}>
-                <span>{firstContentObject.hot}</span>
+                <span>{firstContentObject.hot_title}</span>
               </Link>
             </BoardItem>
             <BoardItem>
@@ -310,7 +343,7 @@ const Preview = ({ type }) => {
                 <span>홍보 게시판</span>
               </Link>
               <Link to={`/boards/${firstContentObject.promotion_id}`}>
-                <span>{firstContentObject.promotion}</span>
+                <span>{firstContentObject.promotion_title}</span>
               </Link>
             </BoardItem>
           </BoardWrapper>
