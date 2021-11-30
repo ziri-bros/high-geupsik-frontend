@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
-import Cocomment from './Cocomment';
 import MoreButtonPop from './common/MoreButtonPop';
 import { parseTime } from '../utils/parseTime';
 import { postCommentsLike } from '../lib/api/comment';

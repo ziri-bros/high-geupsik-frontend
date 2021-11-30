@@ -53,10 +53,6 @@ const CommentInput = ({
   const [isEditComment, setIsEditComment] = useState(false);
   const [parentId, setParentId] = useState(null);
 
-  useEffect(() => {
-    setParentId(commentParentId);
-  }, [commentParentId]);
-
   const onClickSubmitComments = async event => {
     event.preventDefault();
     let dto = {
@@ -83,11 +79,15 @@ const CommentInput = ({
   };
 
   useEffect(() => {
+    setParentId(commentParentId);
+
     if (editCommentValue) {
       setComment(editCommentValue.content);
       setIsEditComment(true);
     }
-  }, [editCommentValue]);
+  }, [commentParentId, editCommentValue]);
+
+  console.log(parentId);
 
   return (
     <CommentInputWrapper>

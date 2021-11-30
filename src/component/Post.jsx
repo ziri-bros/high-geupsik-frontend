@@ -216,7 +216,7 @@ const Post = ({ boardId }) => {
       setComments(commentsData.data.content);
 
       const likeData = await getLike(boardId);
-      setLike(likeData.data);
+      setLike(likeData.data.likeFlag);
     } catch (e) {
       console.log(e);
     }
