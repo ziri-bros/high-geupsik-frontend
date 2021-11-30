@@ -10,7 +10,16 @@ import Modal from './common/Modal';
 import { getUserInfo } from '../store/userInfo';
 
 const RegisterUserInfoBox = styled.div`
-  margin: 15px 0 0 22px;
+  margin: 22px 0 0 22px;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width:100%;
+  overflow-y: auto; 
+
+  position:relative;
+
 `;
 
 const Menu = styled.div`
@@ -51,7 +60,7 @@ const InputText = styled.div`
 
 const ImageWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   font-size: 14px;
 `;
 
