@@ -149,9 +149,11 @@ const PostEdit = ({ boardId }) => {
   const onChangeSelected = selected => {
     if (selected === '자유게시판') {
       setDropDownSelected('FREE');
+      return;
     }
     if (selected === '정보게시판') {
       setDropDownSelected('INFORMATION');
+      return;
     }
     if (selected === '홍보게시판') {
       setDropDownSelected('PROMOTION');
@@ -162,10 +164,12 @@ const PostEdit = ({ boardId }) => {
     if (category === 'FREE') {
       setEditCategory('자유게시판');
       setDropDownSelected('FREE');
+      return;
     }
     if (category === 'INFORMATION') {
       setEditCategory('정보게시판');
       setDropDownSelected('INFORMATION');
+      return;
     }
     if (category === 'PROMOTION') {
       setEditCategory('홍보게시판');

@@ -161,8 +161,8 @@ const PostLikedButton = styled.div`
   font-weight: 500;
   font-size: 14px;
 
-  border: ${props =>
-    props.isLiked ? '1px solid #e27070' : '1px solid #adadad'};
+  border: 1px solid ${props => (props.isLiked ? '#e27070' : '#adadad')};
+
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
 
@@ -209,7 +209,7 @@ const Post = ({ boardId }) => {
 
   const onClickLoad = () => load();
 
-  const onClickLike = async () => {
+  const onClickLikeBtn = async () => {
     try {
       await postLike(boardId);
       setLike(!like);
@@ -280,7 +280,7 @@ const Post = ({ boardId }) => {
                       {data.commentCount}
                     </PostCommentsNumber>
                   </PostCommentsIconWrapper>
-                  <PostLikedButton isLiked={like} onClick={onClickLike}>
+                  <PostLikedButton isLiked={like} onClick={onClickLikeBtn}>
                     {like ? (
                       <img src="/images/icons/filledHeart.png" alt="liked" />
                     ) : (
