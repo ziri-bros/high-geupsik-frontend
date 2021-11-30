@@ -85,7 +85,7 @@ const SchoolFoodTitleWrapper = styled.div`
   margin: 5px 0;
   span {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 10px;
     color: #4f4f4f;
   }
 `;
@@ -214,13 +214,31 @@ const Preview = ({ type }) => {
     }, []);
   }
 
+  const [month, setMonth] = useState(null);
+  const [date, setDate] = useState(null);
+  const [day, setDay] = useState(null);
+  const dateItem = new Date();
+
+  // 초기 단 한번
+  useEffect(() => {
+    setMonth(dateItem.getMonth());
+    setDate(dateItem.getDate());
+    dateItem.getDay() === 0 && setDay('일');
+    dateItem.getDay() === 1 && setDay('월');
+    dateItem.getDay() === 2 && setDay('화');
+    dateItem.getDay() === 3 && setDay('수');
+    dateItem.getDay() === 4 && setDay('목');
+    dateItem.getDay() === 5 && setDay('금');
+    dateItem.getDay() === 6 && setDay('토');
+  }, []);
+
   return (
     <>
       {type === 'schoolfood' && (
         <PreviewItem>
           <TitleWrapper>
             <span>오늘의 급식</span>
-            <span>7월 22일</span>
+            <span>{`${month + 1}월 ${date}일 (${day})`}</span>
             <IconItem>
               <Link to="/schoolfood">
                 <img src="/images/icons/right_arrow.png" alt="right_arrow" />
@@ -231,21 +249,21 @@ const Preview = ({ type }) => {
             <SchoolFoodItem>
               <SchoolFoodTitleWrapper>
                 <DaytimeItem>아침</DaytimeItem>
-                <span>11월17일</span>
+                <span> {`${month + 1}.${date} (${day})`}</span>
               </SchoolFoodTitleWrapper>
               <SchoolFoodMenu>쇠고기 무국</SchoolFoodMenu>
             </SchoolFoodItem>
             <SchoolFoodItem>
               <SchoolFoodTitleWrapper>
                 <DaytimeItem>점심</DaytimeItem>
-                <span>12월15일</span>
+                <span> {`${month + 1}.${date} (${day})`}</span>
               </SchoolFoodTitleWrapper>
               <SchoolFoodMenu>파전</SchoolFoodMenu>
             </SchoolFoodItem>
             <SchoolFoodItem>
               <SchoolFoodTitleWrapper>
                 <DaytimeItem>저녁</DaytimeItem>
-                <span>12월27일</span>
+                <span> {`${month + 1}.${date} (${day})`}</span>
               </SchoolFoodTitleWrapper>
               <SchoolFoodMenu>박성호</SchoolFoodMenu>
             </SchoolFoodItem>
