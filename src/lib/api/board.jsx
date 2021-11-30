@@ -1,9 +1,13 @@
 import axios from 'axios';
 import { API_BASE_URL } from '../../constants';
 
-export const getBoardList = async (category, pageNumber = 1, region) => {
+export const getBoardList = async (category, pageNumber = 1) => {
+  let urls = '';
+  category != null
+    ? (urls = `${API_BASE_URL}/boards?category=${category}&page=${pageNumber}`)
+    : (urls = `${API_BASE_URL}/boards?&page=${pageNumber}`);
   const response = await axios({
-    url: `${API_BASE_URL}/boards?category=${category}&page=${pageNumber}&region=${region}`,
+    url: urls,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,

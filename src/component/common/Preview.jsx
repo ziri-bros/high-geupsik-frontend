@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import { Link } from 'react-router-dom';
 import BoardComponent from './BoardComponent';
+import { getBoardList } from '../../lib/api/board';
 
 const PreviewItem = styled.div`
   display: flex;
@@ -84,7 +85,7 @@ const SchoolFoodTitleWrapper = styled.div`
   margin: 5px 0;
   span {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 10px;
     color: #4f4f4f;
   }
 `;
@@ -138,11 +139,13 @@ const BoardItem = styled.div`
     font-weight: 500;
     font-size: 12px;
     margin: 0 0 0 15px;
+    color: black;
   }
   span:nth-of-type(2) {
     font-weight: 400;
     font-size: 11px;
     margin: 0 0 0 15px;
+    color: black;
   }
 `;
 
@@ -157,135 +160,179 @@ const RecentPostWrapper = styled.div`
   margin: 0 0 10px;
 `;
 
-// 예시 DB
-const examplePost = {
-  title: '제목입니다',
-  time: '21/7/23 11:34',
-  view: '100',
-  content: '점심메뉴 추천 좀',
-  images: ['/images/icons/square.png', '/images/icons/square.png'],
-  like: 5,
-  liked: true,
-  totalCommentCount: 4,
-  isMe: true,
-  comments: [
-    {
-      name: '익명1',
-      time: '21/7/23 11:50',
-      content: '냉모밀 먹어라',
-      goodCount: 0,
-      cocomments: [],
-    },
-    {
-      name: '익명2',
-      time: '21/7/23 11:50',
-      content: '치킨 먹어라',
-      goodCount: 2,
-      cocomments: [
-        {
-          name: '익명(글쓴이)',
-          time: '21/7/23 11:50',
-          content: '추천 고마워',
-          goodCount: 0,
-          cocommentsCount: 1,
-        },
-        {
-          name: '익명2',
-          time: '21/7/23 11:50',
-          content: '맛있게 먹어',
-          goodCount: 1,
-          cocommentsCount: 0,
-        },
-      ],
-    },
-  ],
-};
+const Preview = ({ type }) => {
+  const [firstContentObject, setFirstContentObject] = useState({
+    free: '',
+    free_id: '',
+    information: '',
+    information_id: '',
+    hot: '',
+    hot_id: '',
+    promotion: '',
+    promotion_id: '',
+  });
 
-const Preview = ({ type }) => (
-  <>
-    {type === 'schoolfood' && (
-      <PreviewItem>
-        <TitleWrapper>
-          <span>오늘의 급식</span>
-          <span>7월 22일</span>
-          <IconItem>
-            <Link to="/schoolfood">
-              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-            </Link>
-          </IconItem>
-        </TitleWrapper>
-        <SchoolFoodWrapper>
-          <SchoolFoodItem>
-            <SchoolFoodTitleWrapper>
-              <DaytimeItem>아침</DaytimeItem>
-              <span>11월17일</span>
-            </SchoolFoodTitleWrapper>
-            <SchoolFoodMenu>쇠고기 무국</SchoolFoodMenu>
-          </SchoolFoodItem>
-          <SchoolFoodItem>
-            <SchoolFoodTitleWrapper>
-              <DaytimeItem>점심</DaytimeItem>
-              <span>12월15일</span>
-            </SchoolFoodTitleWrapper>
-            <SchoolFoodMenu>파전</SchoolFoodMenu>
-          </SchoolFoodItem>
-          <SchoolFoodItem>
-            <SchoolFoodTitleWrapper>
-              <DaytimeItem>저녁</DaytimeItem>
-              <span>12월27일</span>
-            </SchoolFoodTitleWrapper>
-            <SchoolFoodMenu>박성호</SchoolFoodMenu>
-          </SchoolFoodItem>
-        </SchoolFoodWrapper>
-      </PreviewItem>
-    )}
-    {type === 'board' && (
-      <PreviewItem>
-        <TitleWrapper>
-          <span>게시판 모아보기</span>
-          <IconItem>
-            <Link to="/board">
-              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-            </Link>
-          </IconItem>
-        </TitleWrapper>
-        <BoardWrapper>
-          <BoardItem>
-            <span>자유 게시판</span>
-            <span>내용1</span>
-          </BoardItem>
-          <BoardItem>
-            <span>정보 게시판</span>
-            <span>내용2</span>
-          </BoardItem>
-          <BoardItem>
-            <span>인기 게시판</span>
-            <span>내용3</span>
-          </BoardItem>
-          <BoardItem>
-            <span>홍보 게시판</span>
-            <span>내용4</span>
-          </BoardItem>
-        </BoardWrapper>
-      </PreviewItem>
-    )}
-    {type === 'post' && (
-      <PreviewItem>
-        <TitleWrapper>
-          <span>최근 게시글</span>
-          <IconItem>
-            <Link to="/board">
-              <img src="/images/icons/right_arrow.png" alt="right_arrow" />
-            </Link>
-          </IconItem>
-        </TitleWrapper>
-        <RecentPostWrapper>
-          <BoardComponent objects={examplePost} />
-        </RecentPostWrapper>
-      </PreviewItem>
-    )}
-  </>
-);
+  if (type === 'board') {
+    useEffect(() => {
+      const loadBoard = async () => {
+        const FREE = await getBoardList('FREE', 1);
+        const INFORMATION = await getBoardList('INFORMATION', 1);
+        const HOT = await getBoardList('HOT', 1);
+        const PROMOTION = await getBoardList('PROMOTION', 1);
+
+        setFirstContentObject({
+          free_title:
+            FREE.data.totalElements !== 0 ? FREE.data.content[0].title : '',
+          free_id: FREE.data.totalElements !== 0 ? FREE.data.content[0].id : '',
+
+          information_title:
+            INFORMATION.data.totalElements !== 0
+              ? INFORMATION.data.content[0].title
+              : '',
+          information_id:
+            INFORMATION.data.totalElements !== 0
+              ? INFORMATION.data.content[0].id
+              : '',
+
+          hot_title:
+            HOT.data.totalElements !== 0 ? HOT.data.content[0].title : '',
+          hot_id: HOT.data.totalElements !== 0 ? HOT.data.content[0].id : '',
+
+          promotion_title:
+            PROMOTION.data.totalElements !== 0
+              ? PROMOTION.data.content[0].title
+              : '',
+          promotion_id:
+            PROMOTION.data.totalElements !== 0
+              ? PROMOTION.data.content[0].id
+              : '',
+        });
+      };
+
+      loadBoard();
+    }, []);
+  }
+
+  const [month, setMonth] = useState(null);
+  const [date, setDate] = useState(null);
+  const [day, setDay] = useState(null);
+  const dateItem = new Date();
+
+  // 초기 단 한번
+  useEffect(() => {
+    setMonth(dateItem.getMonth());
+    setDate(dateItem.getDate());
+    dateItem.getDay() === 0 && setDay('일');
+    dateItem.getDay() === 1 && setDay('월');
+    dateItem.getDay() === 2 && setDay('화');
+    dateItem.getDay() === 3 && setDay('수');
+    dateItem.getDay() === 4 && setDay('목');
+    dateItem.getDay() === 5 && setDay('금');
+    dateItem.getDay() === 6 && setDay('토');
+  }, []);
+
+  return (
+    <>
+      {type === 'schoolfood' && (
+        <PreviewItem>
+          <TitleWrapper>
+            <span>오늘의 급식</span>
+            <span>{`${month + 1}월 ${date}일 (${day})`}</span>
+            <IconItem>
+              <Link to="/schoolfood">
+                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+              </Link>
+            </IconItem>
+          </TitleWrapper>
+          <SchoolFoodWrapper>
+            <SchoolFoodItem>
+              <SchoolFoodTitleWrapper>
+                <DaytimeItem>아침</DaytimeItem>
+                <span> {`${month + 1}.${date} (${day})`}</span>
+              </SchoolFoodTitleWrapper>
+              <SchoolFoodMenu>쇠고기 무국</SchoolFoodMenu>
+            </SchoolFoodItem>
+            <SchoolFoodItem>
+              <SchoolFoodTitleWrapper>
+                <DaytimeItem>점심</DaytimeItem>
+                <span> {`${month + 1}.${date} (${day})`}</span>
+              </SchoolFoodTitleWrapper>
+              <SchoolFoodMenu>파전</SchoolFoodMenu>
+            </SchoolFoodItem>
+            <SchoolFoodItem>
+              <SchoolFoodTitleWrapper>
+                <DaytimeItem>저녁</DaytimeItem>
+                <span> {`${month + 1}.${date} (${day})`}</span>
+              </SchoolFoodTitleWrapper>
+              <SchoolFoodMenu>박성호</SchoolFoodMenu>
+            </SchoolFoodItem>
+          </SchoolFoodWrapper>
+        </PreviewItem>
+      )}
+      {type === 'board' && (
+        <PreviewItem>
+          <TitleWrapper>
+            <span>게시판 모아보기</span>
+            <IconItem>
+              <Link to="/board">
+                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+              </Link>
+            </IconItem>
+          </TitleWrapper>
+          <BoardWrapper>
+            <BoardItem>
+              <Link to="/board/free">
+                <span>자유 게시판</span>
+              </Link>
+              <Link to={`/boards/${firstContentObject.free_id}`}>
+                <span>{firstContentObject.free_title}</span>
+              </Link>
+            </BoardItem>
+            <BoardItem>
+              <Link to="/board/information">
+                <span>정보 게시판</span>
+              </Link>
+              <Link to={`/boards/${firstContentObject.information_id}`}>
+                <span>{firstContentObject.information_title}</span>
+              </Link>
+            </BoardItem>
+            <BoardItem>
+              <Link to="/board/hot">
+                <span>인기 게시판</span>
+              </Link>
+              <Link to={`/boards/${firstContentObject.hot_id}`}>
+                <span>{firstContentObject.hot_title}</span>
+              </Link>
+            </BoardItem>
+            <BoardItem>
+              <Link to="/board/promotion">
+                <span>홍보 게시판</span>
+              </Link>
+              <Link to={`/boards/${firstContentObject.promotion_id}`}>
+                <span>{firstContentObject.promotion_title}</span>
+              </Link>
+            </BoardItem>
+          </BoardWrapper>
+        </PreviewItem>
+      )}
+      {type === 'post' && (
+        <PreviewItem>
+          <TitleWrapper>
+            <span>최근 게시글</span>
+            <IconItem>
+              <Link to="/board">
+                <img src="/images/icons/right_arrow.png" alt="right_arrow" />
+              </Link>
+            </IconItem>
+          </TitleWrapper>
+          <RecentPostWrapper>
+            <BoardComponent />
+          </RecentPostWrapper>
+        </PreviewItem>
+      )}
+    </>
+  );
+};
 
 Preview.propTypes = {
   type: PropTypes.string,

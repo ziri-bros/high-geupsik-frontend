@@ -80,51 +80,10 @@ const SchoolFoodList = styled.div`
   color: #626262;
 `;
 
-// 예시 DB
-const exampleSchoolFood = {
-  success: true,
-  menu: [
-    {
-      year: '2021',
-      month: '11',
-      date: '21',
-      meal1: '식단1입니다',
-      meal2: '식단2입니다',
-      meal3: '식단3입니다',
-      kcal: '1000kcal',
-      menu: [
-        {
-          year: '2021',
-          month: '11',
-          date: '22',
-          meal1: '식단4입니다',
-          meal2: '식단5입니다',
-          meal3: '식단6입니다',
-          kcal: '2000kcal',
-          menu: [
-            {
-              year: '2021',
-              month: '11',
-              date: '23',
-              meal1: '식단7입니다',
-              meal2: '식단8입니다',
-              meal3: '식단9입니다',
-              kcal: '3000kcal',
-              menu: [],
-            },
-          ],
-        },
-      ],
-    },
-  ],
-};
-
 const SchoolFood = () => {
   const [year, setYear] = useState(null);
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
-
-  console.log(exampleSchoolFood);
 
   const dateItem = new Date();
   // 초기 단 한번
