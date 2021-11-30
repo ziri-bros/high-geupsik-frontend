@@ -180,6 +180,7 @@ const Post = ({ boardId }) => {
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
   const [like, setLike] = useState(null);
+  const [editCommentValue, setEditCommentValue] = useState(null);
 
   const history = useHistory();
 
@@ -191,6 +192,10 @@ const Post = ({ boardId }) => {
 
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
   const isMe = () => info.id === data.writerId;
+
+  const getEditComment = editComment => {
+    setEditCommentValue(editComment);
+  };
 
   const load = async () => {
     try {
@@ -296,11 +301,16 @@ const Post = ({ boardId }) => {
                       boardId={boardId}
                       userId={info.id}
                       onClickLoad={onClickLoad}
+                      getEditComment={getEditComment}
                     />
                   ))}
               </PostCommentsWrapper>
             </PostWrapper>
-            <CommentInput boardId={boardId} onClickLoad={onClickLoad} />
+            <CommentInput
+              boardId={boardId}
+              onClickLoad={onClickLoad}
+              editCommentValue={editCommentValue}
+            />
           </PostMainBox>
         </>
       )}
@@ -309,7 +319,7 @@ const Post = ({ boardId }) => {
 };
 
 Post.propTypes = {
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
 };
 
 export default Post;

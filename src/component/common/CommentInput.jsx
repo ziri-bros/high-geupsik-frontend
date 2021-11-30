@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from '@emotion/styled';
-import { postComments } from '../../lib/api/comment';
+import { postComments, putEditComments } from '../../lib/api/comment';
 
 const CommentInputWrapper = styled.form`
   margin-top: 20px;
@@ -43,7 +43,7 @@ const CommentButton = styled.button`
   }
 `;
 
-const CommentInput = ({ boardId, onClickLoad }) => {
+const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
   const [comment, setComment] = useState('');
 
   const onClickSubmitComments = async event => {
@@ -52,7 +52,9 @@ const CommentInput = ({ boardId, onClickLoad }) => {
       content: comment,
     };
     try {
-      await postComments(boardId, commentReqDTO);
+      editCommentValue
+        ? await putEditComments(editCommentValue.id, commentReqDTO)
+        : await postComments(boardId, commentReqDTO);
       setComment('');
       onClickLoad();
     } catch (e) {
@@ -63,6 +65,10 @@ const CommentInput = ({ boardId, onClickLoad }) => {
   const onChangeComment = e => {
     setComment(e.target.value);
   };
+
+  useEffect(() => {
+    editCommentValue && setComment(editCommentValue.content);
+  }, [editCommentValue]);
 
   return (
     <CommentInputWrapper>
@@ -81,8 +87,9 @@ const CommentInput = ({ boardId, onClickLoad }) => {
 };
 
 CommentInput.propTypes = {
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
   onClickLoad: PropTypes.func.isRequired,
+  editCommentValue: PropTypes.objectOf(PropTypes.object),
 };
 
 export default CommentInput;

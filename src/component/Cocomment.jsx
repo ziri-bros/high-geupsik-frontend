@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import MoreButtonPop from './common/MoreButtonPop';
+import { parseTime } from '../utils/parseTime';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -92,62 +94,75 @@ const CommentLikeButton = styled.div`
   }
 `;
 
-const CommentNumber = styled.div`
-  display: flex;
-  align-items: center;
-  font-weight: bold;
-  font-size: 14px;
-  color: #626262;
-  cursor: pointer;
+const Cocomment = ({ cocomment, boardId, userId, onClickLoad }) => {
+  const [morePopOff, setMorePopOff] = useState(false);
+  const morePopOn = () => {
+    setMorePopOff(!morePopOff);
+  };
 
-  img {
-    width: 24px;
-    height: 24px;
-    margin-right: 3px;
-  }
-`;
+  const isMe = () => userId === cocomment.writerId;
 
-const Cocomment = ({ cocomments, morePopHandle }) => (
-  <CommentWrapper>
-    <CommentMainWrapper>
-      <CommentNameButtonWrapper>
-        <CommentArrow>
-          <img src="/images/icons/return.png" alt="return" />
-        </CommentArrow>
-        <CommentName>{cocomments.name}</CommentName>
-        <CommentMoreButton onClick={morePopHandle}>
-          <img src="/images/icons/more.png" alt="more" />
-        </CommentMoreButton>
-      </CommentNameButtonWrapper>
-      <CommentTime>{cocomments.time}</CommentTime>
-    </CommentMainWrapper>
-    <CommentSubWrapper>
-      <CommentContents>{cocomments.content}</CommentContents>
-    </CommentSubWrapper>
-    <CommentIconWrapper>
-      <CommentLikeButton>
-        {cocomments.goodCount > 0 ? (
-          <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
-        ) : (
-          <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
-        )}
-        {cocomments.goodCount}
-      </CommentLikeButton>
-      <CommentNumber>
-        {cocomments.cocommentsCount > 0 ? (
-          <img src="/images/icons/comment-green.png" alt="comment" />
-        ) : (
-          <img src="/images/icons/comment-grey.png" alt="comment" />
-        )}
-        {cocomments.cocommentsCount}
-      </CommentNumber>
-    </CommentIconWrapper>
-  </CommentWrapper>
-);
+  return (
+    <>
+      {morePopOff && (
+        <MoreButtonPop
+          boardId={boardId}
+          commentId={cocomment.id}
+          type="comment"
+          isMe={isMe()}
+          onClickLoad={onClickLoad}
+          morePopHandle={morePopOn}
+        />
+      )}
+      <>
+        <CommentWrapper>
+          <CommentMainWrapper>
+            <CommentNameButtonWrapper>
+              <CommentArrow>
+                <img src="/images/icons/return.png" alt="return" />
+              </CommentArrow>
+              <CommentName>
+                {cocomment.userCount === -1
+                  ? '익명 (글쓴이)'
+                  : `익명 ${cocomment.userCount}`}
+              </CommentName>
+              <CommentMoreButton onClick={morePopOn}>
+                <img src="/images/icons/more.png" alt="more" />
+              </CommentMoreButton>
+            </CommentNameButtonWrapper>
+            <CommentTime>{parseTime(cocomment.createdDate)}</CommentTime>
+          </CommentMainWrapper>
+          <CommentSubWrapper>
+            <CommentContents>{cocomment.content}</CommentContents>
+          </CommentSubWrapper>
+          <CommentIconWrapper>
+            <CommentLikeButton>
+              {cocomment.likeCount > 0 ? (
+                <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
+              ) : (
+                <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
+              )}
+              {cocomment.likeCount}
+            </CommentLikeButton>
+          </CommentIconWrapper>
+        </CommentWrapper>
+      </>
+    </>
+  );
+};
 
 Cocomment.propTypes = {
-  cocomments: PropTypes.arrayOf,
-  morePopHandle: PropTypes.func,
+  cocomment: PropTypes.shape({
+    content: PropTypes.string,
+    id: PropTypes.number,
+    likeCount: PropTypes.number,
+    userCount: PropTypes.number,
+    writerId: PropTypes.number,
+    createdDate: PropTypes.objectOf(PropTypes.object),
+  }).isRequired,
+  boardId: PropTypes.number.isRequired,
+  userId: PropTypes.number.isRequired,
+  onClickLoad: PropTypes.func,
 };
 
 export default Cocomment;

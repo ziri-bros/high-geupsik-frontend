@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import Cocomment from './Cocomment';
 import MoreButtonPop from './common/MoreButtonPop';
+import { parseTime } from '../utils/parseTime';
+import { postCommentsLike } from '../lib/api/comment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -99,13 +101,30 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comment, boardId, userId, onClickLoad }) => {
+const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
   const [morePopOff, setMorePopOff] = useState(false);
+  const [commentLike, setCommentLike] = useState(false);
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
 
   const isMe = () => userId === comment.writerId;
+
+  const onClickCommentLikeBtn = async () => {
+    try {
+      await postCommentsLike(comment.id);
+      setCommentLike(!commentLike);
+      onClickLoad();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickCommentEdit = () => {
+    getEditComment(comment);
+  };
+
+  // console.log(comment);
 
   return (
     <>
@@ -116,6 +135,7 @@ const Comment = ({ comment, boardId, userId, onClickLoad }) => {
           type="comment"
           isMe={isMe()}
           onClickLoad={onClickLoad}
+          onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
         />
       )}
@@ -132,14 +152,16 @@ const Comment = ({ comment, boardId, userId, onClickLoad }) => {
                 <img src="/images/icons/more.png" alt="more" />
               </CommentMoreButton>
             </CommentNameButtonWrapper>
-            {/* <CommentTime>{comment.time}</CommentTime> */}
+            <CommentTime>{parseTime(comment.createdDate)}</CommentTime>
           </CommentMainWrapper>
           <CommentSubWrapper>
-            <CommentContents>{comment.content}</CommentContents>
+            <CommentContents>
+              {comment.deleteFlag ? '삭제된 댓글 입니다.' : comment.content}
+            </CommentContents>
           </CommentSubWrapper>
           <CommentIconWrapper>
-            <CommentLikeButton>
-              {comment.likeCount > 0 ? (
+            <CommentLikeButton onClick={onClickCommentLikeBtn}>
+              {commentLike ? (
                 <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
               ) : (
                 <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
@@ -173,10 +195,13 @@ Comment.propTypes = {
     likeCount: PropTypes.number,
     userCount: PropTypes.number,
     writerId: PropTypes.number,
+    createdDate: PropTypes.string,
+    deleteFlag: PropTypes.bool,
   }).isRequired,
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
+  getEditComment: PropTypes.func,
 };
 
 export default Comment;

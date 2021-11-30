@@ -170,12 +170,16 @@ const MoreButtonPop = ({
   type,
   morePopHandle,
   onClickLoad,
+  onClickCommentEdit,
 }) => {
   const history = useHistory();
 
   const onClickRevise = async () => {
     if (type === 'post') {
       history.push(`/boards/edit/${boardId}`);
+    } else {
+      morePopHandle();
+      onClickCommentEdit();
     }
   };
 
@@ -190,7 +194,7 @@ const MoreButtonPop = ({
       }
     } else {
       try {
-        const response = await deleteComments(boardId, commentId);
+        await deleteComments(boardId, commentId);
         morePopHandle();
         onClickLoad();
       } catch (e) {
@@ -198,6 +202,9 @@ const MoreButtonPop = ({
       }
     }
   };
+
+  console.log(typeof isMe);
+  console.log(typeof boardId);
 
   return (
     <MoreButtonPopBackground>
@@ -235,12 +242,13 @@ const MoreButtonPop = ({
 };
 
 MoreButtonPop.propTypes = {
-  boardId: PropTypes.number,
+  boardId: PropTypes.string,
   commentId: PropTypes.number,
-  isMe: PropTypes.func.isRequired,
+  isMe: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
   morePopHandle: PropTypes.func.isRequired,
   onClickLoad: PropTypes.func,
+  onClickCommentEdit: PropTypes.func,
 };
 
 export default MoreButtonPop;
