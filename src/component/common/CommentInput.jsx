@@ -59,7 +59,7 @@ const CommentInput = ({
       content: comment,
     };
     if (parentId) {
-      dto = { ...dto, parentId };
+      dto = { ...dto, ...parentId };
     }
     try {
       isEditComment

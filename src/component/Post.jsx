@@ -204,7 +204,7 @@ const Post = ({ boardId }) => {
 
   // 대댓글 작성시 parentId를 받아온다
   const getCommentParentId = parentId => {
-    setCommentParentId(parentId);
+    setCommentParentId({ parentId });
   };
 
   const load = async () => {
