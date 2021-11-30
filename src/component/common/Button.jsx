@@ -30,12 +30,14 @@ const ButtonBox = styled.div`
   /* 하단에 위치하는 버튼 디자인 */
   ${props =>
     props.infoBtn &&
-    css`
-      position: absolute;
-      left: 0;
-      right: 0;
-      margin: 35px 35px 0;
-    `}
+    css`      
+      margin: 40px 50px 10px 10px;
+      /* 모바일용 폰트 크기 적용 */
+      @media only screen and (max-width: 385px) {
+        margin: 40px 35px 10px 10px;
+      }
+
+  `}
 
   margin: ${props => props.postBtn && '-50px 0 0 0'};
 

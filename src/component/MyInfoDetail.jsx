@@ -8,9 +8,16 @@ import DropDown from './common/DropDown';
 import { getCurrentUserInfo, imageUploader, signUp, updateUserInfo } from '../lib/api/auth';
 import Modal from './common/Modal';
 import { getUserInfo } from '../store/userInfo';
+import { areas, classes, grades, schoolCodes } from '../constants';
 
 const RegisterUserInfoBox = styled.div`
-  margin: 15px 0 0 22px;
+  margin: 22px 0 0 22px;
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width:100%;
+  overflow-y: auto; 
 `;
 
 const Menu = styled.div`
@@ -51,7 +58,7 @@ const InputText = styled.div`
 
 const ImageWrapper = styled.div`
   display: flex;
-  align-items: flex-start;
+  align-items: flex-end;
   font-size: 14px;
 `;
 
@@ -74,36 +81,6 @@ const ImageUploadButton = styled.div`
   cursor: pointer;
 `;
 
-const areas = {
-  서울특별시: { region: 'SEOUL', code: 'B10' },
-  부산광역시: { region: 'BUSAN', code: 'C10' },
-  대구광역시: { region: 'DAEGU', code: 'D10' },
-  인천광역시: { region: 'INCHEON', code: 'E10' },
-  광주광역시: { region: 'GWANGJU', code: 'F10' },
-  대전광역시: { region: 'DAEJEON', code: 'G10' },
-  울산광역시: { region: 'ULSAN', code: 'H10' },
-  세종특별시: { region: 'SEJONG', code: 'I10' },
-  경기도: { region: 'GYEONGGI', code: 'J10' },
-  강원도: { region: 'GANGWON', code: 'K10' },
-  충청북도: { region: 'CHUNGBUK', code: 'M10' },
-  충청남도: { region: 'CHUNGNAM', code: 'N10' },
-  전라북도: { region: 'JEONBUK', code: 'P10' },
-  전라남도: { region: 'JEONNAM', code: 'Q10' },
-  경상북도: { region: 'GYEONGBUK', code: 'R10' },
-  경상남도: { region: 'GYEONGNAM', code: 'S10' },
-  제주특별자치도: { region: 'JEJU', code: 'T10' },
-};
-
-const schoolCodes = {
-  서울과학고등학교: '7010084',
-  한성과학고등학교: '7010115',
-  대원외국어고등학교: '7010143',
-  한영외국어고등학교: '7010259',
-};
-
-const grades = ['1학년', '2학년', '3학년'];
-const classes = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
-
 const MyInfoDetail = ({ path }) => {
   const [imgData, setImgData] = useState(null);
   const [location, setLocation] = useState(null);
@@ -120,8 +97,8 @@ const MyInfoDetail = ({ path }) => {
 
   let defaultArea = '지역 선택';
   let defaultSchool = '재학 중인 고등학교 선택';
-  const defaultGrade = '학년 선택';
-  const defaultClass = '분반 선택';
+  let defaultGrade = '학년 선택';
+  let defaultClass = '분반 선택';
 
   const info = useSelector(({ userInfo }) => userInfo.info);
 
@@ -129,8 +106,8 @@ const MyInfoDetail = ({ path }) => {
     const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
     defaultArea = Object.keys(areas)[idx];
     defaultSchool = info.schoolDTO.name;
-    // defaultGrade = info.studentCardDTO.grade;
-    // defaultClass = info.studentCardDTO.classNum;
+    defaultGrade = grades[info.grade - 1];
+    defaultClass = classes[info.classNum - 1];
   }
 
   useEffect(() => {
@@ -173,10 +150,14 @@ const MyInfoDetail = ({ path }) => {
       setModalOn(false);
       return;
     }
+
+    const gradeValue = grades.findIndex(value => value === grade) + 1;
+    const classValue = classes.findIndex(value => value === classNum) + 1;
+
     const userReqDTO = {
       studentCardDTO: {
-        grade: grades.findIndex(value => value === grade) + 1,
-        classNum: classes.findIndex(value => value === classNum) + 1,
+        grade: gradeValue,
+        classNum: classValue,
         studentCardImage: imgUrl,
       },
       schoolDTO: {
@@ -196,23 +177,32 @@ const MyInfoDetail = ({ path }) => {
   };
 
   const onClickUpdate = async () => {
-    const schoolDTO = {
-      code: schoolCodes[schoolName],
-      name: schoolName,
-      region: areas[area].region,
-      regionCode: areas[area].code,
+    if (!imgUrl) {
+      setModalOn(false);
+      return;
+    }
+    const gradeValue = grades.findIndex(value => value === grade) + 1;
+    const classValue = classes.findIndex(value => value === classNum) + 1;
+
+    const userReqDTO = {
+      studentCardDTO: {
+        grade: gradeValue,
+        classNum: classValue,
+        studentCardImage: imgUrl,
+      },
+      schoolDTO: {
+        code: schoolCodes[schoolName],
+        name: schoolName,
+        region: areas[area].region,
+        regionCode: areas[area].code,
+      },
     };
-    //
+
     try {
-      await updateUserInfo(schoolDTO);
+      await updateUserInfo(userReqDTO);
 
-      const loadAPI = async () => {
-        const response = await getCurrentUserInfo();
-        dispatch(getUserInfo(response.data.data));
-      };
-      loadAPI();
-
-      history.push('/myInfo');
+      localStorage.removeItem('ACCESS_TOKEN');
+      history.push('/');
     } catch (e) {
       console.log('error', e);
     }
@@ -267,18 +257,14 @@ const MyInfoDetail = ({ path }) => {
           narrow
         />
       </InputWrapper>
-      {
-        location === 'register' && (
-          <InputWrapper>
-            <InputText>학생증 첨부<span>*</span></InputText>
-            <ImageWrapper>
-              <input type="file" ref={fileInput} onChange={onChangeImage} style={{ display: 'none' }} />
-              <ImageText>{imgData || '파일 없음'}</ImageText>
-              <ImageUploadButton onClick={onClickImgBtn}>학생증 첨부</ImageUploadButton>
-            </ImageWrapper>
-          </InputWrapper>
-        )
-      }
+      <InputWrapper>
+        <InputText>학생증 첨부<span>*</span></InputText>
+        <ImageWrapper>
+          <input type="file" ref={fileInput} onChange={onChangeImage} style={{ display: 'none' }} />
+          <ImageText>{imgData || '파일 없음'}</ImageText>
+          <ImageUploadButton onClick={onClickImgBtn}>학생증 첨부</ImageUploadButton>
+        </ImageWrapper>
+      </InputWrapper>
       {
         location === 'register' ?
           <Button onClick={onClickSubmit} infoBtn>가입하기</Button>
