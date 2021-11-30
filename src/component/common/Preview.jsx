@@ -172,36 +172,6 @@ const Preview = ({ type }) => {
     promotion_id: '',
   });
 
-  function checkLength(string) {
-    let returnString = '';
-    const sizeSingle = /[a-z|~!^*()_+|<>?:{}]/;
-    const sizeDouble = /[0-9]/;
-    const sizeTriple = /[A-Z|@&#$%|ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-
-    let tmp = 0;
-    let moreText = false;
-
-    for (let n = 0; n < string.length; n += 1) {
-      sizeSingle.test(string[n]) === true ? (tmp += 1) : <></>;
-      sizeDouble.test(string[n]) === true ? (tmp += 2.2) : <></>;
-      sizeTriple.test(string[n]) === true ? (tmp += 3) : <></>;
-      returnString += string[n];
-
-      if (string[n + 1] === undefined) {
-        break;
-      }
-      if (tmp > 90) {
-        moreText = true;
-        break;
-      }
-    }
-
-    if (moreText) {
-      return `${returnString}...`;
-    }
-    return returnString;
-  }
-
   if (type === 'board') {
     useEffect(() => {
       const loadBoard = async () => {
@@ -212,14 +182,12 @@ const Preview = ({ type }) => {
 
         setFirstContentObject({
           free_title:
-            FREE.data.totalElements !== 0
-              ? checkLength(FREE.data.content[0].title)
-              : '',
+            FREE.data.totalElements !== 0 ? FREE.data.content[0].title : '',
           free_id: FREE.data.totalElements !== 0 ? FREE.data.content[0].id : '',
 
           information_title:
             INFORMATION.data.totalElements !== 0
-              ? checkLength(INFORMATION.data.content[0].title)
+              ? INFORMATION.data.content[0].title
               : '',
           information_id:
             INFORMATION.data.totalElements !== 0
@@ -227,14 +195,12 @@ const Preview = ({ type }) => {
               : '',
 
           hot_title:
-            HOT.data.totalElements !== 0
-              ? checkLength(HOT.data.content[0].title)
-              : '',
+            HOT.data.totalElements !== 0 ? HOT.data.content[0].title : '',
           hot_id: HOT.data.totalElements !== 0 ? HOT.data.content[0].id : '',
 
           promotion_title:
             PROMOTION.data.totalElements !== 0
-              ? checkLength(PROMOTION.data.content[0].title)
+              ? PROMOTION.data.content[0].title
               : '',
           promotion_id:
             PROMOTION.data.totalElements !== 0
