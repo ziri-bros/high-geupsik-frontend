@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { getTodayDate } from '../utils';
 import Button from './common/Button';
 import Modal from './common/Modal';
 
@@ -100,7 +101,16 @@ const lists = [
   { name: '8교시', id: '8' },
 ];
 
+/*
+regionCode
+code
+date
+grade
+classNum
+*/
 const Timetable = () => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
+
   const [buttonOn, setButtonOn] = useState(true);
   const [onDelete, setOnDelete] = useState(true);
 
@@ -108,6 +118,24 @@ const Timetable = () => {
   const onCancel = () => setOnDelete(!onDelete);
   // 차후에 onConfirm 수정 필요
   const onConfirm = () => setOnDelete(!onDelete);
+
+  useEffect(() => {
+    if (info) {
+      const { regionCode, code } = info.schoolDTO;
+      const { grade, classNum } = info;
+
+      const date = {
+        regionCode,
+        code,
+        grade,
+        classNum,
+      };
+
+      const loadAPI = async () => {
+
+      };
+    }
+  }, []);
 
   return (
     <TimetableWrapper>

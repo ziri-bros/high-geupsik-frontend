@@ -8,7 +8,7 @@ import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
 import { getLike, getPost, postLike } from '../lib/api/board';
 import { getComments } from '../lib/api/comment';
-import { parseTime } from '../utils/parseTime';
+import { parseTime } from '../utils';
 import Cocomment from './Cocomment';
 
 const PostMainBox = styled.div`

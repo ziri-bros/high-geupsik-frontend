@@ -6,7 +6,7 @@ import { css } from '@emotion/react';
 import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
 import { getBoardList, getMyPostList } from '../../lib/api/board';
-import { parseTime } from '../../utils/parseTime';
+import { parseTime } from '../../utils';
 
 const BoardWrapper = styled.div`
   display: flex;
