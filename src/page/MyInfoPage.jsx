@@ -1,14 +1,30 @@
 import React from 'react';
+import styled from '@emotion/styled';
 import Header from '../component/common/Header';
 import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import MyInfo from '../component/MyInfo';
 
+const HomeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #e5e5e5;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
 const MyInfoPage = () => (
   <Wrapper>
     <Header />
     <HeaderNavigation />
-    <MyInfo />
+    <HomeWrapper>
+      <MyInfo />
+    </HomeWrapper>
   </Wrapper>
 );
 
