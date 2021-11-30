@@ -32,7 +32,8 @@ const Name = styled.div`
 const Text = styled.div`
   font-size: 13px;
   color: ${props => (props.blur ? '#626262' : '#4f4f4f')};
-  margin-right: ${props => props.area && '15px'};
+  margin-right: ${props => props.rightMargin && '15px'};
+  margin-right: ${props => props.grade && '5px'};
 `;
 
 const MyPostMenuList = styled.div`
@@ -129,8 +130,10 @@ const MyInfo = () => {
           <Name>{info.username}</Name>
           <Text blur>{info.email}</Text>
           <div className="where">
-            <Text area>{info.schoolDTO.region}</Text>
-            <Text>{info.schoolDTO.name}</Text>
+            <Text rightMargin>{info.schoolDTO.region}</Text>
+            <Text rightMargin>{info.schoolDTO.name}</Text>
+            <Text grade>{info.grade}학년</Text>
+            <Text>{info.classNum}반</Text>
           </div>
         </MyInfoBox>
         <Button onClick={onLogout} logoutBtn>
