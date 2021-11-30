@@ -23,6 +23,8 @@ const PostWrapper = styled.div`
 `;
 
 const LeftArrow = styled.div`
+  width: 32px;
+  height: 32px;
   margin-top: 16px;
   margin-left: -7px;
   img {
