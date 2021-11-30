@@ -179,6 +179,8 @@ const MoreButtonPop = ({
       history.push(`/boards/edit/${boardId}`);
     } else {
       morePopHandle();
+      const commentInput = document.getElementById('comment-input');
+      commentInput.focus();
       onClickCommentEdit();
     }
   };

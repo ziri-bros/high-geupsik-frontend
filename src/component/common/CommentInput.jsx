@@ -45,6 +45,7 @@ const CommentButton = styled.button`
 
 const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
   const [comment, setComment] = useState('');
+  const [isEditComment, setIsEditComment] = useState(false);
 
   const onClickSubmitComments = async event => {
     event.preventDefault();
@@ -52,10 +53,11 @@ const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
       content: comment,
     };
     try {
-      editCommentValue
+      isEditComment
         ? await putEditComments(editCommentValue.id, commentReqDTO)
         : await postComments(boardId, commentReqDTO);
       setComment('');
+      setIsEditComment(false);
       onClickLoad();
     } catch (e) {
       console.log(e);
@@ -67,7 +69,10 @@ const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
   };
 
   useEffect(() => {
-    editCommentValue && setComment(editCommentValue.content);
+    if (editCommentValue) {
+      setComment(editCommentValue.content);
+      setIsEditComment(true);
+    }
   }, [editCommentValue]);
 
   return (
@@ -78,6 +83,7 @@ const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
         name="comment"
         value={comment}
         onChange={onChangeComment}
+        id="comment-input"
       />
       <CommentButton onClick={onClickSubmitComments}>
         <img src="/images/icons/send_green.png" alt="send" />
