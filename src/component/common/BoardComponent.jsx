@@ -113,7 +113,6 @@ const BoardComponent = ({ noticeExistence, type }) => {
   useEffect(() => {
     const loadBoard = async () => {
       const response = await getBoardList(type, 1);
-      console.log(response.data);
 
       if (response.success) {
         setData(response.data.content);
