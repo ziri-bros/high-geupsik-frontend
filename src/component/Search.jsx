@@ -1,78 +1,59 @@
+import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import History from './common/History';
+import SearchBar from './common/SearchBar';
 
-const SearchHeader = styled.div`
+const SearchWrapper = styled.div`
   display: flex;
-  justify-content: space-evenly;
+  flex-direction: column;
   align-items: center;
   width: 100%;
-  height: 70px;
-`;
-
-const SearchInnerBox = styled.div`
-  display: flex;
-  align-items: center;
-  width: 80%;
-  height: 30px;
-  background-color: #f3f3f3;
-  border-radius: 5px;
-  img {
-    width: 20px;
-    height: 20px;
-    margin: 0 0 0 12px;
+  height: 100%;
+  background-color: white;
+  overflow-y: auto;
+  &::-webkit-scrollbar {
+    display: none;
   }
 `;
 
-const SearchInput = styled.input`
-  display: flex;
-  align-items: center;
-  width: 80%;
-  height: 80%;
-  margin: 1px 0 0 12px;
-  background-color: #f3f3f3;
-  font-size: 13px;
-  font-weight: 400;
-`;
-const CancelBtn = styled.button`
-  width: 40px;
-  height: 30px;
-  font-size: 13px;
-  font-weight: 400;
-  color: #5d6e1e;
-  cursor: pointer;
-`;
-
-const Contour = styled.div`
-  width: 100%;
-  height: 0.5px;
-  background-color: #f3f3f3;
-`;
-
-const Search = () => {
-  const history = useHistory();
-
-  const handleKeyPress = e => {
-    if (e.key === 'Enter') {
-      console.log('Enter');
-    }
-  };
-  return (
-    <>
-      <SearchHeader>
-        <SearchInnerBox>
-          <img src="/images/icons/search.png" alt="search" />
-          <SearchInput
-            placeholder="검색어 입력"
-            maxLength={20}
-            onKeyPress={handleKeyPress}
-          />
-        </SearchInnerBox>
-        <CancelBtn onClick={history.goBack}>취소</CancelBtn>
-      </SearchHeader>
-      <Contour />
-    </>
+function Search() {
+  const [keywords, setKeywords] = useState(
+    JSON.parse(localStorage.getItem('keywords') || '[]'),
   );
-};
+
+  useEffect(() => {
+    localStorage.setItem('keywords', JSON.stringify(keywords));
+  }, [keywords]);
+
+  const handleAddKeyword = text => {
+    const newKeyword = {
+      id: Date.now(),
+      text,
+    };
+    setKeywords([newKeyword, ...keywords]);
+  };
+
+  const handleRemoveKeyword = id => {
+    const nextKeyword = keywords.filter(thisKeyword => thisKeyword.id !== id);
+    setKeywords(nextKeyword);
+  };
+
+  const handleClearKeywords = () => {
+    setKeywords([]);
+  };
+
+  return (
+    <div>
+      <SearchWrapper>
+        <SearchBar onAddKeyword={handleAddKeyword}></SearchBar>
+        <History
+          keywords={keywords}
+          onClearKeywords={handleClearKeywords}
+          onRemoveKeyword={handleRemoveKeyword}
+        />
+      </SearchWrapper>
+    </div>
+  );
+}
 
 export default Search;
