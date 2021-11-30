@@ -192,9 +192,6 @@ const PostCreate = () => {
     }
   };
 
-  console.log(images);
-  console.log(resImages);
-
   const onClickDeleteImages = e => {
     const imgs = [...images];
     const resImgs = [...resImages];
