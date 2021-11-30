@@ -181,24 +181,28 @@ const MyInfoDetail = ({ path }) => {
       setModalOn(false);
       return;
     }
+    const gradeValue = grades.findIndex(value => value === grade) + 1;
+    const classValue = classes.findIndex(value => value === classNum) + 1;
 
-    const schoolDTO = {
-      code: schoolCodes[schoolName],
-      name: schoolName,
-      region: areas[area].region,
-      regionCode: areas[area].code,
+    const userReqDTO = {
+      studentCardDTO: {
+        grade: gradeValue,
+        classNum: classValue,
+        studentCardImage: imgUrl,
+      },
+      schoolDTO: {
+        code: schoolCodes[schoolName],
+        name: schoolName,
+        region: areas[area].region,
+        regionCode: areas[area].code,
+      },
     };
 
     try {
-      await updateUserInfo(schoolDTO);
+      await updateUserInfo(userReqDTO);
 
-      const loadAPI = async () => {
-        const response = await getCurrentUserInfo();
-        dispatch(getUserInfo(response.data.data));
-      };
-      loadAPI();
-
-      history.push('/myInfo');
+      localStorage.removeItem('ACCESS_TOKEN');
+      history.push('/');
     } catch (e) {
       console.log('error', e);
     }
