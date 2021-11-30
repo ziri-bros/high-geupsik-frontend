@@ -43,21 +43,35 @@ const CommentButton = styled.button`
   }
 `;
 
-const CommentInput = ({ boardId, onClickLoad, editCommentValue }) => {
+const CommentInput = ({
+  boardId,
+  onClickLoad,
+  editCommentValue,
+  commentParentId,
+}) => {
   const [comment, setComment] = useState('');
   const [isEditComment, setIsEditComment] = useState(false);
+  const [parentId, setParentId] = useState(null);
+
+  useEffect(() => {
+    setParentId(commentParentId);
+  }, [commentParentId]);
 
   const onClickSubmitComments = async event => {
     event.preventDefault();
-    const commentReqDTO = {
+    let dto = {
       content: comment,
     };
+    if (parentId) {
+      dto = { ...dto, parentId };
+    }
     try {
       isEditComment
-        ? await putEditComments(editCommentValue.id, commentReqDTO)
-        : await postComments(boardId, commentReqDTO);
+        ? await putEditComments(editCommentValue.id, dto)
+        : await postComments(boardId, dto);
       setComment('');
       setIsEditComment(false);
+      setParentId(null);
       onClickLoad();
     } catch (e) {
       console.log(e);
@@ -96,6 +110,7 @@ CommentInput.propTypes = {
   boardId: PropTypes.string.isRequired,
   onClickLoad: PropTypes.func.isRequired,
   editCommentValue: PropTypes.objectOf(PropTypes.object),
+  commentParentId: PropTypes.number,
 };
 
 export default CommentInput;

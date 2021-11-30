@@ -3,6 +3,7 @@ import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
 import { parseTime } from '../utils/parseTime';
+import { postCommentsLike } from '../lib/api/comment';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -94,13 +95,35 @@ const CommentLikeButton = styled.div`
   }
 `;
 
-const Cocomment = ({ cocomment, boardId, userId, onClickLoad }) => {
+const Cocomment = ({
+  cocomment,
+  boardId,
+  userId,
+  onClickLoad,
+  getEditComment,
+}) => {
   const [morePopOff, setMorePopOff] = useState(false);
+  const [commentLike, setCommentLike] = useState(cocomment.userLike);
+
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
 
   const isMe = () => userId === cocomment.writerId;
+
+  const onClickCommentLikeBtn = async () => {
+    try {
+      await postCommentsLike(cocomment.id);
+      setCommentLike(!commentLike);
+      onClickLoad();
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickCommentEdit = () => {
+    getEditComment(cocomment);
+  };
 
   return (
     <>
@@ -111,6 +134,7 @@ const Cocomment = ({ cocomment, boardId, userId, onClickLoad }) => {
           type="comment"
           isMe={isMe()}
           onClickLoad={onClickLoad}
+          onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
         />
       )}
@@ -122,9 +146,9 @@ const Cocomment = ({ cocomment, boardId, userId, onClickLoad }) => {
                 <img src="/images/icons/return.png" alt="return" />
               </CommentArrow>
               <CommentName>
-                {cocomment.userCount === -1
+                {cocomment.writerId === userId
                   ? '익명 (글쓴이)'
-                  : `익명 ${cocomment.userCount}`}
+                  : `익명 ${cocomment.anonymousId}`}
               </CommentName>
               <CommentMoreButton onClick={morePopOn}>
                 <img src="/images/icons/more.png" alt="more" />
@@ -136,8 +160,8 @@ const Cocomment = ({ cocomment, boardId, userId, onClickLoad }) => {
             <CommentContents>{cocomment.content}</CommentContents>
           </CommentSubWrapper>
           <CommentIconWrapper>
-            <CommentLikeButton>
-              {cocomment.likeCount > 0 ? (
+            <CommentLikeButton onClick={onClickCommentLikeBtn}>
+              {commentLike ? (
                 <img src="/images/icons/thumb-up-green.png" alt="thumb-up" />
               ) : (
                 <img src="/images/icons/thumb-up-grey.png" alt="thumb-up" />
@@ -156,13 +180,18 @@ Cocomment.propTypes = {
     content: PropTypes.string,
     id: PropTypes.number,
     likeCount: PropTypes.number,
-    userCount: PropTypes.number,
+    parent: PropTypes.bool,
+    anonymousId: PropTypes.number,
     writerId: PropTypes.number,
-    createdDate: PropTypes.objectOf(PropTypes.object),
+    createdDate: PropTypes.string,
+    deleted: PropTypes.bool,
+    replyCount: PropTypes.number,
+    userLike: PropTypes.bool,
   }).isRequired,
   boardId: PropTypes.number.isRequired,
   userId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
+  getEditComment: PropTypes.func,
 };
 
 export default Cocomment;

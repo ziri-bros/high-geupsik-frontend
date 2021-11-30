@@ -101,9 +101,16 @@ const CommentNumber = styled.div`
   }
 `;
 
-const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
+const Comment = ({
+  comment,
+  boardId,
+  userId,
+  onClickLoad,
+  getEditComment,
+  getCommentParentId,
+}) => {
   const [morePopOff, setMorePopOff] = useState(false);
-  const [commentLike, setCommentLike] = useState(false);
+  const [commentLike, setCommentLike] = useState(comment.userLike);
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
   };
@@ -124,7 +131,11 @@ const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
     getEditComment(comment);
   };
 
-  // console.log(comment);
+  const onClickCommentFocus = () => {
+    getCommentParentId(comment.id);
+    const commentInput = document.getElementById('comment-input');
+    commentInput.focus();
+  };
 
   return (
     <>
@@ -144,9 +155,9 @@ const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
           <CommentMainWrapper>
             <CommentNameButtonWrapper>
               <CommentName>
-                {comment.userCount === -1
+                {comment.writerId === userId
                   ? '익명 (글쓴이)'
-                  : `익명 ${comment.userCount}`}
+                  : `익명 ${comment.anonymousId}`}
               </CommentName>
               <CommentMoreButton onClick={morePopOn}>
                 <img src="/images/icons/more.png" alt="more" />
@@ -156,7 +167,7 @@ const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
           </CommentMainWrapper>
           <CommentSubWrapper>
             <CommentContents>
-              {comment.deleteFlag ? '삭제된 댓글 입니다.' : comment.content}
+              {comment.deleted ? '삭제된 댓글 입니다.' : comment.content}
             </CommentContents>
           </CommentSubWrapper>
           <CommentIconWrapper>
@@ -168,20 +179,16 @@ const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
               )}
               {comment.likeCount}
             </CommentLikeButton>
-            <CommentNumber>
-              {comment.commentResDTOList.length > 0 ? (
+            <CommentNumber onClick={onClickCommentFocus}>
+              {comment.replyCount > 0 ? (
                 <img src="/images/icons/comment-green.png" alt="comment" />
               ) : (
                 <img src="/images/icons/comment-grey.png" alt="comment" />
               )}
-              {comment.commentResDTOList.length}
+              {comment.replyCount}
             </CommentNumber>
           </CommentIconWrapper>
         </CommentWrapper>
-        {comment.commentResDTOList.length > 0 &&
-          comment.commentResDTOList.map(cocomment => (
-            <Cocomment cocomments={cocomment} />
-          ))}
       </>
     </>
   );
@@ -189,19 +196,22 @@ const Comment = ({ comment, boardId, userId, onClickLoad, getEditComment }) => {
 
 Comment.propTypes = {
   comment: PropTypes.shape({
-    commentResDTOList: PropTypes.arrayOf(PropTypes.object),
     content: PropTypes.string,
     id: PropTypes.number,
     likeCount: PropTypes.number,
-    userCount: PropTypes.number,
+    parent: PropTypes.bool,
+    anonymousId: PropTypes.number,
     writerId: PropTypes.number,
     createdDate: PropTypes.string,
-    deleteFlag: PropTypes.bool,
+    deleted: PropTypes.bool,
+    replyCount: PropTypes.number,
+    userLike: PropTypes.bool,
   }).isRequired,
   boardId: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
   getEditComment: PropTypes.func,
+  getCommentParentId: PropTypes.func,
 };
 
 export default Comment;

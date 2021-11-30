@@ -9,6 +9,7 @@ import MoreButtonPop from './common/MoreButtonPop';
 import { getLike, getPost, postLike } from '../lib/api/board';
 import { getComments } from '../lib/api/comment';
 import { parseTime } from '../utils/parseTime';
+import Cocomment from './Cocomment';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -183,6 +184,7 @@ const Post = ({ boardId }) => {
   const [comments, setComments] = useState(null);
   const [like, setLike] = useState(null);
   const [editCommentValue, setEditCommentValue] = useState(null);
+  const [commentParentId, setCommentParentId] = useState(null);
 
   const history = useHistory();
 
@@ -195,8 +197,14 @@ const Post = ({ boardId }) => {
   // 글쓴이인지 체크 한다. 글쓰인이면 true, 아니면 false
   const isMe = () => info.id === data.writerId;
 
+  // 편집시 편집 댓글 정보 받아오기
   const getEditComment = editComment => {
     setEditCommentValue(editComment);
+  };
+
+  // 대댓글 작성시 parentId를 받아온다
+  const getCommentParentId = parentId => {
+    setCommentParentId(parentId);
   };
 
   const load = async () => {
@@ -205,10 +213,10 @@ const Post = ({ boardId }) => {
       setData(postData.data);
 
       const commentsData = await getComments(boardId);
-      setComments(commentsData.data);
+      setComments(commentsData.data.content);
 
       const likeData = await getLike(boardId);
-      setLike(likeData.data.likeFlag);
+      setLike(likeData.data);
     } catch (e) {
       console.log(e);
     }
@@ -297,21 +305,33 @@ const Post = ({ boardId }) => {
                   </PostLikedButton>
                 </PostCommentsNumberWrapper>
                 {comments &&
-                  comments.map(comment => (
-                    <Comment
-                      comment={comment}
-                      boardId={boardId}
-                      userId={info.id}
-                      onClickLoad={onClickLoad}
-                      getEditComment={getEditComment}
-                    />
-                  ))}
+                  comments.map(comment =>
+                    comment.parent ? (
+                      <Comment
+                        comment={comment}
+                        boardId={boardId}
+                        userId={info.id}
+                        onClickLoad={onClickLoad}
+                        getEditComment={getEditComment}
+                        getCommentParentId={getCommentParentId}
+                      />
+                    ) : (
+                      <Cocomment
+                        cocomment={comment}
+                        boardId={boardId}
+                        userId={info.id}
+                        onClickLoad={onClickLoad}
+                        getEditComment={getEditComment}
+                      />
+                    ),
+                  )}
               </PostCommentsWrapper>
             </PostWrapper>
             <CommentInput
               boardId={boardId}
               onClickLoad={onClickLoad}
               editCommentValue={editCommentValue}
+              commentParentId={commentParentId}
             />
           </PostMainBox>
         </>
