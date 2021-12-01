@@ -3,9 +3,9 @@ import { API_BASE_URL } from '../../constants';
 
 export const signUp = async userReqDTO => {
   await axios({
-    url: `${API_BASE_URL}/login/cards`,
+    url: `${API_BASE_URL}/users`,
     data: userReqDTO,
-    method: 'post',
+    method: 'patch',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
@@ -36,11 +36,11 @@ export const getCurrentUserInfo = async () => {
   return response;
 };
 
-export const updateUserInfo = async (schoolDTO) => {
+export const updateUserInfo = async (userReqDTO) => {
   const response = await axios({
     url: `${API_BASE_URL}/users`,
     method: 'patch',
-    data: schoolDTO,
+    data: userReqDTO,
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },

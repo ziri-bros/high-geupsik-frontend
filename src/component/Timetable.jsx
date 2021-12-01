@@ -3,6 +3,8 @@ import styled from '@emotion/styled';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { loadTimetable } from '../lib/api/timetable';
+import { getTargetDate, getTodayIdx } from '../utils';
 import Button from './common/Button';
 import Modal from './common/Modal';
 
@@ -100,7 +102,16 @@ const lists = [
   { name: '8교시', id: '8' },
 ];
 
+/*
+regionCode
+code
+date
+grade
+classNum
+*/
 const Timetable = () => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
+
   const [buttonOn, setButtonOn] = useState(true);
   const [onDelete, setOnDelete] = useState(true);
 

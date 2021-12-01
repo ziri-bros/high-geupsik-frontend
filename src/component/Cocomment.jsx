@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
-import { parseTime } from '../utils/parseTime';
+import { parseTime } from '../utils';
 import { postCommentsLike } from '../lib/api/comment';
 
 const CommentWrapper = styled.div`
