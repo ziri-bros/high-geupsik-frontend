@@ -19,7 +19,7 @@ const CancelBtn = styled.button`
   font-weight: 400;
   color: #5d6e1e;
   cursor: pointer;
-  border: 0.5px solid rgba(0, 0, 0, 0.5);
+  border: 0.5px solid #5d6e1e;
   border-radius: 30px;
 `;
 
@@ -30,7 +30,7 @@ const RemoveIcon = styled.button`
   font-weight: 400;
   color: #5d6e1e;
   cursor: pointer;
-  border: 0.5px solid rgba(0, 0, 0, 0.5);
+  border: 0.5px solid #5d6e1e;
   border-radius: 30px;
 `;
 
@@ -45,8 +45,8 @@ const Input = styled.input`
   display: flex;
   background-color: #fff;
   width: 100%;
-  font-weight: 400;
-  font-size: 20px;
+  font-weight: 200;
+  font-size: 15px;
   border-bottom: 1px solid #666;
 
   ${({ active }) =>
@@ -81,6 +81,7 @@ function SearchBar({ onAddKeyword }) {
       <InputContainer>
         <Input
           placeholder=" 검색어 입력"
+          maxLength="20"
           active={hasKeyword}
           value={keyword}
           onChange={handleKeyword}

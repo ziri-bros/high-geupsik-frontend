@@ -7,13 +7,8 @@ const SearchWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  overflow-y: auto;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+  width: 464px;
+  height: auto;
 `;
 
 function Search() {
@@ -27,6 +22,7 @@ function Search() {
 
   const handleAddKeyword = text => {
     const newKeyword = {
+      // 고유 id지정 원초적인 방법
       id: Date.now(),
       text,
     };

@@ -8,24 +8,26 @@ const HistoryContainer = styled.div`
   width: 100%;
   font-weight: 400;
   font-size: 15px;
-  padding: 0 0 0 30px;
+  padding: 10px 0 0 30px;
   color: rgba(0, 0, 0, 0.5);
 `;
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
-  margin: 10px 20px 10px 0;
+  margin: 0 20px 10px 0;
 `;
 const Title = styled.span`
   float: left;
-  font-weight: 400;
-
+  font-weight: 600;
+  font-size: 16px;
   color: #666;
 `;
 const RemoveText = styled.span`
   float: right;
   color: #666;
+  font-weight: 500;
+  font-size: 16px;
   cursor: pointer;
 `;
 
@@ -43,15 +45,15 @@ const KeywordContainer = styled.li`
   overflow: hidden;
   width: 100%;
 
-  &:not(:last-child) {
-    margin: 5px 0 5px 0;
-  }
+  margin: 10px 0 0 0;
 `;
 
 const RemoveButton = styled.button`
   float: right;
-  color: #666;
-  border: 1px solid #666;
+  color: #5d6e1e;
+  border: 1px solid #5d6e1e;
+  font-weight: 400;
+  font-size: 12px;
   border-radius: 15px;
   cursor: pointer;
   margin: 0 20px 0 0;
@@ -60,7 +62,6 @@ const RemoveButton = styled.button`
 const Keyword = styled.span`
   font-size: 18px;
   font-weight: 400;
-  margin: 0 0 0 20px;
 `;
 
 function History({ keywords, onRemoveKeyword, onClearKeywords }) {
@@ -74,12 +75,12 @@ function History({ keywords, onRemoveKeyword, onClearKeywords }) {
         <RemoveText onClick={onClearKeywords}>전체삭제</RemoveText>
       </HeaderContainer>
       <ListContainer>
-        {keywords.map((id, text) => (
-          <KeywordContainer key={id}>
-            <Keyword>{text}</Keyword>
+        {keywords.map(elem => (
+          <KeywordContainer key={elem.id}>
+            <Keyword>{elem.text}</Keyword>
             <RemoveButton
               onClick={() => {
-                onRemoveKeyword(id);
+                onRemoveKeyword(elem.id);
               }}
             >
               삭제
