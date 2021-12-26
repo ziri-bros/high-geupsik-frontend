@@ -6,11 +6,14 @@ import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import BoardPosting from '../component/common/BoardPosting';
 import Writing from '../component/common/Writing';
+import HeaderWrapper from '../component/common/HeaderWrapper';
 
 const BoardPage = ({ match }) => (
   <Wrapper>
-    <Header />
-    <HeaderNavigation />
+    <HeaderWrapper>
+      <Header />
+      <HeaderNavigation />
+    </HeaderWrapper>
     <BoardNaviagtion />
     <BoardPosting path={match.path} />
     <Writing />
