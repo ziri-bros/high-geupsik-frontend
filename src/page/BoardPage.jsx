@@ -13,8 +13,8 @@ const BoardPage = ({ match }) => (
     <HeaderWrapper>
       <Header />
       <HeaderNavigation />
+      <BoardNaviagtion />
     </HeaderWrapper>
-    <BoardNaviagtion />
     <BoardPosting path={match.path} />
     <Writing />
   </Wrapper>
