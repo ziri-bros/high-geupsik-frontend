@@ -139,14 +139,13 @@ const Comment = ({
   };
 
   useEffect(() => {
-    console.log(comment);
     if (postWriterId === comment.writerId) {
-      setWriter('익명 (글쓴이)');
-    } else if (userId === comment.writerId) {
-      setWriter('익명 (나)');
-    } else {
-      setWriter(`익명 ${comment.anonymousId}`);
+      return setWriter('익명 (글쓴이)');
     }
+    if (userId === comment.writerId) {
+      return setWriter('익명 (나)');
+    }
+    return setWriter(`익명 ${comment.anonymousId}`);
   }, []);
 
   return (

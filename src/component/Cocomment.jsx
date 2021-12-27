@@ -129,12 +129,12 @@ const Cocomment = ({
 
   useEffect(() => {
     if (postWriterId === cocomment.writerId) {
-      setWriter('익명 (글쓴이)');
-    } else if (userId === cocomment.writerId) {
-      setWriter('익명 (나)');
-    } else {
-      setWriter(`익명 ${cocomment.anonymousId}`);
+      return setWriter('익명 (글쓴이)');
     }
+    if (userId === cocomment.writerId) {
+      return setWriter('익명 (나)');
+    }
+    return setWriter(`익명 ${cocomment.anonymousId}`);
   }, []);
 
   return (
