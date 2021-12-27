@@ -26,7 +26,6 @@ const HomePage = () => (
       <Header />
       <HeaderNavigation />
     </HeaderWrapper>
-    <MyScoolLink />
     <HomeWrapper>
       <Preview type="schoolfood" />
       <Preview type="board" />

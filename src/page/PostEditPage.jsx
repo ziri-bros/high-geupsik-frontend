@@ -14,8 +14,8 @@ const PostEditPage = ({ match }) => {
       <HeaderWrapper>
         <Header />
         <HeaderNavigation />
+        <BoardNaviagtion />
       </HeaderWrapper>
-      <BoardNaviagtion />
       <PostEdit boardId={boardId}></PostEdit>
     </Wrapper>
   );

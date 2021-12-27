@@ -213,8 +213,6 @@ const Timetable = () => {
           onConfirm={onConfirm}
         />
       )}
-
-      <MyScoolLink>fefe</MyScoolLink>
     </TimetableWrapper>
   );
 };

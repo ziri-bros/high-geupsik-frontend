@@ -14,8 +14,8 @@ const PostPage = ({ match }) => {
       <HeaderWrapper>
         <Header />
         <HeaderNavigation />
+        <BoardNaviagtion />
       </HeaderWrapper>
-      <BoardNaviagtion />
       <Post boardId={boardId}></Post>
     </Wrapper>
   );
