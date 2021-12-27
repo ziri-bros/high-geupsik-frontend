@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { React, useEffect } from 'react';
+import { css } from '@emotion/react';
+import { Link, useHistory } from 'react-router-dom';
 
 const HeaderNavigationBox = styled.div`
   height: 40px;
@@ -27,45 +28,66 @@ const NavigationItem = styled(Link)`
     font-weight: bold;
     border-bottom: 3px solid #5d6e1e;
   }
+
+  ${props =>
+    props.focused &&
+    css`
+      font-weight: bold;
+      border-bottom: 3px solid #5d6e1e;
+    `}
 `;
 
 const lists = [
   {
     id: 1,
     name: '홈',
-    url: '/home',
+    url: ['/home'],
   },
   {
     id: 2,
     name: '게시판',
-    url: '/board',
+    url: [
+      '/board',
+      '/board/free',
+      '/board/information',
+      '/board/hot',
+      '/board/promotion',
+    ],
   },
   {
     id: 3,
     name: '시간표',
-    url: '/schedule',
+    url: ['/schedule'],
   },
   {
     id: 4,
     name: '쪽지함',
-    url: '/message',
+    url: ['/message'],
   },
   {
     id: 5,
     name: '내정보',
-    url: '/myInfo',
+    url: ['/myInfo'],
   },
 ];
 
-const HeaderNavigation = () => (
-  <HeaderNavigationBox>
-    {lists.map(list => (
-      <NavigationItem to={list.url} key={list.id}>
-        {list.name}
-      </NavigationItem>
-    ))}
+const HeaderNavigation = () => {
+  const history = useHistory();
 
-  </HeaderNavigationBox>
-);
+  return (
+    <HeaderNavigationBox>
+      {lists.map(list => (
+        <NavigationItem
+          to={list.url[0]}
+          key={list.id}
+          pathname={history.location.pathname}
+          focused={list.url.includes(history.location.pathname)}
+        >
+          {list.name}
+        </NavigationItem>
+      ))}
+    </HeaderNavigationBox>
+  );
+};
 
 export default HeaderNavigation;
