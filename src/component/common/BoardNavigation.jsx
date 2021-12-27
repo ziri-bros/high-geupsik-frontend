@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { css } from '@emotion/react';
+import { Link, useHistory } from 'react-router-dom';
 
 const BoardNavigationBox = styled.div`
   display: flex;
@@ -30,6 +32,13 @@ const NavigationItem = styled(Link)`
     font-weight: bold;
     background-color: #cbe54e;
   }
+
+  ${props =>
+    props.focused &&
+    css`
+      font-weight: bold;
+      background-color: #cbe54e;
+    `}
 `;
 
 const lists = [
@@ -60,16 +69,29 @@ const lists = [
   },
 ];
 
-const BoardNaviagtion = () => (
-  <>
+const BoardNaviagtion = ({ category }) => {
+  const history = useHistory();
+  const boardCategory = category && `/board/${category.toLowerCase()}`;
+
+  return (
     <BoardNavigationBox>
       {lists.map(list => (
-        <NavigationItem to={list.url} key={list.id}>
+        <NavigationItem
+          to={list.url}
+          key={list.id}
+          focused={
+            list.url === history.location.pathname || list.url === boardCategory
+          }
+        >
           {list.name}
         </NavigationItem>
       ))}
     </BoardNavigationBox>
-  </>
-);
+  );
+};
+
+BoardNaviagtion.propTypes = {
+  category: PropTypes.string,
+};
 
 export default BoardNaviagtion;
