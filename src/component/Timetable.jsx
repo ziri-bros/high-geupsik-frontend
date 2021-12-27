@@ -2,6 +2,7 @@ import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { TIMETABLE_FRAME } from '../constants';
 import { loadTimetable } from '../lib/api/timetable';
 import { getTargetDate, getWeekIdx } from '../utils';
 import Button from './common/Button';
@@ -89,18 +90,6 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
-const lists = [
-  { name: '0교시', id: '0' },
-  { name: '1교시', id: '1' },
-  { name: '2교시', id: '2' },
-  { name: '3교시', id: '3' },
-  { name: '4교시', id: '4' },
-  { name: '5교시', id: '5' },
-  { name: '6교시', id: '6' },
-  { name: '7교시', id: '7' },
-  { name: '8교시', id: '8' },
-];
-
 const Timetable = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
 
@@ -132,13 +121,16 @@ const Timetable = () => {
     const weekIdx = getWeekIdx();
 
     if (info) {
+      const { grade, classNum } = info;
+      const { code, regionCode } = info.schoolDTO;
+
       for (let i = weekIdx[0] + 1; i < weekIdx[1]; i += 1) {
         const data = {
           date: getTargetDate(i),
-          grade: info.grade,
-          classNum: info.classNum,
-          code: info.schoolDTO.code,
-          regionCode: info.schoolDTO.regionCode,
+          grade,
+          classNum,
+          code,
+          regionCode,
         };
 
         const loadTimetableAPI = async () => {
@@ -198,14 +190,14 @@ const Timetable = () => {
           <TInput value="목" head disabled />
           <TInput value="금" last head disabled />
         </Trow>
-        {lists.map((list, index) => (
+        {TIMETABLE_FRAME.map((list, idx) => (
           <Trow key={list.id}>
-            <TInput first value={list.name} bottom={index === lists.length - 1} disabled />
-            <TInput id={`input${index}0`} maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput id={`input${index}1`} maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput id={`input${index}2`} maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput id={`input${index}3`} maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput id={`input${index}4`} maxLength="6" last bottom={index === lists.length - 1} disabled={buttonOn} />
+            <TInput first value={list.name} bottom={idx === TIMETABLE_FRAME.length - 1} disabled />
+            <TInput id={`input${idx}0`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}1`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}2`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}3`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}4`} maxLength="6" last bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
           </Trow>
         ))}
       </Table>
