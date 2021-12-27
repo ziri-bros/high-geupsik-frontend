@@ -107,10 +107,7 @@ const Timetable = () => {
   const reflectDOM = (table, position) => {
     table[position].forEach((_, idx) => {
       const $input = document.getElementById(`input${idx}${position}`);
-
-      if (timeTable[position][idx] !== '-') {
-        $input.value = timeTable[position][idx];
-      }
+      $input.value = timeTable[position][idx];
     });
   };
 
@@ -139,24 +136,28 @@ const Timetable = () => {
 
         const loadTimetableAPI = async () => {
           const response = await loadTimetable(data);
-          if (!response) return;
+
+          if (!response) {
+            reflectDOM(timeTable, i);
+            return;
+          }
 
           const dataSet = response[1].row;
 
           switch (i) {
-            case 1:
+            case 0:
               trimData(dataSet, 0);
               break;
-            case 2:
+            case 1:
               trimData(dataSet, 1);
               break;
-            case 3:
+            case 2:
               trimData(dataSet, 2);
               break;
-            case 4:
+            case 3:
               trimData(dataSet, 3);
               break;
-            case 5:
+            case 4:
               trimData(dataSet, 4);
               break;
             default:
@@ -199,11 +200,11 @@ const Timetable = () => {
         {TIMETABLE_FRAME.map((list, idx) => (
           <Trow key={list.id}>
             <TInput first value={list.name} bottom={idx === TIMETABLE_FRAME.length - 1} disabled />
-            <TInput value="-" id={`input${idx}0`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput value="-" id={`input${idx}1`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput value="-" id={`input${idx}2`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput value="-" id={`input${idx}3`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput value="-" id={`input${idx}4`} maxLength="6" last bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}0`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}1`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}2`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}3`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}4`} maxLength="6" last bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
           </Trow>
         ))}
       </Table>

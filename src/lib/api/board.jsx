@@ -1,11 +1,10 @@
 import axios from 'axios';
-import { API_BASE_URL } from '../../constants';
 
 export const getBoardList = async (category, pageNumber = 1) => {
   let urls = '';
   category != null
-    ? (urls = `${API_BASE_URL}/boards?category=${category}&page=${pageNumber}`)
-    : (urls = `${API_BASE_URL}/boards?&page=${pageNumber}`);
+    ? (urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&page=${pageNumber}`)
+    : (urls = `${process.env.REACT_APP_API_BASE_URL}/boards?&page=${pageNumber}`);
   const response = await axios({
     url: urls,
     method: 'get',
@@ -21,7 +20,7 @@ export const getBoardList = async (category, pageNumber = 1) => {
 // 응답으로 게시글Id를 받아서 자동으로 내가 쓴 상세게시글로 이동 시킨다.
 export const postNewPost = async boardReqDTO => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards`,
     data: boardReqDTO,
     method: 'post',
     headers: {
@@ -34,7 +33,7 @@ export const postNewPost = async boardReqDTO => {
 // 게시글 조회를 게시글ID를 통해 조회한다.
 export const getPost = async boardId => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards/${boardId}`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -47,7 +46,7 @@ export const getPost = async boardId => {
 // reponse 받아서 글쓴이 id와 맞는지 확인하고 맞을때만 수정할 수 있게 한다.
 export const getEditPost = async boardId => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards/${boardId}/edit`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/edit`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -59,7 +58,7 @@ export const getEditPost = async boardId => {
 // 기존 게시글 수정을 요청할때. 게시글 수정되면 바꾼 게시글로 이동시킨다.
 export const putEditPost = async (boardId, boardReqDTO) => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards/${boardId}`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}`,
     data: boardReqDTO,
     method: 'put',
     headers: {
@@ -72,7 +71,7 @@ export const putEditPost = async (boardId, boardReqDTO) => {
 // 게시글 id를 통해서 게시글 삭제를 요청한다.
 export const deletePost = async boardId => {
   await axios({
-    url: `${API_BASE_URL}/boards/${boardId}`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}`,
     method: 'delete',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -84,7 +83,7 @@ export const deletePost = async boardId => {
 // 좋아요 취소할때도 똑같이 요청하면 된다.
 export const postLike = async boardId => {
   await axios({
-    url: `${API_BASE_URL}/boards/${boardId}/like`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/like`,
     method: 'post',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -94,7 +93,7 @@ export const postLike = async boardId => {
 
 export const getLike = async boardId => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards/${boardId}/like`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/like`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -106,7 +105,7 @@ export const getLike = async boardId => {
 // 내가 쓴 게시글 리스트 받아오기
 export const getMyPostList = async () => {
   const response = await axios({
-    url: `${API_BASE_URL}/boards/my`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/my`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
