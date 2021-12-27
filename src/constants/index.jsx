@@ -1,5 +1,5 @@
-export const API_BASE_URL = 'http://10.21.20.21:8080';
-// const API_BASE_URL =
+export const API_BASE_URL = 'http://10.21.20.10:8080';
+// export const API_BASE_URL =
 // 'http://ec2-13-125-74-97.ap-northeast-2.compute.amazonaws.com:8080';
 export const REDIRECT_URL = 'http://localhost:3000/oauth2/redirect';
 

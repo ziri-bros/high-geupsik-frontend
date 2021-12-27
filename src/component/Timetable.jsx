@@ -7,6 +7,7 @@ import { loadTimetable } from '../lib/api/timetable';
 import { getTargetDate, getWeekIdx } from '../utils';
 import Button from './common/Button';
 import Modal from './common/Modal';
+import MyScoolLink from './MyScoolLink';
 
 const TimetableWrapper = styled.div`
   margin: 19px 20px 0 20px;
@@ -212,6 +213,8 @@ const Timetable = () => {
           onConfirm={onConfirm}
         />
       )}
+
+      <MyScoolLink>fefe</MyScoolLink>
     </TimetableWrapper>
   );
 };
