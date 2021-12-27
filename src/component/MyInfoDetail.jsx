@@ -8,7 +8,7 @@ import DropDown from './common/DropDown';
 import { getCurrentUserInfo, imageUploader, signUp, updateUserInfo } from '../lib/api/auth';
 import Modal from './common/Modal';
 import { getUserInfo } from '../store/userInfo';
-import { areas, classes, grades, schoolCodes } from '../constants';
+import { AREAS, CLASSES, GRADES, SCHOOL_CODES } from '../constants';
 
 const RegisterUserInfoBox = styled.div`
   margin: 22px 0 0 22px;
@@ -103,11 +103,11 @@ const MyInfoDetail = ({ path }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
 
   if (info) {
-    const idx = Object.values(areas).findIndex(item => info.schoolDTO.region === item.region);
-    defaultArea = Object.keys(areas)[idx];
+    const idx = Object.values(AREAS).findIndex(item => info.schoolDTO.region === item.region);
+    defaultArea = Object.keys(AREAS)[idx];
     defaultSchool = info.schoolDTO.name;
-    defaultGrade = grades[info.grade - 1];
-    defaultClass = classes[info.classNum - 1];
+    defaultGrade = GRADES[info.grade - 1];
+    defaultClass = CLASSES[info.classNum - 1];
   }
 
   useEffect(() => {
@@ -151,8 +151,8 @@ const MyInfoDetail = ({ path }) => {
       return;
     }
 
-    const gradeValue = grades.findIndex(value => value === grade) + 1;
-    const classValue = classes.findIndex(value => value === classNum) + 1;
+    const gradeValue = GRADES.findIndex(value => value === grade) + 1;
+    const classValue = CLASSES.findIndex(value => value === classNum) + 1;
 
     const userReqDTO = {
       studentCardDTO: {
@@ -161,10 +161,10 @@ const MyInfoDetail = ({ path }) => {
         studentCardImage: imgUrl,
       },
       schoolDTO: {
-        code: schoolCodes[schoolName],
+        code: SCHOOL_CODES[schoolName],
         name: schoolName,
-        region: areas[area].region,
-        regionCode: areas[area].code,
+        region: AREAS[area].region,
+        regionCode: AREAS[area].code,
       },
     };
 
@@ -181,8 +181,8 @@ const MyInfoDetail = ({ path }) => {
       setModalOn(false);
       return;
     }
-    const gradeValue = grades.findIndex(value => value === grade) + 1;
-    const classValue = classes.findIndex(value => value === classNum) + 1;
+    const gradeValue = GRADES.findIndex(value => value === grade) + 1;
+    const classValue = CLASSES.findIndex(value => value === classNum) + 1;
 
     const userReqDTO = {
       studentCardDTO: {
@@ -191,10 +191,10 @@ const MyInfoDetail = ({ path }) => {
         studentCardImage: imgUrl,
       },
       schoolDTO: {
-        code: schoolCodes[schoolName],
+        code: SCHOOL_CODES[schoolName],
         name: schoolName,
-        region: areas[area].region,
-        regionCode: areas[area].code,
+        region: AREAS[area].region,
+        regionCode: AREAS[area].code,
       },
     };
 
@@ -224,7 +224,7 @@ const MyInfoDetail = ({ path }) => {
         <InputText>지역<span>*</span></InputText>
         <DropDown
           name={defaultArea}
-          list={Object.keys(areas)}
+          list={Object.keys(AREAS)}
           onChangeSelected={onChangeArea}
           narrow
         />
@@ -233,7 +233,7 @@ const MyInfoDetail = ({ path }) => {
         <InputText>재학 중인 고등학교<span>*</span></InputText>
         <DropDown
           name={defaultSchool}
-          list={Object.keys(schoolCodes)}
+          list={Object.keys(SCHOOL_CODES)}
           onChangeSelected={onChangeSchoolName}
           narrow
           school
@@ -243,7 +243,7 @@ const MyInfoDetail = ({ path }) => {
         <InputText>학년<span>*</span></InputText>
         <DropDown
           name={defaultGrade}
-          list={grades}
+          list={GRADES}
           onChangeSelected={onChangeGrade}
           narrow
         />
@@ -252,7 +252,7 @@ const MyInfoDetail = ({ path }) => {
         <InputText>반<span>*</span></InputText>
         <DropDown
           name={defaultClass}
-          list={classes}
+          list={CLASSES}
           onChangeSelected={onChangeClassNum}
           narrow
         />
