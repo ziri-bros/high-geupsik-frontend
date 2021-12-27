@@ -5,7 +5,7 @@ import HeaderWrapper from '../component/common/HeaderWrapper';
 import Wrapper from '../component/common/Wrapper';
 import SchoolFood from '../component/SchoolFoold';
 
-const HomePage = () => (
+const SchoolFoodPage = () => (
   <>
     <Wrapper>
       <HeaderWrapper>
@@ -17,4 +17,4 @@ const HomePage = () => (
   </>
 );
 
-export default HomePage;
+export default SchoolFoodPage;
