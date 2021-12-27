@@ -140,12 +140,14 @@ const Comment = ({
 
   useEffect(() => {
     if (postWriterId === comment.writerId) {
-      return setWriter('익명 (글쓴이)');
+      setWriter('익명 (글쓴이)');
+      return;
     }
     if (userId === comment.writerId) {
-      return setWriter('익명 (나)');
+      setWriter('익명 (나)');
+      return;
     }
-    return setWriter(`익명 ${comment.anonymousId}`);
+    setWriter(`익명 ${comment.anonymousId}`);
   }, []);
 
   return (
