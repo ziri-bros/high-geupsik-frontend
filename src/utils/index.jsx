@@ -6,14 +6,14 @@ const parseTime = time =>
     .join(' ')
     .substring(2, time.length - 3);
 
-const getTodayIdx = () => {
+const getWeekIdx = () => {
   const today = new Date();
   return [1 - today.getDay(), 7 - today.getDay()];
 };
 
 const getTargetDate = (target) => {
   let today = new Date();
-  today = new Date(today.setDate(today.getDate() - target));
+  today = new Date(today.setDate(today.getDate() + target - 1));
 
   const year = today.getFullYear();
   const month = (`0${today.getMonth() + 1}`).slice(-2);
@@ -36,5 +36,5 @@ export {
   parseTime,
   getTargetDate,
   getTodayDate,
-  getTodayIdx,
+  getWeekIdx,
 };

@@ -1,6 +1,6 @@
-const API_BASE_URL = 'http://10.21.20.157:8080';
+const API_BASE_URL = 'http://10.21.20.21:8080';
 // const API_BASE_URL =
-//   'http://ec2-54-180-201-123.ap-northeast-2.compute.amazonaws.com:8080';
+// 'http://ec2-13-125-74-97.ap-northeast-2.compute.amazonaws.com:8080';
 const REDIRECT_URL = 'http://localhost:3000/oauth2/redirect';
 
 const KAKAO_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URL}`;
