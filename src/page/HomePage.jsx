@@ -5,6 +5,7 @@ import HeaderNavigation from '../component/common/HeaderNavigation';
 import Wrapper from '../component/common/Wrapper';
 import Preview from '../component/common/Preview';
 import HeaderWrapper from '../component/common/HeaderWrapper';
+import MyScoolLink from '../component/MyScoolLink';
 
 const HomeWrapper = styled.div`
   display: flex;

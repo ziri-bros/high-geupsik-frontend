@@ -1,12 +1,13 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
+import { TIMETABLE_FRAME } from '../constants';
 import { loadTimetable } from '../lib/api/timetable';
-import { getTargetDate, getTodayIdx } from '../utils';
+import { getTargetDate, getWeekIdx } from '../utils';
 import Button from './common/Button';
 import Modal from './common/Modal';
+import MyScoolLink from './MyScoolLink';
 
 const TimetableWrapper = styled.div`
   margin: 19px 20px 0 20px;
@@ -90,25 +91,6 @@ const DeleteBtn = styled.button`
   cursor: pointer;
 `;
 
-const lists = [
-  { name: '0교시', id: '0' },
-  { name: '1교시', id: '1' },
-  { name: '2교시', id: '2' },
-  { name: '3교시', id: '3' },
-  { name: '4교시', id: '4' },
-  { name: '5교시', id: '5' },
-  { name: '6교시', id: '6' },
-  { name: '7교시', id: '7' },
-  { name: '8교시', id: '8' },
-];
-
-/*
-regionCode
-code
-date
-grade
-classNum
-*/
 const Timetable = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
 
@@ -119,6 +101,67 @@ const Timetable = () => {
   const onCancel = () => setOnDelete(!onDelete);
   // 차후에 onConfirm 수정 필요
   const onConfirm = () => setOnDelete(!onDelete);
+
+  const timeTable = [...new Array(5)].map(_ => new Array(9).fill('-'));
+
+  const reflectDOM = (table, position) => {
+    table[position].forEach((_, idx) => {
+      const $input = document.getElementById(`input${idx}${position}`);
+      $input.value = timeTable[position][idx];
+    });
+  };
+
+  const trimData = (dataSet, position) => {
+    dataSet.forEach(data => {
+      timeTable[position][data.PERIO] = data.ITRT_CNTNT;
+    });
+    reflectDOM(timeTable, position);
+  };
+
+  useEffect(() => {
+    const weekIdx = getWeekIdx();
+
+    if (info) {
+      const { grade, classNum } = info;
+      const { code, regionCode } = info.schoolDTO;
+
+      for (let i = weekIdx[0] + 1; i < weekIdx[1]; i += 1) {
+        const data = {
+          date: getTargetDate(i),
+          grade,
+          classNum,
+          code,
+          regionCode,
+        };
+
+        const loadTimetableAPI = async () => {
+          const response = await loadTimetable(data);
+          const dataSet = response[1].row;
+
+          switch (i) {
+            case 1:
+              trimData(dataSet, 0);
+              break;
+            case 2:
+              trimData(dataSet, 1);
+              break;
+            case 3:
+              trimData(dataSet, 2);
+              break;
+            case 4:
+              trimData(dataSet, 3);
+              break;
+            case 5:
+              trimData(dataSet, 4);
+              break;
+            default:
+          }
+        };
+
+        loadTimetableAPI();
+      }
+    }
+  }, [info]);
 
   return (
     <TimetableWrapper>
@@ -148,18 +191,19 @@ const Timetable = () => {
           <TInput value="목" head disabled />
           <TInput value="금" last head disabled />
         </Trow>
-        {lists.map((list, index) => (
+        {TIMETABLE_FRAME.map((list, idx) => (
           <Trow key={list.id}>
-            <TInput first value={list.name} bottom={index === lists.length - 1} disabled />
-            <TInput maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput maxLength="6" bottom={index === lists.length - 1} disabled={buttonOn} />
-            <TInput maxLength="6" last bottom={index === lists.length - 1} disabled={buttonOn} />
+            <TInput first value={list.name} bottom={idx === TIMETABLE_FRAME.length - 1} disabled />
+            <TInput id={`input${idx}0`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}1`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}2`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}3`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput id={`input${idx}4`} maxLength="6" last bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
           </Trow>
         ))}
       </Table>
-      {!buttonOn && <Button footer>저장</Button>}
+      {/* 추후 수정 필요 */}
+      {!buttonOn && <Button footer onClick={onClickBtn}>저장</Button>}
 
       {/* 지우기 클릭시 생성되는 모달 창 */}
       {!onDelete && (

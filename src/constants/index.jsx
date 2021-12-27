@@ -1,13 +1,13 @@
-const API_BASE_URL = 'http://10.21.20.10:8080';
-// const API_BASE_URL =
-//   'http://ec2-54-180-201-123.ap-northeast-2.compute.amazonaws.com:8080';
-const REDIRECT_URL = 'http://localhost:3000/oauth2/redirect';
+export const API_BASE_URL = 'http://10.21.20.10:8080';
+// export const API_BASE_URL =
+// 'http://ec2-13-125-74-97.ap-northeast-2.compute.amazonaws.com:8080';
+export const REDIRECT_URL = 'http://localhost:3000/oauth2/redirect';
 
-const KAKAO_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URL}`;
-const NAVER_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/naver?redirect_uri=${REDIRECT_URL}`;
-const GOOGLE_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/google?redirect_uri=${REDIRECT_URL}`;
+export const KAKAO_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/kakao?redirect_uri=${REDIRECT_URL}`;
+export const NAVER_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/naver?redirect_uri=${REDIRECT_URL}`;
+export const GOOGLE_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/google?redirect_uri=${REDIRECT_URL}`;
 
-const areas = {
+export const AREAS = Object.freeze({
   서울특별시: { region: 'SEOUL', code: 'B10' },
   부산광역시: { region: 'BUSAN', code: 'C10' },
   대구광역시: { region: 'DAEGU', code: 'D10' },
@@ -25,26 +25,26 @@ const areas = {
   경상북도: { region: 'GYEONGBUK', code: 'R10' },
   경상남도: { region: 'GYEONGNAM', code: 'S10' },
   제주특별자치도: { region: 'JEJU', code: 'T10' },
-};
+});
 
-const schoolCodes = {
+export const SCHOOL_CODES = Object.freeze({
   서울과학고등학교: '7010084',
   한성과학고등학교: '7010115',
   대원외국어고등학교: '7010143',
   한영외국어고등학교: '7010259',
-};
+});
 
-const grades = ['1학년', '2학년', '3학년'];
-const classes = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
+export const GRADES = ['1학년', '2학년', '3학년'];
+export const CLASSES = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
 
-export {
-  API_BASE_URL,
-  REDIRECT_URL,
-  KAKAO_AUTH_URL,
-  NAVER_AUTH_URL,
-  GOOGLE_AUTH_URL,
-  areas,
-  schoolCodes,
-  grades,
-  classes,
-};
+export const TIMETABLE_FRAME = [
+  { name: '0교시', id: '0' },
+  { name: '1교시', id: '1' },
+  { name: '2교시', id: '2' },
+  { name: '3교시', id: '3' },
+  { name: '4교시', id: '4' },
+  { name: '5교시', id: '5' },
+  { name: '6교시', id: '6' },
+  { name: '7교시', id: '7' },
+  { name: '8교시', id: '8' },
+];
