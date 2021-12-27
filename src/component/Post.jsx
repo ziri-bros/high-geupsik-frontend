@@ -204,7 +204,7 @@ const Post = ({ boardId }) => {
 
   // 대댓글 작성시 parentId를 받아온다
   const getCommentParentId = parentId => {
-    setCommentParentId(parentId);
+    setCommentParentId({ parentId });
   };
 
   const load = async () => {
@@ -314,6 +314,7 @@ const Post = ({ boardId }) => {
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
                         getCommentParentId={getCommentParentId}
+                        key={comment.id}
                       />
                     ) : (
                       <Cocomment
@@ -322,6 +323,7 @@ const Post = ({ boardId }) => {
                         userId={info.id}
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
+                        key={comment.id}
                       />
                     ),
                   )}

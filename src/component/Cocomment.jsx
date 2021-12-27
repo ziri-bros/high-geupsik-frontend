@@ -188,7 +188,7 @@ Cocomment.propTypes = {
     replyCount: PropTypes.number,
     userLike: PropTypes.bool,
   }).isRequired,
-  boardId: PropTypes.number.isRequired,
+  boardId: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
   getEditComment: PropTypes.func,

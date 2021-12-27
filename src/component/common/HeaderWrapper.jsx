@@ -6,5 +6,5 @@ const HeaderWrapper = ({ children }) => <div>{children}</div>;
 export default HeaderWrapper;
 
 HeaderWrapper.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.arrayOf(PropTypes.element),
 };

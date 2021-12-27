@@ -59,7 +59,7 @@ const CommentInput = ({
       content: comment,
     };
     if (parentId) {
-      dto = { ...dto, parentId };
+      dto = { ...dto, ...parentId };
     }
     try {
       isEditComment
@@ -110,7 +110,7 @@ CommentInput.propTypes = {
   boardId: PropTypes.string.isRequired,
   onClickLoad: PropTypes.func.isRequired,
   editCommentValue: PropTypes.objectOf(PropTypes.object),
-  commentParentId: PropTypes.number,
+  commentParentId: PropTypes.objectOf(PropTypes.number),
 };
 
 export default CommentInput;
