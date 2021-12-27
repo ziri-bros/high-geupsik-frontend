@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import { React, useEffect } from 'react';
+import React from 'react';
 import { css } from '@emotion/react';
 import { Link, useHistory } from 'react-router-dom';
 
