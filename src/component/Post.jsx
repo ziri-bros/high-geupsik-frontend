@@ -314,6 +314,7 @@ const Post = ({ boardId }) => {
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
                         getCommentParentId={getCommentParentId}
+                        key={comment.id}
                       />
                     ) : (
                       <Cocomment
@@ -322,6 +323,7 @@ const Post = ({ boardId }) => {
                         userId={info.id}
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
+                        key={comment.id}
                       />
                     ),
                   )}
