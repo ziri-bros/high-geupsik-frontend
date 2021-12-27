@@ -1,4 +1,4 @@
-const parseTime = time =>
+export const parseTime = time =>
   time
     .toString()
     .replace(/-/g, '/')
@@ -6,12 +6,12 @@ const parseTime = time =>
     .join(' ')
     .substring(2, time.length - 3);
 
-const getWeekIdx = () => {
+export const getWeekIdx = () => {
   const today = new Date();
   return [1 - today.getDay(), 7 - today.getDay()];
 };
 
-const getTargetDate = (target) => {
+export const getTargetDate = (target) => {
   let today = new Date();
   today = new Date(today.setDate(today.getDate() + target - 1));
 
@@ -22,7 +22,7 @@ const getTargetDate = (target) => {
   return `${year}${month}${day}`;
 };
 
-const getTodayDate = () => {
+export const getTodayDate = () => {
   const today = new Date();
 
   const year = today.getFullYear();
@@ -30,11 +30,4 @@ const getTodayDate = () => {
   const day = (`0${today.getDate()}`).slice(-2);
 
   return `${year}${month}${day}`;
-};
-
-export {
-  parseTime,
-  getTargetDate,
-  getTodayDate,
-  getWeekIdx,
 };
