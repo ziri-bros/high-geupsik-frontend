@@ -1,4 +1,4 @@
-import React from 'react';
+import { React, useState } from 'react';
 import ReactRouterPropTypes from 'react-router-prop-types';
 import BoardNaviagtion from '../component/common/BoardNavigation';
 import Header from '../component/common/Header';
@@ -9,14 +9,16 @@ import Post from '../component/Post';
 
 const PostPage = ({ match }) => {
   const { boardId } = match.params;
+  const [category, setCategory] = useState('');
+
   return (
     <Wrapper>
       <HeaderWrapper>
         <Header />
         <HeaderNavigation />
-        <BoardNaviagtion />
+        <BoardNaviagtion category={category} />
       </HeaderWrapper>
-      <Post boardId={boardId}></Post>
+      <Post boardId={boardId} setCategory={setCategory}></Post>
     </Wrapper>
   );
 };

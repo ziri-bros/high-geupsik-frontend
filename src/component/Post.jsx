@@ -177,7 +177,7 @@ const PostLikedButton = styled.div`
   }
 `;
 
-const Post = ({ boardId }) => {
+const Post = ({ boardId, setCategory }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
   const [data, setData] = useState(null);
@@ -211,6 +211,7 @@ const Post = ({ boardId }) => {
     try {
       const postData = await getPost(boardId);
       setData(postData.data);
+      setCategory(postData.data.category);
 
       const commentsData = await getComments(boardId);
       setComments(commentsData.data.content);
@@ -344,6 +345,7 @@ const Post = ({ boardId }) => {
 
 Post.propTypes = {
   boardId: PropTypes.string.isRequired,
+  setCategory: PropTypes.func,
 };
 
 export default Post;

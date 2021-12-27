@@ -138,25 +138,26 @@ const Timetable = () => {
           const response = await loadTimetable(data);
 
           if (!response) {
-            reflectDOM(timeTable, i - 1);
+            reflectDOM(timeTable, i);
             return;
           }
+
           const dataSet = response[1].row;
 
           switch (i) {
-            case 1:
+            case 0:
               trimData(dataSet, 0);
               break;
-            case 2:
+            case 1:
               trimData(dataSet, 1);
               break;
-            case 3:
+            case 2:
               trimData(dataSet, 2);
               break;
-            case 4:
+            case 3:
               trimData(dataSet, 3);
               break;
-            case 5:
+            case 4:
               trimData(dataSet, 4);
               break;
             default:
