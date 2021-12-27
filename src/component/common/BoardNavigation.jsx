@@ -71,7 +71,7 @@ const lists = [
 
 const BoardNaviagtion = ({ category }) => {
   const history = useHistory();
-  const setCategory = category && `/board/${category.toLowerCase()}`;
+  const boardCategory = category && `/board/${category.toLowerCase()}`;
 
   return (
     <BoardNavigationBox>
@@ -80,7 +80,7 @@ const BoardNaviagtion = ({ category }) => {
           to={list.url}
           key={list.id}
           focused={
-            list.url === history.location.pathname || list.url === setCategory
+            list.url === history.location.pathname || list.url === boardCategory
           }
         >
           {list.name}
