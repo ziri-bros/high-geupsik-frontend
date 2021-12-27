@@ -312,6 +312,7 @@ const Post = ({ boardId, setCategory }) => {
                         comment={comment}
                         boardId={boardId}
                         userId={info.id}
+                        postWriterId={data.writerId}
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
                         getCommentParentId={getCommentParentId}
@@ -322,6 +323,7 @@ const Post = ({ boardId, setCategory }) => {
                         cocomment={comment}
                         boardId={boardId}
                         userId={info.id}
+                        postWriterId={data.writerId}
                         onClickLoad={onClickLoad}
                         getEditComment={getEditComment}
                         key={comment.id}

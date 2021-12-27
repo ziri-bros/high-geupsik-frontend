@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
@@ -99,11 +99,13 @@ const Cocomment = ({
   cocomment,
   boardId,
   userId,
+  postWriterId,
   onClickLoad,
   getEditComment,
 }) => {
   const [morePopOff, setMorePopOff] = useState(false);
   const [commentLike, setCommentLike] = useState(cocomment.userLike);
+  const [writer, setWriter] = useState('');
 
   const morePopOn = () => {
     setMorePopOff(!morePopOff);
@@ -125,6 +127,18 @@ const Cocomment = ({
     getEditComment(cocomment);
   };
 
+  useEffect(() => {
+    if (postWriterId === cocomment.writerId) {
+      setWriter('익명 (글쓴이)');
+      return;
+    }
+    if (userId === cocomment.writerId) {
+      setWriter('익명 (나)');
+      return;
+    }
+    setWriter(`익명 ${cocomment.anonymousId}`);
+  }, []);
+
   return (
     <>
       {morePopOff && (
@@ -145,11 +159,7 @@ const Cocomment = ({
               <CommentArrow>
                 <img src="/images/icons/return.png" alt="return" />
               </CommentArrow>
-              <CommentName>
-                {cocomment.writerId === userId
-                  ? '익명 (글쓴이)'
-                  : `익명 ${cocomment.anonymousId}`}
-              </CommentName>
+              <CommentName>{writer}</CommentName>
               <CommentMoreButton onClick={morePopOn}>
                 <img src="/images/icons/more.png" alt="more" />
               </CommentMoreButton>
@@ -190,6 +200,7 @@ Cocomment.propTypes = {
   }).isRequired,
   boardId: PropTypes.string.isRequired,
   userId: PropTypes.number.isRequired,
+  postWriterId: PropTypes.number.isRequired,
   onClickLoad: PropTypes.func,
   getEditComment: PropTypes.func,
 };
