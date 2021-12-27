@@ -7,7 +7,7 @@ export const KAKAO_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/kakao?redirect_u
 export const NAVER_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/naver?redirect_uri=${REDIRECT_URL}`;
 export const GOOGLE_AUTH_URL = `${API_BASE_URL}/oauth2/authorize/google?redirect_uri=${REDIRECT_URL}`;
 
-export const AREAS = {
+export const AREAS = Object.freeze({
   서울특별시: { region: 'SEOUL', code: 'B10' },
   부산광역시: { region: 'BUSAN', code: 'C10' },
   대구광역시: { region: 'DAEGU', code: 'D10' },
@@ -25,14 +25,14 @@ export const AREAS = {
   경상북도: { region: 'GYEONGBUK', code: 'R10' },
   경상남도: { region: 'GYEONGNAM', code: 'S10' },
   제주특별자치도: { region: 'JEJU', code: 'T10' },
-};
+});
 
-export const SCHOOL_CODES = {
+export const SCHOOL_CODES = Object.freeze({
   서울과학고등학교: '7010084',
   한성과학고등학교: '7010115',
   대원외국어고등학교: '7010143',
   한영외국어고등학교: '7010259',
-};
+});
 
 export const GRADES = ['1학년', '2학년', '3학년'];
 export const CLASSES = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
