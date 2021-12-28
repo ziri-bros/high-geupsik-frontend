@@ -2,8 +2,9 @@ import styled from '@emotion/styled';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import XMLParser from 'react-xml-parser';
-import { getTargetDate, getWeek } from '../utils';
+import { getTargetDate, getWeek, getTodayDate } from '../utils';
 import { mealServiceDietInfo } from '../lib/api/schoolFoodInfo';
+import { getSchoolFoodList } from '../store/schoolFoodList';
 
 const DateWrapper = styled.div`
   display: flex;
@@ -86,23 +87,19 @@ const SchoolFoodList = styled.div`
 const Img = styled.img``;
 
 const SchoolFood = () => {
+  //
   const info = useSelector(({ userInfo }) => userInfo.info);
-  const [breakfast, setBreakfast] = useState({
-    kcal: '',
-    foodlist: '',
-  });
-  const [lunch, setLunch] = useState({
-    kcal: '',
-    foodlist: '',
-  });
-  const [dinner, setDinner] = useState({
-    kcal: '',
-    foodlist: '',
-  });
 
+  const [breakfast, setBreakfast] = useState(null);
+  const [lunch, setLunch] = useState(null);
+  const [dinner, setDinner] = useState(null);
   const [targetDate, setTargetDate] = useState(0);
 
   const [tmp, setTmp] = useState(1);
+
+  useEffect(() => {
+    setTargetDate(getTargetDate(tmp));
+  }, [tmp]);
 
   const deleteSchoolFoodCharacters = value => {
     const completeSchoolFood = value
@@ -130,10 +127,6 @@ const SchoolFood = () => {
 
     return completeSchoolFood;
   };
-
-  useEffect(() => {
-    setTargetDate(getTargetDate(tmp));
-  }, [tmp]);
 
   useEffect(() => {
     if (info) {
@@ -214,9 +207,7 @@ const SchoolFood = () => {
       };
       mealServiceDietInfoAPI();
     }
-  }, [info, targetDate]);
-
-  // 현재 날짜와 DB의 날짜를 비교해서 depth를 파악 후 오늘급식 띄우는게 우선.
+  }, [info, breakfast]);
 
   return (
     <>
@@ -236,27 +227,33 @@ const SchoolFood = () => {
         />
       </DateWrapper>
       <SchoolFoodWrapper>
-        <SchoolFoodItem>
-          <SchoolFoodUpperWrapper>
-            <DaytimeItem>아침</DaytimeItem>
-            <Kcal>{breakfast.kcal}</Kcal>
-          </SchoolFoodUpperWrapper>
-          <SchoolFoodList>{breakfast.foodlist}</SchoolFoodList>
-        </SchoolFoodItem>
-        <SchoolFoodItem>
-          <SchoolFoodUpperWrapper>
-            <DaytimeItem>점심</DaytimeItem>
-            <Kcal>{lunch.kcal}</Kcal>
-          </SchoolFoodUpperWrapper>
-          <SchoolFoodList>{lunch.foodlist}</SchoolFoodList>
-        </SchoolFoodItem>
-        <SchoolFoodItem>
-          <SchoolFoodUpperWrapper>
-            <DaytimeItem>저녁</DaytimeItem>
-            <Kcal>{dinner.kcal}</Kcal>
-          </SchoolFoodUpperWrapper>
-          <SchoolFoodList>{dinner.foodlist}</SchoolFoodList>
-        </SchoolFoodItem>
+        {breakfast && (
+          <SchoolFoodItem>
+            <SchoolFoodUpperWrapper>
+              <DaytimeItem>아침</DaytimeItem>
+              <Kcal>{breakfast.kcal}</Kcal>
+            </SchoolFoodUpperWrapper>
+            <SchoolFoodList>{breakfast.foodlist}</SchoolFoodList>
+          </SchoolFoodItem>
+        )}
+        {lunch && (
+          <SchoolFoodItem>
+            <SchoolFoodUpperWrapper>
+              <DaytimeItem>점심</DaytimeItem>
+              <Kcal>{lunch.kcal}</Kcal>
+            </SchoolFoodUpperWrapper>
+            <SchoolFoodList>{lunch.foodlist}</SchoolFoodList>
+          </SchoolFoodItem>
+        )}
+        {dinner && (
+          <SchoolFoodItem>
+            <SchoolFoodUpperWrapper>
+              <DaytimeItem>저녁</DaytimeItem>
+              <Kcal>{dinner.kcal}</Kcal>
+            </SchoolFoodUpperWrapper>
+            <SchoolFoodList>{dinner.foodlist}</SchoolFoodList>
+          </SchoolFoodItem>
+        )}
       </SchoolFoodWrapper>
     </>
   );
