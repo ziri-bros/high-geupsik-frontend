@@ -63,13 +63,17 @@ const ImageWrapper = styled.div`
 `;
 
 const ImageText = styled.div`
-  width: 220px;
+  width: 300px;
   padding: 7px;
   border: none;
   margin-right: 10px;
   background: #f5f5f5;
   border: 1px solid #ebebeb;
   overflow: hidden;
+
+  @media only screen and (max-width: 385px) {
+      width: 210px;     
+  }
 `;
 
 const ImageUploadButton = styled.div`

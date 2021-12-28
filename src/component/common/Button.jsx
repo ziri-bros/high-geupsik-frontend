@@ -35,6 +35,8 @@ const ButtonBox = styled.div`
       /* 모바일용 폰트 크기 적용 */
       @media only screen and (max-width: 385px) {
         margin: 40px 35px 10px 10px;
+        padding: 8px 0;
+        
       }
 
   `}
@@ -56,6 +58,7 @@ const ButtonBox = styled.div`
       color: black;
       margin-bottom: 7px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+      
     `}
 
   ${props =>
