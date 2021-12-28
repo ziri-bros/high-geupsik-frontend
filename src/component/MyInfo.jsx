@@ -34,9 +34,11 @@ const TextWrapper = styled.div`
   display: flex;
   margin: 10px 0;
 
-  ${props => props.mainInfo && css`
-    flex-direction:column;
-  `}
+  ${props =>
+    props.mainInfo &&
+    css`
+      flex-direction: column;
+    `}
 `;
 
 const Text = styled.div`
@@ -69,7 +71,7 @@ const MyPostMenu = styled.div`
 
   /* 모바일용 폰트 크기 적용 */
   @media only screen and (max-width: 385px) {
-    font-size:14px;
+    font-size: 14px;
   }
 
   ${props =>
@@ -97,7 +99,7 @@ const MyPostWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled(Link)`
-  width: 94%;  
+  width: 94%;
 `;
 
 const MyInfo = () => {

@@ -4,7 +4,6 @@ import { useSelector } from 'react-redux';
 import XMLParser from 'react-xml-parser';
 import { getTargetDate, getWeek, getTodayDate } from '../utils';
 import { mealServiceDietInfo } from '../lib/api/schoolFoodInfo';
-import { getSchoolFoodList } from '../store/schoolFoodList';
 
 const DateWrapper = styled.div`
   display: flex;

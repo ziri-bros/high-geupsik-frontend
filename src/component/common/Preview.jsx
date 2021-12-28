@@ -288,8 +288,6 @@ const Preview = ({ type }) => {
         const response = await mealServiceDietInfo(data);
         const xmlToJson = new XMLParser().parseFromString(response);
 
-        console.log(xmlToJson);
-
         // 아점저 처리.
         switch (xmlToJson.children.length) {
           case 2:
