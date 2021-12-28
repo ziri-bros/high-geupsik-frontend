@@ -92,7 +92,7 @@ const SchoolFood = () => {
   const [breakfast, setBreakfast] = useState(null);
   const [lunch, setLunch] = useState(null);
   const [dinner, setDinner] = useState(null);
-  const [targetDate, setTargetDate] = useState(0);
+  const [targetDate, setTargetDate] = useState(getTargetDate(1));
 
   const [tmp, setTmp] = useState(1);
 
@@ -206,7 +206,7 @@ const SchoolFood = () => {
       };
       mealServiceDietInfoAPI();
     }
-  }, [info, breakfast]);
+  }, [info, targetDate]);
 
   return (
     <>
