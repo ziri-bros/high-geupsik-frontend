@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import XMLParser from 'react-xml-parser';
+
 import styled from '@emotion/styled';
 import PropTypes, { func } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { getTargetDate, getTodayDate } from '../../utils';
+
 import BoardComponent from './BoardComponent';
 import { getBoardList } from '../../lib/api/board';
+import { mealServiceDietInfo } from '../../lib/api/schoolFoodInfo';
+import { getSchoolFoodList } from '../../store/schoolFoodList';
+import MySchoolLink from '../MyScoolLink';
 
 const PreviewItem = styled.div`
   display: flex;
@@ -112,7 +120,7 @@ const SchoolFoodMenu = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin: 0 0 0 9px;
+  margin: 0 9px 0 9px;
   font-weight: 400;
   font-size: 11px;
   color: #4f4f4f;
@@ -231,8 +239,142 @@ const Preview = ({ type }) => {
     dateItem.getDay() === 6 && setDay('토');
   }, []);
 
+  const info = useSelector(({ userInfo }) => userInfo.info);
+  const dispatch = useDispatch();
+
+  const [breakfast, setBreakfast] = useState(null);
+  const [lunch, setLunch] = useState(null);
+  const [dinner, setDinner] = useState(null);
+
+  // const [targetDate, setTargetDate] = useState(1);
+
+  const deleteSchoolFoodCharacters = value => {
+    const completeSchoolFood = value
+      .replace(/[0-9]/g, '')
+      .replace(/\./g, '')
+      .replace(/~/g, '')
+      .replace(/\(과학고\)/g, '')
+      .replace(/\(과\)/g, '')
+      .replace(/\(조\/석\)/g, '')
+      .replace(/\(조식-과학고\)/g, '')
+      .replace(/\(중식-과학고\)/g, '')
+      .replace(/\(석식-과학고\)/g, '')
+      .replace(/\(조-과학고\)/g, '')
+      .replace(/\(중-과학고\)/g, '')
+      .replace(/\(석-과학고\)/g, '')
+      .replace(/\(조식\)/g, '')
+      .replace(/\(중식\)/g, '')
+      .replace(/\(석식\)/g, '')
+      .replace(/\(조\)/g, '')
+      .replace(/\(중\)/g, '')
+      .replace(/\(석\)/g, '')
+      .replace(/<br\/>/g, ', ')
+      .replace(/>/g, '')
+      .replace(/[~!^*_+|<>?:{}]/g, '');
+
+    return completeSchoolFood;
+  };
+
+  useEffect(() => {
+    if (info) {
+      const { code, regionCode } = info.schoolDTO;
+      const data = {
+        code,
+        regionCode,
+        targetDate: getTodayDate(),
+      };
+
+      const mealServiceDietInfoAPI = async () => {
+        const response = await mealServiceDietInfo(data);
+        const xmlToJson = new XMLParser().parseFromString(response);
+
+        // 아점저 처리.
+        switch (xmlToJson.children.length) {
+          case 2:
+            setBreakfast({
+              ...breakfast,
+              kcal: '',
+              foodlist: '식사 없음',
+            });
+            setLunch({
+              ...lunch,
+              kcal: '',
+              foodlist: '식사 없음',
+            });
+            setDinner({
+              ...dinner,
+              kcal: '',
+              foodlist: '식사 없음',
+            });
+            break;
+          case 3:
+            setBreakfast({
+              ...breakfast,
+              kcal: xmlToJson.children[1].children[10].value.replace(/>/g, ''),
+              foodlist: deleteSchoolFoodCharacters(
+                xmlToJson.children[1].children[8].value,
+              ),
+            });
+            setLunch({
+              ...lunch,
+              kcal: xmlToJson.children[2].children[10].value.replace(/>/g, ''),
+              foodlist: deleteSchoolFoodCharacters(
+                xmlToJson.children[2].children[8].value,
+              ),
+            });
+            setDinner({
+              ...dinner,
+              kcal: '',
+              foodlist: '식사 없음',
+            });
+            break;
+          default:
+            setBreakfast({
+              ...breakfast,
+              kcal: xmlToJson.children[1].children[10].value.replace(/>/g, ''),
+              foodlist: deleteSchoolFoodCharacters(
+                xmlToJson.children[1].children[8].value,
+              ),
+            });
+            setLunch({
+              ...lunch,
+              kcal: xmlToJson.children[2].children[10].value.replace(/>/g, ''),
+              foodlist: deleteSchoolFoodCharacters(
+                xmlToJson.children[2].children[8].value,
+              ),
+            });
+            setDinner({
+              ...dinner,
+              kcal: xmlToJson.children[3].children[10].value.replace(/>/g, ''),
+              foodlist: deleteSchoolFoodCharacters(
+                xmlToJson.children[3].children[8].value,
+              ),
+            });
+        }
+      };
+      mealServiceDietInfoAPI();
+    }
+  }, [info]);
+
+  useEffect(() => {
+    if (breakfast) {
+      dispatch(getSchoolFoodList({ type: 'breakfast', data: breakfast }));
+    }
+    if (lunch) {
+      dispatch(getSchoolFoodList({ type: 'lunch', data: lunch }));
+    }
+    if (dinner) {
+      dispatch(getSchoolFoodList({ type: 'dinner', data: dinner }));
+    }
+  }, [breakfast, lunch, dinner]);
+
   return (
     <>
+      {type === 'myschool' && (
+        <PreviewItem>
+          <MySchoolLink />
+        </PreviewItem>
+      )}
       {type === 'schoolfood' && (
         <PreviewItem>
           <TitleWrapper>
@@ -244,29 +386,31 @@ const Preview = ({ type }) => {
               </Link>
             </IconItem>
           </TitleWrapper>
-          <SchoolFoodWrapper>
-            <SchoolFoodItem>
-              <SchoolFoodTitleWrapper>
-                <DaytimeItem>아침</DaytimeItem>
-                <span> {`${month + 1}.${date} (${day})`}</span>
-              </SchoolFoodTitleWrapper>
-              <SchoolFoodMenu>쇠고기 무국</SchoolFoodMenu>
-            </SchoolFoodItem>
-            <SchoolFoodItem>
-              <SchoolFoodTitleWrapper>
-                <DaytimeItem>점심</DaytimeItem>
-                <span> {`${month + 1}.${date} (${day})`}</span>
-              </SchoolFoodTitleWrapper>
-              <SchoolFoodMenu>파전</SchoolFoodMenu>
-            </SchoolFoodItem>
-            <SchoolFoodItem>
-              <SchoolFoodTitleWrapper>
-                <DaytimeItem>저녁</DaytimeItem>
-                <span> {`${month + 1}.${date} (${day})`}</span>
-              </SchoolFoodTitleWrapper>
-              <SchoolFoodMenu>박성호</SchoolFoodMenu>
-            </SchoolFoodItem>
-          </SchoolFoodWrapper>
+          {breakfast && lunch && dinner && (
+            <SchoolFoodWrapper>
+              <SchoolFoodItem>
+                <SchoolFoodTitleWrapper>
+                  <DaytimeItem>아침</DaytimeItem>
+                  <span> {breakfast.kcal}</span>
+                </SchoolFoodTitleWrapper>
+                <SchoolFoodMenu>{breakfast.foodlist}</SchoolFoodMenu>
+              </SchoolFoodItem>
+              <SchoolFoodItem>
+                <SchoolFoodTitleWrapper>
+                  <DaytimeItem>점심</DaytimeItem>
+                  <span> {lunch.kcal}</span>
+                </SchoolFoodTitleWrapper>
+                <SchoolFoodMenu>{lunch.foodlist}</SchoolFoodMenu>
+              </SchoolFoodItem>
+              <SchoolFoodItem>
+                <SchoolFoodTitleWrapper>
+                  <DaytimeItem>저녁</DaytimeItem>
+                  <span> {dinner.kcal}</span>
+                </SchoolFoodTitleWrapper>
+                <SchoolFoodMenu>{dinner.foodlist}</SchoolFoodMenu>
+              </SchoolFoodItem>
+            </SchoolFoodWrapper>
+          )}
         </PreviewItem>
       )}
       {type === 'board' && (

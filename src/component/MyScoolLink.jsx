@@ -13,18 +13,19 @@ const MySchoolLinkWrapper = styled.a`
 
 const ImageBox = styled.div`
   margin-right: 20px;
-  
-  img{
+
+  img {
     width: 50px;
     height: 50px;
   }
 `;
 
 const TextBox = styled.div`
-  font-size:15px;
+  font-size: 15px;
+  margin: 2px 20px 0 0;
 `;
 
-const MyScoolLink = () => {
+const MySchoolLink = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [schoolURL, setSchoolURL] = useState(null);
 
@@ -52,17 +53,16 @@ const MyScoolLink = () => {
 
   return (
     <>
-      { schoolURL && (
-      <MySchoolLinkWrapper href={`${schoolURL}`} target="_blank">
-        <ImageBox>
-          <img src="/images/icons/school.png" alt="" />
-        </ImageBox>
-        <TextBox>학교 홈페이지 바로가기</TextBox>
-      </MySchoolLinkWrapper>
+      {schoolURL && (
+        <MySchoolLinkWrapper href={`${schoolURL}`} target="_blank">
+          <ImageBox>
+            <img src="/images/icons/school.png" alt="" />
+          </ImageBox>
+          <TextBox>학교 홈페이지 바로가기</TextBox>
+        </MySchoolLinkWrapper>
       )}
     </>
-
   );
 };
 
-export default MyScoolLink;
+export default MySchoolLink;
