@@ -273,11 +273,11 @@ const Post = ({ boardId, setCategory }) => {
                 </PostTitleWrapper>
                 <PostSubTitleWrapper>
                   <PostSubTitle>{parseTime(data.createdDate)}</PostSubTitle>
-                  <PostSubTitle>|</PostSubTitle>
+                  {/* <PostSubTitle>|</PostSubTitle>
                   <View>
                     <img src="/images/icons/view.png" alt="view" />
                   </View>
-                  <PostSubTitle>123</PostSubTitle>
+                  <PostSubTitle>123</PostSubTitle> */}
                 </PostSubTitleWrapper>
               </PostMainWrapper>
 
