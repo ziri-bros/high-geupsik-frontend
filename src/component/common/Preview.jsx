@@ -246,8 +246,6 @@ const Preview = ({ type }) => {
   const [lunch, setLunch] = useState(null);
   const [dinner, setDinner] = useState(null);
 
-  // const [targetDate, setTargetDate] = useState(1);
-
   const deleteSchoolFoodCharacters = value => {
     const completeSchoolFood = value
       .replace(/[0-9]/g, '')
