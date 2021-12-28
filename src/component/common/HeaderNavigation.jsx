@@ -41,47 +41,42 @@ const lists = [
   {
     id: 1,
     name: '홈',
-    url: ['/home'],
+    url: '/home',
   },
   {
     id: 2,
     name: '게시판',
-    url: [
-      '/board',
-      '/board/free',
-      '/board/information',
-      '/board/hot',
-      '/board/promotion',
-    ],
+    url: '/board',
   },
   {
     id: 3,
     name: '시간표',
-    url: ['/schedule'],
+    url: '/schedule',
   },
   {
     id: 4,
     name: '쪽지함',
-    url: ['/message'],
+    url: '/message',
   },
   {
     id: 5,
     name: '내정보',
-    url: ['/myInfo'],
+    url: '/myInfo',
   },
 ];
 
 const HeaderNavigation = () => {
   const history = useHistory();
 
+  const checkFocused = (pathname, url) => pathname.match(url);
+
   return (
     <HeaderNavigationBox>
       {lists.map(list => (
         <NavigationItem
-          to={list.url[0]}
+          to={list.url}
           key={list.id}
-          pathname={history.location.pathname}
-          focused={list.url.includes(history.location.pathname)}
+          focused={checkFocused(history.location.pathname, list.url)}
         >
           {list.name}
         </NavigationItem>
