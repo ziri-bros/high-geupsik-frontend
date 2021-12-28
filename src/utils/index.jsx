@@ -11,6 +11,30 @@ export const getWeekIdx = () => {
   return [1 - today.getDay(), 7 - today.getDay()];
 };
 
+export const getWeek = target => {
+  let today = new Date();
+  today = new Date(today.setDate(today.getDate() + target - 1));
+
+  const day = `${today.getDay()}`;
+
+  switch (day) {
+    case '0':
+      return '일';
+    case '1':
+      return '월';
+    case '2':
+      return '화';
+    case '3':
+      return '수';
+    case '4':
+      return '목';
+    case '5':
+      return '금';
+    default:
+      return '토';
+  }
+};
+
 export const getTargetDate = target => {
   let today = new Date();
   today = new Date(today.setDate(today.getDate() + target - 1));

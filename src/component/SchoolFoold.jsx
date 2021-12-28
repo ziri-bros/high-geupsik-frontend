@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import XMLParser from 'react-xml-parser';
-import { getTargetDate } from '../utils';
+import { getTargetDate, getWeek } from '../utils';
 import { mealServiceDietInfo } from '../lib/api/schoolFoodInfo';
 
 const DateWrapper = styled.div`
@@ -228,7 +228,7 @@ const SchoolFood = () => {
         />
         {`${getTargetDate(tmp).substring(4, 6)}월 ${getTargetDate(
           tmp,
-        ).substring(6, 8)}일`}
+        ).substring(6, 8)}일 (${getWeek(tmp)})`}
         <Img
           onClick={() => setTmp(tmp + 1)}
           src="/images/icons/right_arrow.png"
