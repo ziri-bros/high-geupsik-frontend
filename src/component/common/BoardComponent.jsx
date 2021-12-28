@@ -201,8 +201,8 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
                 <BoardInnerWrapper>
                   <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
                   <ContentsInformationSet>
-                    <img src="/images/icons/view.png" alt="view" />
-                    <span>123</span>
+                    {/* <img src="/images/icons/view.png" alt="view" />
+                    <span>123</span> */}
                     <img src="/images/icons/heart.png" alt="heart" />
                     <span>{elem.likeCount}</span>
                     <img src="/images/icons/chat.png" alt="chat" />

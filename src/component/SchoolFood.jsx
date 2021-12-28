@@ -140,69 +140,109 @@ const SchoolFood = () => {
         const response = await mealServiceDietInfo(data);
         const xmlToJson = new XMLParser().parseFromString(response);
 
-        // 아점저 처리.
-        switch (xmlToJson.children.length) {
-          case 2:
-            setBreakfast({
-              ...breakfast,
-              kcal: '',
-              foodlist: '식사 없음',
-            });
-            setLunch({
-              ...lunch,
-              kcal: '',
-              foodlist: '식사 없음',
-            });
-            setDinner({
-              ...dinner,
-              kcal: '',
-              foodlist: '식사 없음',
-            });
-            break;
-          case 3:
-            setBreakfast({
-              ...breakfast,
-              kcal: xmlToJson.children[1].children[10].value.replace(/>/g, ''),
-              foodlist: deleteSchoolFoodCharacters(
-                xmlToJson.children[1].children[8].value,
-              ),
-            });
-            setLunch({
-              ...lunch,
-              kcal: xmlToJson.children[2].children[10].value.replace(/>/g, ''),
-              foodlist: deleteSchoolFoodCharacters(
-                xmlToJson.children[2].children[8].value,
-              ),
-            });
-            setDinner({
-              ...dinner,
-              kcal: '',
-              foodlist: '식사 없음',
-            });
-            break;
-          default:
-            setBreakfast({
-              ...breakfast,
-              kcal: xmlToJson.children[1].children[10].value.replace(/>/g, ''),
-              foodlist: deleteSchoolFoodCharacters(
-                xmlToJson.children[1].children[8].value,
-              ),
-            });
-            setLunch({
-              ...lunch,
-              kcal: xmlToJson.children[2].children[10].value.replace(/>/g, ''),
-              foodlist: deleteSchoolFoodCharacters(
-                xmlToJson.children[2].children[8].value,
-              ),
-            });
-            setDinner({
-              ...dinner,
-              kcal: xmlToJson.children[3].children[10].value.replace(/>/g, ''),
-              foodlist: deleteSchoolFoodCharacters(
-                xmlToJson.children[3].children[8].value,
-              ),
-            });
+        console.log(xmlToJson);
+        //
+        if (xmlToJson.children[0].name === 'head') {
+          switch (xmlToJson.children.length) {
+            case 2:
+              setBreakfast({
+                ...breakfast,
+                kcal: '',
+                foodlist: '식사 없음',
+              });
+              setLunch({
+                ...lunch,
+                kcal: xmlToJson.children[1].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[1].children[8].value,
+                ),
+              });
+              setDinner({
+                ...dinner,
+                kcal: '',
+                foodlist: '식사 없음',
+              });
+              break;
+            case 3:
+              setBreakfast({
+                ...breakfast,
+                kcal: xmlToJson.children[1].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[1].children[8].value,
+                ),
+              });
+              setLunch({
+                ...lunch,
+                kcal: xmlToJson.children[2].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[2].children[8].value,
+                ),
+              });
+              setDinner({
+                ...dinner,
+                kcal: '',
+                foodlist: '식사 없음',
+              });
+              break;
+            default:
+              setBreakfast({
+                ...breakfast,
+                kcal: xmlToJson.children[1].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[1].children[8].value,
+                ),
+              });
+              setLunch({
+                ...lunch,
+                kcal: xmlToJson.children[2].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[2].children[8].value,
+                ),
+              });
+              setDinner({
+                ...dinner,
+                kcal: xmlToJson.children[3].children[10].value.replace(
+                  />/g,
+                  '',
+                ),
+                foodlist: deleteSchoolFoodCharacters(
+                  xmlToJson.children[3].children[8].value,
+                ),
+              });
+          }
+        } else {
+          setBreakfast({
+            ...breakfast,
+            kcal: '',
+            foodlist: '식사 없음',
+          });
+          setLunch({
+            ...lunch,
+            kcal: '',
+            foodlist: '식사 없음',
+          });
+          setDinner({
+            ...dinner,
+            kcal: '',
+            foodlist: '식사 없음',
+          });
         }
+        // 아점저 처리.
       };
       mealServiceDietInfoAPI();
     }
