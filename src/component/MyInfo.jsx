@@ -13,7 +13,7 @@ const MyInfoWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  height: auto;
+  height: 100%;
   background-color: white;
   &::-webkit-scrollbar {
     display: none;
@@ -67,6 +67,11 @@ const MyPostMenu = styled.div`
   color: #4f4f4f;
   cursor: pointer;
 
+  /* 모바일용 폰트 크기 적용 */
+  @media only screen and (max-width: 385px) {
+    font-size:14px;
+  }
+
   ${props =>
     props.menuOn &&
     css`
@@ -88,14 +93,11 @@ const MyPostWrapper = styled.div`
   justify-content: center;
   align-items: center;
   width: 100%;
-  height: 300px;
-  border-radius: 5px;
-  background-color: black;
-  margin: 0 0 0 10px;
+  height: 100%;
 `;
 
 const ButtonWrapper = styled(Link)`
-  width: 94%;
+  width: 94%;  
 `;
 
 const MyInfo = () => {
@@ -118,7 +120,7 @@ const MyInfo = () => {
     const loadBoard = async () => {
       const response = await getMyPostList();
 
-      if (response.success) {
+      if (response.success && response.data.length) {
         setData(response.data);
       }
     };

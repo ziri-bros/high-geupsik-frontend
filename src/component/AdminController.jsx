@@ -46,6 +46,7 @@ const Button = styled.button`
   /* 모바일용 폰트 크기 적용 */
   @media only screen and (max-width: 385px) {
     font-size: 10px;
+    margin-right:0;
   }
   
   ${props => props.approve && css`
@@ -78,8 +79,8 @@ const BlackBackground = styled.div`
 `;
 
 const DeleteModal = styled.div`
-  background: white;
-  font-size: 14px;
+  background: white; 
+  font-size: 14px; 
   font-weight : 500;
   color: #4f4f4f;
   border-radius: 5px;
@@ -112,10 +113,18 @@ const ImgModal = styled.div`
   align-items: center;
   justify-content: center;
   position: relative;
-  
-  img{
-    width: 300px;
-    height: 200px;
+
+  >img{
+    width: 400px;
+    height: 300px;
+  }
+
+  /* 모바일용 폰트 크기 적용 */
+  @media only screen and (max-width: 385px) {
+    >img{
+      width: 300px;
+      height: 200px;
+    }
   }
 `;
 
