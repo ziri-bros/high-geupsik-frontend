@@ -111,7 +111,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
   const [normalPost, setNormalPost] = useState(null);
   const [myWritePost, setMyWritePost] = useState(null);
 
-  const setCategoryKor = engCategory => {
+  const getCategoryKor = engCategory => {
     if (engCategory === 'FREE') {
       return '자유게시판';
     }
@@ -166,7 +166,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
                   )}
                 </BoardInnerWrapper>
                 <BoardInnerWrapper>
-                  <ContentsType>{setCategoryKor(elem.category)}</ContentsType>
+                  <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
                   <ContentsInformationSet>
                     <img src="/images/icons/view.png" alt="view" />
                     <span>999</span>
@@ -199,7 +199,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
                   )}
                 </BoardInnerWrapper>
                 <BoardInnerWrapper>
-                  <ContentsType>{setCategoryKor(elem.category)}</ContentsType>
+                  <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
                   <ContentsInformationSet>
                     <img src="/images/icons/view.png" alt="view" />
                     <span>999</span>
