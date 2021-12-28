@@ -7,7 +7,6 @@ import { loadTimetable } from '../lib/api/timetable';
 import { getTargetDate, getWeekIdx } from '../utils';
 import Button from './common/Button';
 import Modal from './common/Modal';
-import MyScoolLink from './MyScoolLink';
 
 const TimetableWrapper = styled.div`
   margin: 19px 20px 0 20px;
@@ -209,7 +208,7 @@ const Timetable = () => {
         ))}
       </Table>
       {/* 추후 수정 필요 */}
-      {!buttonOn && <Button footer onClick={onClickBtn}>저장</Button>}
+      {!buttonOn && <Button scheduleBtn onClick={onClickBtn}>저장</Button>}
 
       {/* 지우기 클릭시 생성되는 모달 창 */}
       {!onDelete && (
