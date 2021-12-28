@@ -13,6 +13,10 @@ import Cocomment from './Cocomment';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 `;
 
 const PostWrapper = styled.div`
@@ -177,6 +181,8 @@ const PostLikedButton = styled.div`
   }
 `;
 
+const CommentInputWrapper = styled.div``;
+
 const Post = ({ boardId, setCategory }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [morePopOff, setMorePopOff] = useState(false);
@@ -332,12 +338,14 @@ const Post = ({ boardId, setCategory }) => {
                   )}
               </PostCommentsWrapper>
             </PostWrapper>
-            <CommentInput
-              boardId={boardId}
-              onClickLoad={onClickLoad}
-              editCommentValue={editCommentValue}
-              commentParentId={commentParentId}
-            />
+            <CommentInputWrapper>
+              <CommentInput
+                boardId={boardId}
+                onClickLoad={onClickLoad}
+                editCommentValue={editCommentValue}
+                commentParentId={commentParentId}
+              />
+            </CommentInputWrapper>
           </PostMainBox>
         </>
       )}
