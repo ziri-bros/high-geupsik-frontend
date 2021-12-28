@@ -111,6 +111,19 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
   const [normalPost, setNormalPost] = useState(null);
   const [myWritePost, setMyWritePost] = useState(null);
 
+  const setCategoryKor = engCategory => {
+    if (engCategory === 'FREE') {
+      return '자유게시판';
+    }
+    if (engCategory === 'INFORMATION') {
+      return '정보게시판';
+    }
+    if (engCategory === 'PROMOTION') {
+      return '홍보게시판';
+    }
+    return '기타게시판';
+  };
+
   useEffect(() => {
     const loadBoard = async () => {
       const responseToNormalPost = await getBoardList(type, 1);
@@ -153,7 +166,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
                   )}
                 </BoardInnerWrapper>
                 <BoardInnerWrapper>
-                  <ContentsType>{`${elem.category} 게시판`}</ContentsType>
+                  <ContentsType>{setCategoryKor(elem.category)}</ContentsType>
                   <ContentsInformationSet>
                     <img src="/images/icons/view.png" alt="view" />
                     <span>999</span>
@@ -186,7 +199,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
                   )}
                 </BoardInnerWrapper>
                 <BoardInnerWrapper>
-                  <ContentsType>{`${elem.category} 게시판`}</ContentsType>
+                  <ContentsType>{setCategoryKor(elem.category)}</ContentsType>
                   <ContentsInformationSet>
                     <img src="/images/icons/view.png" alt="view" />
                     <span>999</span>
