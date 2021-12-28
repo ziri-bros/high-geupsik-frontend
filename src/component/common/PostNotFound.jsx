@@ -7,12 +7,10 @@ const PostNotFoundWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 18%;
   font-size:18px;
 
   /* 모바일용 폰트 크기 적용 */
   @media only screen and (max-width: 385px) {
-    margin-top: 12%;
     font-size:15px;
   }
 

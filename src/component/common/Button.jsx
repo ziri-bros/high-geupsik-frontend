@@ -52,6 +52,7 @@ const ButtonBox = styled.div`
       background: white;
       color: black;
       margin-bottom: 7px;
+      padding:10px 0;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
       
        /* 모바일용 폰트 크기 적용 */
@@ -70,6 +71,7 @@ const ButtonBox = styled.div`
       background: #5d6e1e;
       color: white;
       margin-bottom: 7px;
+      padding:10px 0;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
 
       /* 모바일용 폰트 크기 적용 */
