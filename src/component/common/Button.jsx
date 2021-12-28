@@ -32,7 +32,7 @@ const ButtonBox = styled.div`
   ${props =>
     props.scheduleBtn &&
     css`
-      margin-top: 60px;
+      margin-top: 20px;
       
       /* 모바일용 폰트 크기 적용 */
       @media only screen and (max-width: 385px) {
