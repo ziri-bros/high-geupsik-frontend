@@ -108,7 +108,7 @@ const PostImages = styled.div`
   justify-content: center;
   align-items: center;
   img {
-    max-width: 420px;
+    max-width: 365px;
     margin-top: 20px;
   }
 `;
