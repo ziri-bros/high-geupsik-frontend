@@ -43,11 +43,6 @@ const ButtonBox = styled.div`
 
   margin: ${props => props.postBtn && '-50px 0 0 0'};
 
-  height: 40px;
-  background: #5d6e1e;
-  border-radius: 5px;
-  cursor: pointer;
-
   /* 내 정보에 위치하는 로그아웃 버튼 디자인 */
   ${props =>
     props.logoutBtn &&
@@ -59,27 +54,40 @@ const ButtonBox = styled.div`
       margin-bottom: 7px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
       
+       /* 모바일용 폰트 크기 적용 */
+      @media only screen and (max-width: 385px) {
+        font-size:12px;
+        height:30px;  
+      }
     `}
+
+
 
   ${props =>
     props.modifyBtn &&
     css`
       width: 100%;
-      margin: 5px 0;
       background: #5d6e1e;
-      color: black;
+      color: white;
       margin-bottom: 7px;
       box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.3);
+
+      /* 모바일용 폰트 크기 적용 */
+      @media only screen and (max-width: 385px) {
+        font-size:12px;
+        height:30px;  
+      }
     `}
 `;
 
-const Button = ({ children, footer, onClick, postBtn, logoutBtn, infoBtn }) => (
+const Button = ({ children, footer, onClick, postBtn, logoutBtn, infoBtn, modifyBtn }) => (
   <ButtonBox
     footer={footer}
     onClick={onClick}
     postBtn={postBtn}
     logoutBtn={logoutBtn}
     infoBtn={infoBtn}
+    modifyBtn={modifyBtn}
   >
     {children}
   </ButtonBox>
@@ -92,6 +100,7 @@ Button.propTypes = {
   postBtn: PropTypes.bool,
   logoutBtn: PropTypes.string,
   infoBtn: PropTypes.string,
+  modifyBtn: PropTypes.string,
 };
 
 export default Button;

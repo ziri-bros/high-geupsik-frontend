@@ -67,6 +67,11 @@ const MyPostMenu = styled.div`
   color: #4f4f4f;
   cursor: pointer;
 
+  /* 모바일용 폰트 크기 적용 */
+  @media only screen and (max-width: 385px) {
+    font-size:14px;
+  }
+
   ${props =>
     props.menuOn &&
     css`
@@ -95,7 +100,7 @@ const MyPostWrapper = styled.div`
 `;
 
 const ButtonWrapper = styled(Link)`
-  width: 94%;
+  width: 94%;  
 `;
 
 const MyInfo = () => {
