@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getBoardList = async (category, pageNumber = 1) => {
+export const getBoardList = async (category = '', pageNumber = 1) => {
   let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&page=${pageNumber}`;
 
   if (category === 'HOT') {
