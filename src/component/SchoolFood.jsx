@@ -140,8 +140,6 @@ const SchoolFood = () => {
         const response = await mealServiceDietInfo(data);
         const xmlToJson = new XMLParser().parseFromString(response);
 
-        console.log(xmlToJson);
-        //
         if (xmlToJson.children[0].name === 'head') {
           switch (xmlToJson.children.length) {
             case 2:
