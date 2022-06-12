@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { css } from '@emotion/react';
 import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
@@ -111,6 +112,8 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
   const [normalPost, setNormalPost] = useState(null);
   const [myWritePost, setMyWritePost] = useState(null);
 
+  const info = useSelector(({ userInfo }) => userInfo.info);
+
   const getCategoryKor = engCategory => {
     if (engCategory === 'FREE') {
       return '자유게시판';
@@ -125,23 +128,33 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
   };
 
   useEffect(() => {
-    const loadBoard = async () => {
-      const responseToNormalPost = await getBoardList(type, 1);
-      if (responseToNormalPost.success) {
-        setNormalPost(responseToNormalPost.data.content);
-      }
-    };
-    loadBoard();
-  }, []);
+    if (info) {
+      const loadBoard = async () => {
+        const responseToNormalPost = await getBoardList(
+          type,
+          1,
+          info.schoolResDTO.region,
+        );
+
+        if (responseToNormalPost.success) {
+          setNormalPost(responseToNormalPost.data.content);
+        }
+      };
+      loadBoard();
+    }
+  }, [info]);
 
   useEffect(() => {
-    const loadBoard2 = async () => {
-      const responseMyWritePost = await getMyPostList(type, 1);
-      if (responseMyWritePost.success) {
-        setMyWritePost(responseMyWritePost.data);
-      }
-    };
-    loadBoard2();
+    if (myPost) {
+      const loadMyBoard = async () => {
+        const responseMyWritePost = await getMyPostList();
+
+        if (responseMyWritePost.success) {
+          setMyWritePost(responseMyWritePost.data);
+        }
+      };
+      loadMyBoard();
+    }
   }, []);
 
   return (
@@ -183,7 +196,7 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
           ))}
         {myPost === true &&
           (myWritePost ? (
-            myWritePost.map(elem => (
+            myWritePost.content.map(elem => (
               <BoardContents
                 to={`/boards/${elem.id}`}
                 noticeExistence={noticeExistence}

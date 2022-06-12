@@ -6,11 +6,14 @@ export const getUserInfo = createAction(GET_USER_INFO);
 
 const initialState = {};
 
-const userInfo = handleActions({
-  [GET_USER_INFO]: (state, { payload: info }) => ({
-    ...state,
-    info,
-  }),
-}, initialState);
+const userInfo = handleActions(
+  {
+    [GET_USER_INFO]: (state, { payload: info }) => ({
+      ...state,
+      info,
+    }),
+  },
+  initialState,
+);
 
 export default userInfo;

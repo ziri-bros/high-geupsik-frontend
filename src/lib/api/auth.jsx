@@ -35,7 +35,7 @@ export const getCurrentUserInfo = async () => {
   return response;
 };
 
-export const updateUserInfo = async (userReqDTO) => {
+export const updateUserInfo = async userReqDTO => {
   const response = await axios({
     url: `${process.env.REACT_APP_API_BASE_URL}/users`,
     method: 'patch',
