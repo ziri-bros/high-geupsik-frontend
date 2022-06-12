@@ -157,10 +157,10 @@ const MyInfo = () => {
           <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
             내가 작성한 게시글
           </MyPostMenu>
-          <Bar />
+          {/* <Bar />
           <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>
             내가 댓글 단 게시글
-          </MyPostMenu>
+          </MyPostMenu> */}
         </MyPostMenuList>
       </PostMenuListWrapper>
 
