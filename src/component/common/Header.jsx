@@ -1,10 +1,12 @@
 import styled from '@emotion/styled';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCurrentUserInfo } from '../../lib/api/auth';
 import { getUserInfo } from '../../store/userInfo';
+import { getNotifications } from '../../lib/api/notification';
+import { getNotificationCount } from '../../store/notification';
 
 const HeaderStyle = styled.div`
   display: flex;
@@ -47,10 +49,38 @@ const LogoutBtn = styled.button`
   cursor: pointer;
 `;
 
+const NotificationNumber = styled.div`
+  position: absolute;
+
+  margin-left: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 15px;
+  height: 15px;
+
+  background: #e27070;
+  border-radius: 50%;
+
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 16px;
+
+  color: #ffffff;
+`;
+
 const Header = ({ admin }) => {
-  const info = useSelector(({ userInfo }) => (userInfo.info));
+  const info = useSelector(({ userInfo }) => userInfo.info);
+  const notificationCount = useSelector(
+    ({ notification }) => notification.notificationCount,
+  );
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const [remainNotificationCount, setRemainNotificationCount] =
+    useState(notificationCount);
 
   useEffect(() => {
     const loadUser = () => {
@@ -76,8 +106,20 @@ const Header = ({ admin }) => {
         console.log('localstorage is not working!');
       }
     };
+
+    const loadNotifications = async () => {
+      const response = await getNotifications();
+
+      dispatch(getNotificationCount(response.data.remainNotificationCount));
+    };
+
     loadUser();
+    loadNotifications();
   }, []);
+
+  useEffect(() => {
+    setRemainNotificationCount(notificationCount);
+  }, [notificationCount]);
 
   return (
     <HeaderStyle>
@@ -94,7 +136,12 @@ const Header = ({ admin }) => {
             </Link>
           </IconItem>
           <IconItem>
-            <Link to="/home">
+            <Link to="/notification">
+              {remainNotificationCount > 0 && (
+                <NotificationNumber>
+                  {remainNotificationCount}
+                </NotificationNumber>
+              )}
               <img src="/images/icons/bell.png" alt="search" />
             </Link>
           </IconItem>
