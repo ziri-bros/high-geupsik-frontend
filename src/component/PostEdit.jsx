@@ -6,7 +6,7 @@ import Button from './common/Button';
 import DropDown from './common/DropDown';
 import Modal from './common/Modal';
 import { imageUploader } from '../lib/api/auth';
-import { getEditPost, putEditPost } from '../lib/api/board';
+import { getPost, putEditPost } from '../lib/api/board';
 
 const PostCreateMainBox = styled.div`
   overflow-y: auto;
@@ -232,7 +232,7 @@ const PostEdit = ({ boardId }) => {
   useEffect(() => {
     const loadPost = async () => {
       try {
-        const response = await getEditPost(boardId);
+        const response = await getPost(boardId);
         loadEditCategory(response.data.category);
         setTitle(response.data.title);
         setContent(response.data.content);

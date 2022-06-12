@@ -171,6 +171,7 @@ const MoreButtonPop = ({
   morePopHandle,
   onClickLoad,
   onClickCommentEdit,
+  divRef,
 }) => {
   const history = useHistory();
 
@@ -196,7 +197,7 @@ const MoreButtonPop = ({
       }
     } else {
       try {
-        await deleteComments(boardId, commentId);
+        await deleteComments(commentId);
         morePopHandle();
         onClickLoad();
       } catch (e) {
@@ -207,7 +208,7 @@ const MoreButtonPop = ({
 
   return (
     <MoreButtonPopBackground>
-      <MoreButtonWrapper>
+      <MoreButtonWrapper ref={divRef}>
         <MoreButtonPopActionWrapper>
           {isMe ? (
             <>
@@ -248,6 +249,7 @@ MoreButtonPop.propTypes = {
   morePopHandle: PropTypes.func.isRequired,
   onClickLoad: PropTypes.func,
   onClickCommentEdit: PropTypes.func,
+  divRef: PropTypes.func,
 };
 
 export default MoreButtonPop;

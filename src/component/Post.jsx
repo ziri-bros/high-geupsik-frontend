@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
@@ -6,10 +6,11 @@ import { useSelector } from 'react-redux';
 import Comment from './Comment';
 import CommentInput from './common/CommentInput';
 import MoreButtonPop from './common/MoreButtonPop';
-import { getLike, getPost, postLike } from '../lib/api/board';
+import { getPost, postLike } from '../lib/api/board';
 import { getComments } from '../lib/api/comment';
 import { parseTime } from '../utils';
 import Cocomment from './Cocomment';
+import useDetectOutsideClick from '../hooks/useDetectOutsideClick';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -185,7 +186,8 @@ const CommentInputWrapper = styled.div``;
 
 const Post = ({ boardId, setCategory }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
-  const [morePopOff, setMorePopOff] = useState(false);
+  const divRef = useRef(null);
+  const [morePopOff, setMorePopOff] = useDetectOutsideClick(divRef, false);
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
   const [like, setLike] = useState(null);
@@ -218,12 +220,10 @@ const Post = ({ boardId, setCategory }) => {
       const postData = await getPost(boardId);
       setData(postData.data);
       setCategory(postData.data.category);
+      setLike(postData.data.userLike);
 
       const commentsData = await getComments(boardId);
       setComments(commentsData.data.content);
-
-      const likeData = await getLike(boardId);
-      setLike(likeData.data.likeFlag);
     } catch (e) {
       console.log(e);
     }
@@ -256,6 +256,7 @@ const Post = ({ boardId, setCategory }) => {
               type="post"
               isMe={isMe()}
               morePopHandle={morePopOn}
+              divRef={divRef}
             />
           )}
           <PostMainBox>

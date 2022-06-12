@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
 import { parseTime } from '../utils';
 import { postCommentsLike } from '../lib/api/comment';
+import useDetectOutsideClick from '../hooks/useDetectOutsideClick';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -109,7 +110,8 @@ const Comment = ({
   getEditComment,
   getCommentParentId,
 }) => {
-  const [morePopOff, setMorePopOff] = useState(false);
+  const divRef = useRef(null);
+  const [morePopOff, setMorePopOff] = useDetectOutsideClick(divRef, false);
   const [commentLike, setCommentLike] = useState(comment.userLike);
   const [writer, setWriter] = useState('');
   const morePopOn = () => {
@@ -161,6 +163,7 @@ const Comment = ({
           onClickLoad={onClickLoad}
           onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
+          divRef={divRef}
         />
       )}
       <>
