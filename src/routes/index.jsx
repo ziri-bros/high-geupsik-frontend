@@ -16,6 +16,7 @@ import SearchPage from '../page/SearchPage';
 import SchoolFoodPage from '../page/SchoolFoodPage';
 import OAuth2RedirectHandler from '../component/OAuth2RedirectHandler';
 import PostEditPage from '../page/PostEditPage';
+import NotificationPage from '../page/NotificationPage';
 
 const RootRoute = () => (
   <>
@@ -53,6 +54,7 @@ const RootRoute = () => (
       <Route path="/schedule" component={SchedulePage} exact />
       <Route path="/allow" component={MatchPage} exact />
       <Route path="/oauth2/redirect" component={OAuth2RedirectHandler} exact />
+      <Route path="/notification" component={NotificationPage} exact />
 
       {/* 관리자 전용 페이지 */}
       <Route path="/admin" component={AdminPage} exact />
