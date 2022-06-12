@@ -8,7 +8,7 @@ import { GOOGLE_AUTH_URL, KAKAO_AUTH_URL, NAVER_AUTH_URL } from '../constants';
 const LoginBox = styled.div`
   margin-top: 70px;
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
 `;
 
@@ -16,19 +16,21 @@ const Title = styled.div`
   font-size: 18px;
   font-weight: bold;
   color: #4f4f4f;
+
+  margin-bottom: 60px;
 `;
 
 const Profile = styled.div`
   width: 120px;
   height: 120px;
   margin: 40px 0 50px;
-  background: #c4c4c4;
+  /* background: #c4c4c4; */
 `;
 
 const LoginButton = styled.a`
   width: 276px;
   height: 40px;
-  border: 1px solid #ADADAD;
+  border: 1px solid #adadad;
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -38,21 +40,23 @@ const LoginButton = styled.a`
   background: #ffffff;
   color: black;
 
-  img{
+  img {
     width: 18px;
     height: 17.14px;
   }
 
   background-color: ${props => props.type === 'kakao' && '#f9e54d'};
   background-color: ${props => props.type === 'google' && '#FFFFFF'};
-  
-  ${props => props.type === 'naver' && css`
-    padding-left: 11px;
-    img{
-      width:24px;
-      height:23.14px;
-    }
-  `}
+
+  ${props =>
+    props.type === 'naver' &&
+    css`
+      padding-left: 11px;
+      img {
+        width: 24px;
+        height: 23.14px;
+      }
+    `}
 `;
 
 const LoginText = styled.div`
@@ -67,33 +71,38 @@ const Bottom = styled.div`
   font-size: 12px;
   font-weight: 500;
   display: flex;
-  margin-top:15px;
+  margin-top: 15px;
 
-  div:first-child{
+  div:first-child {
     margin-right: 10px;
   }
 
-  a{
+  a {
     font-weight: bold;
-    color:#5d6e1e;
+    color: #5d6e1e;
   }
 `;
 
 const Login = ({ type }) => (
   <LoginBox>
     <Title>{type === 'login' ? '로그인' : '회원가입'}</Title>
-    <Profile />
     <LoginButton type="kakao" href={KAKAO_AUTH_URL}>
       <img src="/images/icons/kakao.png" alt="kakao" />
-      <LoginText>{`카카오톡으로 ${type === 'login' ? '로그인' : '회원가입'}`}</LoginText>
+      <LoginText>
+        {`카카오톡으로 ${type === 'login' ? '로그인' : '회원가입'}`}
+      </LoginText>
     </LoginButton>
     <LoginButton type="naver" href={NAVER_AUTH_URL}>
       <img src="/images/icons/naver.png" alt="naver" />
-      <LoginText>{`네이버로 ${type === 'login' ? '로그인' : '회원가입'}`}</LoginText>
+      <LoginText>
+        {`네이버로 ${type === 'login' ? '로그인' : '회원가입'}`}
+      </LoginText>
     </LoginButton>
     <LoginButton type="google" href={GOOGLE_AUTH_URL}>
       <img src="/images/icons/google.png" alt="google" />
-      <LoginText>{`구글로 ${type === 'login' ? '로그인' : '회원가입'}`}</LoginText>
+      <LoginText>
+        {`구글로 ${type === 'login' ? '로그인' : '회원가입'}`}
+      </LoginText>
     </LoginButton>
     <Bottom>
       <div>
