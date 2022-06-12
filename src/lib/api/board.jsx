@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-export const getBoardList = async (category = '', pageNumber = 1) => {
-  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&page=${pageNumber}`;
+export const getBoardList = async (
+  category = '',
+  pageNumber = 1,
+  region = '',
+) => {
+  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&region=${region}&page=${pageNumber}`;
 
   if (category === 'HOT') {
-    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?page=${pageNumber}&likeCount=3`;
+    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&region=${region}&page=${pageNumber}&likeCount=3`;
   }
 
   const response = await axios({
