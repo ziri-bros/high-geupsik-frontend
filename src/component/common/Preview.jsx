@@ -180,13 +180,24 @@ const Preview = ({ type }) => {
     promotion_id: '',
   });
 
-  if (type === 'board') {
-    useEffect(() => {
+  const info = useSelector(({ userInfo }) => userInfo.info);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (type === 'board' && info) {
       const loadBoard = async () => {
-        const FREE = await getBoardList('FREE', 1);
-        const INFORMATION = await getBoardList('INFORMATION', 1);
-        const HOT = await getBoardList('HOT', 1);
-        const PROMOTION = await getBoardList('PROMOTION', 1);
+        const FREE = await getBoardList('FREE', 1, info.schoolResDTO.region);
+        const INFORMATION = await getBoardList(
+          'INFORMATION',
+          1,
+          info.schoolResDTO.region,
+        );
+        const HOT = await getBoardList('HOT', 1, info.schoolResDTO.region);
+        const PROMOTION = await getBoardList(
+          'PROMOTION',
+          1,
+          info.schoolResDTO.region,
+        );
 
         setFirstContentObject({
           free_title:
@@ -218,8 +229,8 @@ const Preview = ({ type }) => {
       };
 
       loadBoard();
-    }, []);
-  }
+    }
+  }, [info]);
 
   const [month, setMonth] = useState(null);
   const [date, setDate] = useState(null);
@@ -238,9 +249,6 @@ const Preview = ({ type }) => {
     dateItem.getDay() === 5 && setDay('금');
     dateItem.getDay() === 6 && setDay('토');
   }, []);
-
-  const info = useSelector(({ userInfo }) => userInfo.info);
-  const dispatch = useDispatch();
 
   const [breakfast, setBreakfast] = useState(null);
   const [lunch, setLunch] = useState(null);
@@ -276,7 +284,7 @@ const Preview = ({ type }) => {
 
   useEffect(() => {
     if (info) {
-      const { code, regionCode } = info.schoolDTO;
+      const { code, regionCode } = info.schoolResDTO;
       const data = {
         code,
         regionCode,
@@ -287,7 +295,6 @@ const Preview = ({ type }) => {
         const response = await mealServiceDietInfo(data);
         const xmlToJson = new XMLParser().parseFromString(response);
 
-        console.log(xmlToJson);
         // 아점저 처리.
         if (xmlToJson.children[0].name === 'head') {
           switch (xmlToJson.children.length) {
