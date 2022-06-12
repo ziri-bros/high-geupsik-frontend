@@ -31,7 +31,7 @@ const MySchoolLink = () => {
 
   useEffect(() => {
     if (info) {
-      const { code, regionCode, name } = info.schoolDTO;
+      const { code, regionCode, name } = info.schoolResDTO;
 
       const data = {
         code,
