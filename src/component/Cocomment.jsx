@@ -104,13 +104,16 @@ const Cocomment = ({
   onClickLoad,
   getEditComment,
 }) => {
-  const divRef = useRef(null);
-  const [morePopOff, setMorePopOff] = useDetectOutsideClick(divRef, false);
+  const moreButtonPopRef = useRef(null);
+  const [isMoreButtonPopOn, setIsMoreButtonPopOn] = useDetectOutsideClick(
+    moreButtonPopRef,
+    false,
+  );
   const [commentLike, setCommentLike] = useState(cocomment.userLike);
   const [writer, setWriter] = useState('');
 
   const morePopOn = () => {
-    setMorePopOff(!morePopOff);
+    setIsMoreButtonPopOn(!isMoreButtonPopOn);
   };
 
   const isMe = () => userId === cocomment.writerId;
@@ -143,7 +146,7 @@ const Cocomment = ({
 
   return (
     <>
-      {morePopOff && (
+      {isMoreButtonPopOn && (
         <MoreButtonPop
           boardId={boardId}
           commentId={cocomment.id}
@@ -152,7 +155,7 @@ const Cocomment = ({
           onClickLoad={onClickLoad}
           onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
-          divRef={divRef}
+          moreButtonPopRef={moreButtonPopRef}
         />
       )}
       <>

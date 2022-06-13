@@ -76,12 +76,12 @@ const NotificationItem = ({ item }) => {
     dispatch(getNotificationCount(response.data.remainNotificationCount));
   };
 
-  const setNotificationKind = notificationKind => {
-    if (notificationKind === 'COMMENT') {
+  const getNotificationKind = kind => {
+    if (kind === 'COMMENT') {
       return '댓글';
     }
 
-    if (notificationKind === 'REPLY') {
+    if (kind === 'REPLY') {
       return '대댓글';
     }
 
@@ -95,9 +95,9 @@ const NotificationItem = ({ item }) => {
           <img src="/images/icons/comment-green.png" alt="comment" />
         </IconWrapper>
         <Container>
-          <Title>{setNotificationKind(item.notificationKind)}</Title>
+          <Title>{getNotificationKind(item.notificationKind)}</Title>
           <Content>
-            {`[익명님의 ${setNotificationKind(item.notificationKind)}] : ${
+            {`[익명님의 ${getNotificationKind(item.notificationKind)}] : ${
               item.content
             }`}
           </Content>

@@ -171,7 +171,7 @@ const MoreButtonPop = ({
   morePopHandle,
   onClickLoad,
   onClickCommentEdit,
-  divRef,
+  moreButtonPopRef,
 }) => {
   const history = useHistory();
 
@@ -208,7 +208,7 @@ const MoreButtonPop = ({
 
   return (
     <MoreButtonPopBackground>
-      <MoreButtonWrapper ref={divRef}>
+      <MoreButtonWrapper ref={moreButtonPopRef}>
         <MoreButtonPopActionWrapper>
           {isMe ? (
             <>
@@ -249,7 +249,7 @@ MoreButtonPop.propTypes = {
   morePopHandle: PropTypes.func.isRequired,
   onClickLoad: PropTypes.func,
   onClickCommentEdit: PropTypes.func,
-  divRef: PropTypes.func,
+  moreButtonPopRef: PropTypes.func,
 };
 
 export default MoreButtonPop;

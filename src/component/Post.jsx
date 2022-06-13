@@ -186,8 +186,11 @@ const CommentInputWrapper = styled.div``;
 
 const Post = ({ boardId, setCategory }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
-  const divRef = useRef(null);
-  const [morePopOff, setMorePopOff] = useDetectOutsideClick(divRef, false);
+  const moreButtonPopRef = useRef(null);
+  const [isMoreButtonPopOn, setIsMoreButtonPopOn] = useDetectOutsideClick(
+    moreButtonPopRef,
+    false,
+  );
   const [data, setData] = useState(null);
   const [comments, setComments] = useState(null);
   const [like, setLike] = useState(null);
@@ -197,7 +200,7 @@ const Post = ({ boardId, setCategory }) => {
   const history = useHistory();
 
   const morePopOn = () => {
-    setMorePopOff(!morePopOff);
+    setIsMoreButtonPopOn(!isMoreButtonPopOn);
   };
 
   const onGoBack = () => history.goBack();
@@ -250,13 +253,13 @@ const Post = ({ boardId, setCategory }) => {
     <>
       {data && (
         <>
-          {morePopOff && (
+          {isMoreButtonPopOn && (
             <MoreButtonPop
               boardId={boardId}
               type="post"
               isMe={isMe()}
               morePopHandle={morePopOn}
-              divRef={divRef}
+              moreButtonPopRef={moreButtonPopRef}
             />
           )}
           <PostMainBox>
