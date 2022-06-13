@@ -83,29 +83,41 @@ const Header = ({ admin }) => {
     useState(notificationCount);
 
   useEffect(() => {
-    const loadUser = () => {
-      try {
-        const user = localStorage.getItem('ACCESS_TOKEN');
+    const userToken = localStorage.getItem('ACCESS_TOKEN');
 
-        if (!user) {
-          history.push('/');
+    const loadUser = async () => {
+      try {
+        const response = await getCurrentUserInfo();
+
+        if (response.status === 200) {
+          dispatch(getUserInfo(response.data.data));
           return;
         }
-
-        const loadAPI = async () => {
-          const response = await getCurrentUserInfo();
-
-          // 사용자가 ROLE_USER인 경우
-          if (response.status === 200) {
-            dispatch(getUserInfo(response.data.data));
-          }
-        };
-
-        if (!info) loadAPI();
       } catch (e) {
-        console.log('localstorage is not working!');
+        if (userToken) {
+          history.push('/register');
+        }
       }
     };
+
+    loadUser();
+
+    if (!userToken) {
+      history.push('/');
+      return;
+    }
+
+    if (info) {
+      if (info.role === 'ROLE_GUEST' && !info.studentCardImage) {
+        history.push('/register');
+        return;
+      }
+      if (info.role === 'ROLE_GUEST' && info.studentCardImage) {
+        history.push('/allow');
+        localStorage.removeItem('ACCESS_TOKEN');
+        return;
+      }
+    }
 
     const loadNotifications = async () => {
       const response = await getNotifications();
@@ -113,7 +125,6 @@ const Header = ({ admin }) => {
       dispatch(getNotificationCount(response.data.remainNotificationCount));
     };
 
-    loadUser();
     loadNotifications();
   }, []);
 
