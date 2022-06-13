@@ -12,6 +12,7 @@ module.exports = {
     'react/self-closing-comp': 0,
     'react/jsx-props-no-spreading': 0,
     'react/require-default-props': 0,
+    'react/forbid-prop-types': 0,
     'no-unused-vars': 0,
     'no-unused-expressions': 0,
     'function-paren-newline': 0,

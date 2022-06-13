@@ -25,9 +25,9 @@ export const postComments = async (boardId, commentReqDTO) => {
 };
 
 // 게시글의 boardId, 댓글의 commentId를 받아 댓글 삭제를 요청한다.
-export const deleteComments = async (boardId, commentId) => {
+export const deleteComments = async commentId => {
   const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/comments/${commentId}`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/comments/${commentId}`,
     method: 'delete',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
@@ -60,22 +60,10 @@ export const putEditComments = async (commentId, commentReqDTO) => {
   });
 };
 
-// 댓글의 Id인 commentId를 입력하여 해당 댓글의 좋아요 갯수를 요청한다.
-export const getCommentsLike = async commentId => {
-  const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/comments/${commentId}/like`,
-    method: 'get',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    },
-  });
-  return response.data;
-};
-
 // 댓글의 Id인 commentId를 입력하여 댓글의 좋아요를 요청한다.
 export const postCommentsLike = async commentId => {
   await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/comments/${commentId}/like`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/comments/${commentId}/likes`,
     method: 'post',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,

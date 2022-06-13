@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
 import { parseTime } from '../utils';
 import { postCommentsLike } from '../lib/api/comment';
+import useDetectOutsideClick from '../hooks/useDetectOutsideClick';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -103,12 +104,16 @@ const Cocomment = ({
   onClickLoad,
   getEditComment,
 }) => {
-  const [morePopOff, setMorePopOff] = useState(false);
+  const moreButtonPopRef = useRef(null);
+  const [isMoreButtonPopOn, setIsMoreButtonPopOn] = useDetectOutsideClick(
+    moreButtonPopRef,
+    false,
+  );
   const [commentLike, setCommentLike] = useState(cocomment.userLike);
   const [writer, setWriter] = useState('');
 
   const morePopOn = () => {
-    setMorePopOff(!morePopOff);
+    setIsMoreButtonPopOn(!isMoreButtonPopOn);
   };
 
   const isMe = () => userId === cocomment.writerId;
@@ -141,7 +146,7 @@ const Cocomment = ({
 
   return (
     <>
-      {morePopOff && (
+      {isMoreButtonPopOn && (
         <MoreButtonPop
           boardId={boardId}
           commentId={cocomment.id}
@@ -150,6 +155,7 @@ const Cocomment = ({
           onClickLoad={onClickLoad}
           onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
+          moreButtonPopRef={moreButtonPopRef}
         />
       )}
       <>
@@ -167,7 +173,9 @@ const Cocomment = ({
             <CommentTime>{parseTime(cocomment.createdDate)}</CommentTime>
           </CommentMainWrapper>
           <CommentSubWrapper>
-            <CommentContents>{cocomment.content}</CommentContents>
+            <CommentContents>
+              {cocomment.deleted ? '삭제된 댓글 입니다.' : cocomment.content}
+            </CommentContents>
           </CommentSubWrapper>
           <CommentIconWrapper>
             <CommentLikeButton onClick={onClickCommentLikeBtn}>

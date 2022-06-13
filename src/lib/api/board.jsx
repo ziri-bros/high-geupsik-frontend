@@ -1,10 +1,14 @@
 import axios from 'axios';
 
-export const getBoardList = async (category = '', pageNumber = 1) => {
-  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&page=${pageNumber}`;
+export const getBoardList = async (
+  category = '',
+  pageNumber = 1,
+  region = '',
+) => {
+  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&region=${region}&page=${pageNumber}`;
 
   if (category === 'HOT') {
-    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?page=${pageNumber}&likeCount=3`;
+    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?&region=${region}&page=${pageNumber}&likeCount=3`;
   }
 
   const response = await axios({
@@ -44,19 +48,6 @@ export const getPost = async boardId => {
   return response.data;
 };
 
-// 게시글 id를 통해서 편집 전 게시글 정보를 불러온다
-// reponse 받아서 글쓴이 id와 맞는지 확인하고 맞을때만 수정할 수 있게 한다.
-export const getEditPost = async boardId => {
-  const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/edit`,
-    method: 'get',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    },
-  });
-  return response.data;
-};
-
 // 기존 게시글 수정을 요청할때. 게시글 수정되면 바꾼 게시글로 이동시킨다.
 export const putEditPost = async (boardId, boardReqDTO) => {
   const response = await axios({
@@ -85,23 +76,12 @@ export const deletePost = async boardId => {
 // 좋아요 취소할때도 똑같이 요청하면 된다.
 export const postLike = async boardId => {
   await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/like`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/likes`,
     method: 'post',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
-};
-
-export const getLike = async boardId => {
-  const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/like`,
-    method: 'get',
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
-    },
-  });
-  return response.data;
 };
 
 // 내가 쓴 게시글 리스트 받아오기

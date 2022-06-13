@@ -122,7 +122,7 @@ const MyInfo = () => {
     const loadBoard = async () => {
       const response = await getMyPostList();
 
-      if (response.success && response.data.length) {
+      if (response.success && response.data.content.length > 0) {
         setData(response.data);
       }
     };
@@ -138,8 +138,8 @@ const MyInfo = () => {
           <Text>{info.email}</Text>
         </TextWrapper>
         <TextWrapper>
-          <Text rightMargin>{info.schoolDTO.region}</Text>
-          <Text rightMargin>{info.schoolDTO.name}</Text>
+          <Text rightMargin>{info.schoolResDTO.region}</Text>
+          <Text rightMargin>{info.schoolResDTO.name}</Text>
           <Text grade>{info.grade}학년</Text>
           <Text>{info.classNum}반</Text>
         </TextWrapper>
@@ -157,10 +157,10 @@ const MyInfo = () => {
           <MyPostMenu menuOn={menuOn} onClick={onClickWriteBtn}>
             내가 작성한 게시글
           </MyPostMenu>
-          <Bar />
+          {/* <Bar />
           <MyPostMenu menuOn={!menuOn} onClick={onClickCommentBtn}>
             내가 댓글 단 게시글
-          </MyPostMenu>
+          </MyPostMenu> */}
         </MyPostMenuList>
       </PostMenuListWrapper>
 

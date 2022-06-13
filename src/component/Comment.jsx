@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
 import MoreButtonPop from './common/MoreButtonPop';
 import { parseTime } from '../utils';
 import { postCommentsLike } from '../lib/api/comment';
+import useDetectOutsideClick from '../hooks/useDetectOutsideClick';
 
 const CommentWrapper = styled.div`
   border-bottom: 1px solid #adadad;
@@ -109,11 +110,15 @@ const Comment = ({
   getEditComment,
   getCommentParentId,
 }) => {
-  const [morePopOff, setMorePopOff] = useState(false);
+  const moreButtonPopRef = useRef(null);
+  const [isMoreButtonPopOn, setIsMoreButtonPopOn] = useDetectOutsideClick(
+    moreButtonPopRef,
+    false,
+  );
   const [commentLike, setCommentLike] = useState(comment.userLike);
   const [writer, setWriter] = useState('');
   const morePopOn = () => {
-    setMorePopOff(!morePopOff);
+    setIsMoreButtonPopOn(!isMoreButtonPopOn);
   };
 
   const isMe = () => userId === comment.writerId;
@@ -152,7 +157,7 @@ const Comment = ({
 
   return (
     <>
-      {morePopOff && (
+      {isMoreButtonPopOn && (
         <MoreButtonPop
           boardId={boardId}
           commentId={comment.id}
@@ -161,6 +166,7 @@ const Comment = ({
           onClickLoad={onClickLoad}
           onClickCommentEdit={onClickCommentEdit}
           morePopHandle={morePopOn}
+          moreButtonPopRef={moreButtonPopRef}
         />
       )}
       <>

@@ -129,7 +129,7 @@ const SchoolFood = () => {
 
   useEffect(() => {
     if (info) {
-      const { code, regionCode } = info.schoolDTO;
+      const { code, regionCode } = info.schoolResDTO;
       const data = {
         code,
         regionCode,

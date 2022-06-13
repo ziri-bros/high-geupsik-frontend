@@ -16,20 +16,22 @@ const Head = styled.div`
   position: relative;
   text-align: center;
 
-  ${props => props.modify && css`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    img{
-      width: 25px;
-      height: 25px;
+  ${props =>
+    props.modify &&
+    css`
       display: flex;
-      cursor: pointer;
-    }
-  `}
+      justify-content: space-between;
+      align-items: center;
 
-  .addImg{
+      img {
+        width: 25px;
+        height: 25px;
+        display: flex;
+        cursor: pointer;
+      }
+    `}
+
+  .addImg {
     position: absolute;
     right: 0;
     top: 0;
@@ -49,8 +51,8 @@ const Title = styled.div`
 
 const Table = styled.div`
   border: 1px solid gray;
-  border-radius:5px;
-  margin-top:30px;
+  border-radius: 5px;
+  margin-top: 30px;
 `;
 
 const Trow = styled.div`
@@ -68,9 +70,9 @@ const TInput = styled.input`
 
   /* 모바일용 폰트 크기 적용 */
   @media only screen and (max-width: 385px) {
-    font-size:10px;
+    font-size: 10px;
   }
-  
+
   color: #4f4f4f;
   margin: 0;
   padding: 12px 0;
@@ -83,8 +85,8 @@ const DeleteBtn = styled.button`
   height: 24px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.1);
   border-radius: 5px;
-  border: 1px solid #5D6E1E;
-  color: #5D6E1E;
+  border: 1px solid #5d6e1e;
+  color: #5d6e1e;
   font-weight: 500;
   font-size: 12px;
   cursor: pointer;
@@ -122,7 +124,7 @@ const Timetable = () => {
 
     if (info) {
       const { grade, classNum } = info;
-      const { code, regionCode } = info.schoolDTO;
+      const { code, regionCode } = info.schoolResDTO;
 
       for (let i = weekIdx[0] + 1; i < weekIdx[1]; i += 1) {
         const data = {
@@ -175,15 +177,25 @@ const Timetable = () => {
           <>
             <Title>2021년 1학기</Title>
             <Icon onClick={onClickBtn}>
-              <img className="addImg" src="/images/icons/add_green.png" alt="add" />
+              <img
+                className="addImg"
+                src="/images/icons/add_green.png"
+                alt="add"
+              />
             </Icon>
           </>
         ) : (
           <>
             <Icon onClick={onClickBtn}>
-              <img className="deleteImg" src="/images/icons/close.png" alt="close" />
+              <img
+                className="deleteImg"
+                src="/images/icons/close.png"
+                alt="close"
+              />
             </Icon>
-            <DeleteBtn onClick={onCancel} className="deleteBtn">모두 지우기</DeleteBtn>
+            <DeleteBtn onClick={onCancel} className="deleteBtn">
+              모두 지우기
+            </DeleteBtn>
           </>
         )}
       </Head>
@@ -198,17 +210,52 @@ const Timetable = () => {
         </Trow>
         {TIMETABLE_FRAME.map((list, idx) => (
           <Trow key={list.id}>
-            <TInput first value={list.name} bottom={idx === TIMETABLE_FRAME.length - 1} disabled />
-            <TInput id={`input${idx}0`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput id={`input${idx}1`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput id={`input${idx}2`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput id={`input${idx}3`} maxLength="6" bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
-            <TInput id={`input${idx}4`} maxLength="6" last bottom={idx === TIMETABLE_FRAME.length - 1} disabled={buttonOn} />
+            <TInput
+              first
+              value={list.name}
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled
+            />
+            <TInput
+              id={`input${idx}0`}
+              maxLength="6"
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled={buttonOn}
+            />
+            <TInput
+              id={`input${idx}1`}
+              maxLength="6"
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled={buttonOn}
+            />
+            <TInput
+              id={`input${idx}2`}
+              maxLength="6"
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled={buttonOn}
+            />
+            <TInput
+              id={`input${idx}3`}
+              maxLength="6"
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled={buttonOn}
+            />
+            <TInput
+              id={`input${idx}4`}
+              maxLength="6"
+              last
+              bottom={idx === TIMETABLE_FRAME.length - 1}
+              disabled={buttonOn}
+            />
           </Trow>
         ))}
       </Table>
       {/* 추후 수정 필요 */}
-      {!buttonOn && <Button scheduleBtn onClick={onClickBtn}>저장</Button>}
+      {!buttonOn && (
+        <Button scheduleBtn onClick={onClickBtn}>
+          저장
+        </Button>
+      )}
 
       {/* 지우기 클릭시 생성되는 모달 창 */}
       {!onDelete && (

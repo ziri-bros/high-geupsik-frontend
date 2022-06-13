@@ -5,7 +5,12 @@ import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import Button from './common/Button';
 import DropDown from './common/DropDown';
-import { getCurrentUserInfo, imageUploader, signUp, updateUserInfo } from '../lib/api/auth';
+import {
+  getCurrentUserInfo,
+  imageUploader,
+  signUp,
+  updateUserInfo,
+} from '../lib/api/auth';
 import Modal from './common/Modal';
 import { getUserInfo } from '../store/userInfo';
 import { AREAS, CLASSES, GRADES, SCHOOL_CODES } from '../constants';
@@ -16,8 +21,8 @@ const RegisterUserInfoBox = styled.div`
   display: flex;
   flex-direction: column;
   height: 100%;
-  width:100%;
-  overflow-y: auto; 
+  width: 100%;
+  overflow-y: auto;
 `;
 
 const Menu = styled.div`
@@ -72,7 +77,7 @@ const ImageText = styled.div`
   overflow: hidden;
 
   @media only screen and (max-width: 385px) {
-      width: 210px;     
+    width: 210px;
   }
 `;
 
@@ -107,9 +112,11 @@ const MyInfoDetail = ({ path }) => {
   const info = useSelector(({ userInfo }) => userInfo.info);
 
   if (info) {
-    const idx = Object.values(AREAS).findIndex(item => info.schoolDTO.region === item.region);
+    const idx = Object.values(AREAS).findIndex(
+      item => info.schoolResDTO.regionCode === item.code,
+    );
     defaultArea = Object.keys(AREAS)[idx];
-    defaultSchool = info.schoolDTO.name;
+    defaultSchool = info.schoolResDTO.name;
     defaultGrade = GRADES[info.grade - 1];
     defaultClass = CLASSES[info.classNum - 1];
   }
@@ -132,12 +139,12 @@ const MyInfoDetail = ({ path }) => {
   const onClickModalBtn = () => setModalOn(!modalOn);
   const onClickImgBtn = () => fileInput.current.click();
   const onMoveBack = () => history.push('/myInfo');
-  const onChangeArea = (value) => setArea(value);
-  const onChangeSchoolName = (value) => setSchoolName(value);
-  const onChangeGrade = (value) => setGrade(value);
-  const onChangeClassNum = (value) => setClassNum(value);
+  const onChangeArea = value => setArea(value);
+  const onChangeSchoolName = value => setSchoolName(value);
+  const onChangeGrade = value => setGrade(value);
+  const onChangeClassNum = value => setClassNum(value);
 
-  const onChangeImage = async (e) => {
+  const onChangeImage = async e => {
     if (e.target.files[0] !== null) {
       const currentImgUrl = URL.createObjectURL(e.target.files[0]);
       setImgData(currentImgUrl);
@@ -159,17 +166,11 @@ const MyInfoDetail = ({ path }) => {
     const classValue = CLASSES.findIndex(value => value === classNum) + 1;
 
     const userReqDTO = {
-      studentCardDTO: {
-        grade: gradeValue,
-        classNum: classValue,
-        studentCardImage: imgUrl,
-      },
-      schoolDTO: {
-        code: SCHOOL_CODES[schoolName],
-        name: schoolName,
-        region: AREAS[area].region,
-        regionCode: AREAS[area].code,
-      },
+      classNum: String(classValue),
+      grade: String(gradeValue),
+      region: area,
+      schoolName,
+      studentCardImage: imgUrl,
     };
 
     try {
@@ -189,17 +190,11 @@ const MyInfoDetail = ({ path }) => {
     const classValue = CLASSES.findIndex(value => value === classNum) + 1;
 
     const userReqDTO = {
-      studentCardDTO: {
-        grade: gradeValue,
-        classNum: classValue,
-        studentCardImage: imgUrl,
-      },
-      schoolDTO: {
-        code: SCHOOL_CODES[schoolName],
-        name: schoolName,
-        region: AREAS[area].region,
-        regionCode: AREAS[area].code,
-      },
+      classNum: String(classValue),
+      grade: String(gradeValue),
+      region: area,
+      schoolName,
+      studentCardImage: imgUrl,
     };
 
     try {
@@ -225,7 +220,9 @@ const MyInfoDetail = ({ path }) => {
         <Title>{location === 'register' ? '회원가입' : '내 정보 수정'}</Title>
       </Menu>
       <InputWrapper>
-        <InputText>지역<span>*</span></InputText>
+        <InputText>
+          지역<span>*</span>
+        </InputText>
         <DropDown
           name={defaultArea}
           list={Object.keys(AREAS)}
@@ -234,7 +231,9 @@ const MyInfoDetail = ({ path }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputText>재학 중인 고등학교<span>*</span></InputText>
+        <InputText>
+          재학 중인 고등학교<span>*</span>
+        </InputText>
         <DropDown
           name={defaultSchool}
           list={Object.keys(SCHOOL_CODES)}
@@ -244,7 +243,9 @@ const MyInfoDetail = ({ path }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputText>학년<span>*</span></InputText>
+        <InputText>
+          학년<span>*</span>
+        </InputText>
         <DropDown
           name={defaultGrade}
           list={GRADES}
@@ -253,7 +254,9 @@ const MyInfoDetail = ({ path }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputText>반<span>*</span></InputText>
+        <InputText>
+          반<span>*</span>
+        </InputText>
         <DropDown
           name={defaultClass}
           list={CLASSES}
@@ -262,21 +265,38 @@ const MyInfoDetail = ({ path }) => {
         />
       </InputWrapper>
       <InputWrapper>
-        <InputText>학생증 첨부<span>*</span></InputText>
+        <InputText>
+          학생증 첨부<span>*</span>
+        </InputText>
         <ImageWrapper>
-          <input type="file" ref={fileInput} onChange={onChangeImage} style={{ display: 'none' }} />
+          <input
+            type="file"
+            ref={fileInput}
+            onChange={onChangeImage}
+            style={{ display: 'none' }}
+          />
           <ImageText>{imgData || '파일 없음'}</ImageText>
-          <ImageUploadButton onClick={onClickImgBtn}>학생증 첨부</ImageUploadButton>
+          <ImageUploadButton onClick={onClickImgBtn}>
+            학생증 첨부
+          </ImageUploadButton>
         </ImageWrapper>
       </InputWrapper>
-      {
-        location === 'register' ?
-          <Button onClick={onClickSubmit} infoBtn>가입하기</Button>
-          : <Button onClick={onClickUpdate} infoBtn>저장하기</Button>
-      }
-      {
-        !modalOn && <Modal title="모든 정보를 입력해주세요." onConfirm={onClickModalBtn} single />
-      }
+      {location === 'register' ? (
+        <Button onClick={onClickSubmit} infoBtn>
+          가입하기
+        </Button>
+      ) : (
+        <Button onClick={onClickUpdate} infoBtn>
+          저장하기
+        </Button>
+      )}
+      {!modalOn && (
+        <Modal
+          title="모든 정보를 입력해주세요."
+          onConfirm={onClickModalBtn}
+          single
+        />
+      )}
     </RegisterUserInfoBox>
   );
 };
