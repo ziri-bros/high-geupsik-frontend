@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from '@emotion/styled';
-import History from './common/History';
+
+import { getBoards } from '../lib/api/search';
+
 import SearchBar from './common/SearchBar';
 
 const SearchWrapper = styled.div`
@@ -19,6 +21,22 @@ function Search() {
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
   }, [keywords]);
+
+  useEffect(() => {
+    const getBoardsApi = async () => {
+      const boardReqDTO = {
+        keyword: keywords[0].text,
+      };
+
+      try {
+        const response = await getBoards(boardReqDTO);
+        console.log(response);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    getBoardsApi();
+  }, [keywords[0]]);
 
   const handleAddKeyword = text => {
     const newKeyword = {
@@ -41,8 +59,8 @@ function Search() {
   return (
     <div>
       <SearchWrapper>
-        <SearchBar onAddKeyword={handleAddKeyword}></SearchBar>
-        <History
+        <SearchBar
+          onAddKeyword={handleAddKeyword}
           keywords={keywords}
           onClearKeywords={handleClearKeywords}
           onRemoveKeyword={handleRemoveKeyword}

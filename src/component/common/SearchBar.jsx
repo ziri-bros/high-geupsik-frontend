@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+/* eslint-disable react/prop-types */
+import React, { useState, useEffect, useRef } from 'react';
 import { useHistory } from 'react-router-dom';
 import styled from '@emotion/styled';
 import PropTypes from 'prop-types';
+
+import History from './History';
+
+import BoardComponent from './BoardComponent';
 
 const Container = styled.div`
   display: flex;
@@ -56,8 +61,30 @@ const Input = styled.input`
   `}
 `;
 
-function SearchBar({ onAddKeyword }) {
+const SearchModal = styled.div`
+  position: absolute;
+  display: flex;
+  top: 70px;
+
+  width: 440px;
+  height: 400px;
+
+  border: 2px solid grey;
+  border-radius: 10px;
+  background-color: white;
+`;
+
+function SearchBar({
+  onAddKeyword,
+  keywords,
+  onClearKeywords,
+  onRemoveKeyword,
+}) {
+  const modalRef = useRef('');
+
   const [keyword, setKeyword] = useState('');
+  const [searchModal, setSearchModal] = useState(false);
+
   const history = useHistory();
 
   const handleKeyword = e => {
@@ -76,26 +103,54 @@ function SearchBar({ onAddKeyword }) {
 
   const hasKeyword = !!keyword;
 
+  useEffect(() => {
+    function handleClickOutside(e) {
+      if (modalRef.current && !modalRef.current.contains(e.target)) {
+        setSearchModal(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [modalRef]);
+
   return (
-    <Container>
-      <InputContainer>
-        <Input
-          placeholder=" 검색어 입력"
-          maxLength="20"
-          active={hasKeyword}
-          value={keyword}
-          onChange={handleKeyword}
-          onKeyDown={handleEnter}
-        />
-        {!keyword ? (
-          <CancelBtn onClick={history.goBack}>취소</CancelBtn>
-        ) : (
-          keyword && (
-            <RemoveIcon onClick={handleClearKeyword}>지우기</RemoveIcon>
-          )
-        )}
-      </InputContainer>
-    </Container>
+    <>
+      <Container>
+        <InputContainer ref={modalRef}>
+          <Input
+            placeholder=" 검색어 입력"
+            maxLength="20"
+            active={hasKeyword}
+            value={keyword}
+            onChange={handleKeyword}
+            onKeyDown={handleEnter}
+            onClick={() => {
+              setSearchModal(true);
+            }}
+          />
+          {searchModal && (
+            <SearchModal>
+              <History
+                keywords={keywords}
+                onClearKeywords={onClearKeywords}
+                onRemoveKeyword={onRemoveKeyword}
+              />
+            </SearchModal>
+          )}
+          {!keyword ? (
+            <CancelBtn onClick={history.goBack}>취소</CancelBtn>
+          ) : (
+            keyword && (
+              <RemoveIcon onClick={handleClearKeyword}>지우기</RemoveIcon>
+            )
+          )}
+        </InputContainer>
+      </Container>
+
+      {keywords.length !== 0 && <BoardComponent type="HOT" />}
+    </>
   );
 }
 
