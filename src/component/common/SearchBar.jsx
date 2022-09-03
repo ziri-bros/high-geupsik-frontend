@@ -6,14 +6,16 @@ import PropTypes from 'prop-types';
 
 import History from './History';
 
-import BoardComponent from './BoardComponent';
+import SearchedContentsComponent from './SearchedContentsComponent';
 
 const Container = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+
   width: 100%;
-  height: 50px;
+
   margin: 20px 0 10px 0;
 `;
 
@@ -64,14 +66,21 @@ const Input = styled.input`
 const SearchModal = styled.div`
   position: absolute;
   display: flex;
-  top: 70px;
+  top: 50px;
 
-  width: 440px;
+  width: 365px;
   height: 400px;
 
-  border: 2px solid grey;
-  border-radius: 10px;
+  margin-right: 50px;
+
+  border: 1px solid grey;
   background-color: white;
+`;
+
+const SearchedContentsContainer = styled.div`
+  display: flex;
+
+  width: 100%;
 `;
 
 function SearchBar({
@@ -79,6 +88,8 @@ function SearchBar({
   keywords,
   onClearKeywords,
   onRemoveKeyword,
+  searchedContent,
+  setSearchedKeyword,
 }) {
   const modalRef = useRef('');
 
@@ -94,6 +105,8 @@ function SearchBar({
     if (keyword && e.keyCode === 13) {
       onAddKeyword(keyword);
       setKeyword('');
+      setSearchModal(false);
+      setSearchedKeyword(keyword);
     }
   };
 
@@ -136,6 +149,8 @@ function SearchBar({
                 keywords={keywords}
                 onClearKeywords={onClearKeywords}
                 onRemoveKeyword={onRemoveKeyword}
+                setSearchModal={setSearchModal}
+                setSearchedKeyword={setSearchedKeyword}
               />
             </SearchModal>
           )}
@@ -147,9 +162,12 @@ function SearchBar({
             )
           )}
         </InputContainer>
+        {searchedContent && (
+          <SearchedContentsContainer>
+            <SearchedContentsComponent elem={searchedContent} />
+          </SearchedContentsContainer>
+        )}
       </Container>
-
-      {keywords.length !== 0 && <BoardComponent type="HOT" />}
     </>
   );
 }

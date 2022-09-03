@@ -8,26 +8,24 @@ const HistoryContainer = styled.div`
   width: 100%;
   font-weight: 400;
   font-size: 15px;
-  padding: 10px 0 0 30px;
+  padding: 20px;
   color: rgba(0, 0, 0, 0.5);
+
+  overflow-y: scroll;
 `;
 const HeaderContainer = styled.div`
   display: flex;
   justify-content: space-between;
-  overflow: hidden;
-  margin: 0 20px 10px 0;
 `;
 const Title = styled.span`
-  float: left;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 14px;
   color: #666;
 `;
 const RemoveText = styled.span`
-  float: right;
   color: #666;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 14px;
   cursor: pointer;
 `;
 
@@ -36,13 +34,13 @@ const ListContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0 10px 0 0;
+
+  padding: 5px;
 `;
 
 const KeywordContainer = styled.li`
   display: flex;
   justify-content: space-between;
-  overflow: hidden;
   width: 100%;
 
   margin: 10px 0 0 0;
@@ -56,15 +54,22 @@ const RemoveButton = styled.button`
   font-size: 12px;
   border-radius: 15px;
   cursor: pointer;
-  margin: 0 20px 0 0;
 `;
 
 const Keyword = styled.span`
-  font-size: 18px;
-  font-weight: 400;
+  font-size: 14px;
+  font-weight: 300;
+
+  cursor: pointer;
 `;
 
-function History({ keywords, onRemoveKeyword, onClearKeywords }) {
+function History({
+  keywords,
+  onRemoveKeyword,
+  onClearKeywords,
+  setSearchModal,
+  setSearchedKeyword,
+}) {
   if (keywords.length === 0) {
     return <HistoryContainer>최근 검색된 기록이 없습니다.</HistoryContainer>;
   }
@@ -77,7 +82,14 @@ function History({ keywords, onRemoveKeyword, onClearKeywords }) {
       <ListContainer>
         {keywords.map(elem => (
           <KeywordContainer key={elem.id}>
-            <Keyword>{elem.text}</Keyword>
+            <Keyword
+              onClick={() => {
+                setSearchedKeyword(elem.text);
+                setSearchModal(false);
+              }}
+            >
+              {elem.text}
+            </Keyword>
             <RemoveButton
               onClick={() => {
                 onRemoveKeyword(elem.id);
@@ -96,6 +108,8 @@ History.propTypes = {
   keywords: PropTypes.objectOf(PropTypes.object),
   onRemoveKeyword: PropTypes.func.isRequired,
   onClearKeywords: PropTypes.string,
+  setSearchModal: PropTypes.func,
+  setSearchedKeyword: PropTypes.func,
 };
 
 export default History;
