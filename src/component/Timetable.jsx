@@ -175,7 +175,7 @@ const Timetable = () => {
       <Head modify={!buttonOn}>
         {buttonOn ? (
           <>
-            <Title>2022년 1학기</Title>
+            <Title>2022년 2학기</Title>
             <Icon onClick={onClickBtn}>
               <img
                 className="addImg"
