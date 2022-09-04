@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { getBoards } from '../lib/api/search';
@@ -19,6 +20,7 @@ function Search() {
   );
   const [searchedContent, setSearchedContent] = useState(null);
   const [searchedKeyword, setSearchedKeyword] = useState('');
+  const info = useSelector(({ userInfo }) => userInfo.info);
 
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
@@ -27,6 +29,7 @@ function Search() {
   useEffect(() => {
     const getBoardsApi = async () => {
       const boardReqDTO = {
+        region: info.schoolResDTO.region,
         keyword: searchedKeyword,
       };
 
