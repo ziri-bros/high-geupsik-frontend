@@ -8,6 +8,7 @@ import BoardNotice from './BoardNotice';
 import PostNotFound from './PostNotFound';
 import { getBoardList, getMyPostList } from '../../lib/api/board';
 import { parseTime } from '../../utils';
+import useInfiniteScroll from '../../hooks/useInfiniteScroll';
 
 const BoardWrapper = styled.div`
   display: flex;
@@ -108,11 +109,35 @@ const ContentsInformationSet = styled.span`
   }
 `;
 
+const DetectBoardInfiniteScroll = styled.div`
+  border: 1px solid black;
+`;
+
 const BoardComponent = ({ noticeExistence, myPost, type }) => {
-  const [normalPost, setNormalPost] = useState(null);
-  const [myWritePost, setMyWritePost] = useState(null);
+  const [normalPost, setNormalPost] = useState([]);
+  const [myWritePost, setMyWritePost] = useState([]);
 
   const info = useSelector(({ userInfo }) => userInfo.info);
+
+  const {
+    data: boardData,
+    setSize,
+    error,
+    ref: boardRef,
+  } = useInfiniteScroll({
+    key: `/board/${type}`,
+    api: (_, pageIndex) =>
+      getBoardList({
+        category: type,
+        page: pageIndex,
+        region: info.schoolResDTO.region,
+      }),
+  });
+
+  const { data: myBoardData, ref: myBoardRef } = useInfiniteScroll({
+    key: '/board/myBoard',
+    api: (_, pageIndex) => getMyPostList(pageIndex),
+  });
 
   const getCategoryKor = engCategory => {
     if (engCategory === 'FREE') {
@@ -128,106 +153,101 @@ const BoardComponent = ({ noticeExistence, myPost, type }) => {
   };
 
   useEffect(() => {
-    if (info) {
-      const loadBoard = async () => {
-        const responseToNormalPost = await getBoardList(
-          type,
-          1,
-          info.schoolResDTO.region,
-        );
-
-        if (responseToNormalPost.success) {
-          setNormalPost(responseToNormalPost.data.content);
-        }
-      };
-      loadBoard();
-    }
-  }, [info]);
+    setSize(1);
+  }, [type]);
 
   useEffect(() => {
-    if (myPost) {
-      const loadMyBoard = async () => {
-        const responseMyWritePost = await getMyPostList();
-
-        if (responseMyWritePost.success) {
-          setMyWritePost(responseMyWritePost.data);
-        }
-      };
-      loadMyBoard();
+    if (boardData) {
+      setNormalPost(boardData.flat());
     }
-  }, []);
+  }, [boardData]);
+
+  useEffect(() => {
+    if (myPost && myBoardData) {
+      setMyWritePost(myBoardData.flat());
+    }
+  }, [myBoardData]);
 
   return (
     <>
-      <BoardWrapper>
-        {noticeExistence === 'true' && <BoardNotice />}
-        {myPost !== true &&
-          (normalPost ? (
-            normalPost.map(elem => (
-              <BoardContents
-                to={`/boards/${elem.id}`}
-                noticeExistence={noticeExistence}
-              >
-                <BoardInnerWrapper>
-                  <ContentsTitle>{elem.title}</ContentsTitle>
-                  <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
-                </BoardInnerWrapper>
-                <BoardInnerWrapper>
-                  <ContentsContent>{elem.content}</ContentsContent>
-                  {elem.thumbnail && (
-                    <img className="content-img" src={elem.thumbnail} alt="" />
-                  )}
-                </BoardInnerWrapper>
-                <BoardInnerWrapper>
-                  <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
-                  <ContentsInformationSet>
-                    {/* <img src="/images/icons/view.png" alt="view" />
+      {!error && (
+        <BoardWrapper>
+          {noticeExistence === 'true' && <BoardNotice />}
+          {myPost !== true ? (
+            <>
+              {normalPost.map(elem => (
+                <BoardContents
+                  to={`/boards/${elem.id}`}
+                  noticeExistence={noticeExistence}
+                >
+                  <BoardInnerWrapper>
+                    <ContentsTitle>{elem.title}</ContentsTitle>
+                    <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
+                  </BoardInnerWrapper>
+                  <BoardInnerWrapper>
+                    <ContentsContent>{elem.content}</ContentsContent>
+                    {elem.thumbnail && (
+                      <img
+                        className="content-img"
+                        src={elem.thumbnail}
+                        alt=""
+                      />
+                    )}
+                  </BoardInnerWrapper>
+                  <BoardInnerWrapper>
+                    <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
+                    <ContentsInformationSet>
+                      {/* <img src="/images/icons/view.png" alt="view" />
                     <span>999</span> */}
-                    <img src="/images/icons/heart.png" alt="heart" />
-                    <span>{elem.likeCount}</span>
-                    <img src="/images/icons/chat.png" alt="chat" />
-                    <span>{elem.commentCount}</span>
-                  </ContentsInformationSet>
-                </BoardInnerWrapper>
-              </BoardContents>
-            ))
+                      <img src="/images/icons/heart.png" alt="heart" />
+                      <span>{elem.likeCount}</span>
+                      <img src="/images/icons/chat.png" alt="chat" />
+                      <span>{elem.commentCount}</span>
+                    </ContentsInformationSet>
+                  </BoardInnerWrapper>
+                </BoardContents>
+              ))}
+              <DetectBoardInfiniteScroll ref={boardRef} />
+            </>
           ) : (
-            <></>
-          ))}
-        {myPost === true &&
-          (myWritePost ? (
-            myWritePost.content.map(elem => (
-              <BoardContents
-                to={`/boards/${elem.id}`}
-                noticeExistence={noticeExistence}
-              >
-                <BoardInnerWrapper>
-                  <ContentsTitle>{elem.title}</ContentsTitle>
-                  <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
-                </BoardInnerWrapper>
-                <BoardInnerWrapper>
-                  <ContentsContent>{elem.content}</ContentsContent>
-                  {elem.thumbnail && (
-                    <img className="content-img" src={elem.thumbnail} alt="" />
-                  )}
-                </BoardInnerWrapper>
-                <BoardInnerWrapper>
-                  <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
-                  <ContentsInformationSet>
-                    {/* <img src="/images/icons/view.png" alt="view" />
+            <>
+              {myWritePost.map(elem => (
+                <BoardContents
+                  to={`/boards/${elem.id}`}
+                  noticeExistence={noticeExistence}
+                >
+                  <BoardInnerWrapper>
+                    <ContentsTitle>{elem.title}</ContentsTitle>
+                    <ContentsDate>{parseTime(elem.createdDate)}</ContentsDate>
+                  </BoardInnerWrapper>
+                  <BoardInnerWrapper>
+                    <ContentsContent>{elem.content}</ContentsContent>
+                    {elem.thumbnail && (
+                      <img
+                        className="content-img"
+                        src={elem.thumbnail}
+                        alt=""
+                      />
+                    )}
+                  </BoardInnerWrapper>
+                  <BoardInnerWrapper>
+                    <ContentsType>{getCategoryKor(elem.category)}</ContentsType>
+                    <ContentsInformationSet>
+                      {/* <img src="/images/icons/view.png" alt="view" />
                     <span>123</span> */}
-                    <img src="/images/icons/heart.png" alt="heart" />
-                    <span>{elem.likeCount}</span>
-                    <img src="/images/icons/chat.png" alt="chat" />
-                    <span>{elem.commentCount}</span>
-                  </ContentsInformationSet>
-                </BoardInnerWrapper>
-              </BoardContents>
-            ))
-          ) : (
-            <></>
-          ))}
-      </BoardWrapper>
+                      <img src="/images/icons/heart.png" alt="heart" />
+                      <span>{elem.likeCount}</span>
+                      <img src="/images/icons/chat.png" alt="chat" />
+                      <span>{elem.commentCount}</span>
+                    </ContentsInformationSet>
+                  </BoardInnerWrapper>
+                </BoardContents>
+              ))}
+              <DetectBoardInfiniteScroll ref={myBoardRef} />
+            </>
+          )}
+        </BoardWrapper>
+      )}
     </>
   );
 };
