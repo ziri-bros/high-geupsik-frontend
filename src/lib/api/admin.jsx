@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getUserCardList = async (pageNumber = 1) => {
+export const getUserCardList = async (pageNumber = 0) => {
   const response = await axios({
     url: `${process.env.REACT_APP_API_BASE_URL}/admin/users?page=${pageNumber}`,
     method: 'get',
