@@ -150,6 +150,7 @@ const Cocomment = ({
         <MoreButtonPop
           boardId={boardId}
           commentId={cocomment.id}
+          receiverId={cocomment.writerId}
           type="comment"
           isMe={isMe()}
           onClickLoad={onClickLoad}

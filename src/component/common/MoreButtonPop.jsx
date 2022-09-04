@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { useHistory } from 'react-router-dom';
 import { deletePost } from '../../lib/api/board';
 import { deleteComments } from '../../lib/api/comment';
+import { deleteMessageRoom, postMessageRoomMake } from '../../lib/api/message';
 
 const MoreButtonPopBackground = styled.div`
   width: 100%;
@@ -20,6 +21,8 @@ const MoreButtonPopBackground = styled.div`
   justify-content: flex-end;
 
   background: rgba(0, 0, 0, 0.6);
+
+  z-index: 999;
 `;
 
 const MoreButtonWrapper = styled.div`
@@ -166,6 +169,8 @@ const MoreButtonPopCancelButton = styled.div`
 const MoreButtonPop = ({
   boardId,
   commentId,
+  receiverId,
+  roomId,
   isMe,
   type,
   morePopHandle,
@@ -206,32 +211,62 @@ const MoreButtonPop = ({
     }
   };
 
+  const onClickMessageRoomCreate = async () => {
+    try {
+      const res = await postMessageRoomMake({ boardId, receiverId });
+      console.log(res);
+      if (res.data.success) {
+        history.push(`/message/${boardId}/${res.data.data.id}/${receiverId}`);
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const onClickMessageRoomDelete = async () => {
+    try {
+      await deleteMessageRoom({ roomId });
+      history.push('/message');
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <MoreButtonPopBackground>
       <MoreButtonWrapper ref={moreButtonPopRef}>
         <MoreButtonPopActionWrapper>
-          {isMe ? (
-            <>
-              <MoreButtonPopReviseButton onClick={onClickRevise}>
-                수정
-              </MoreButtonPopReviseButton>
-              <MoreButtonPopDeleteButton onClick={onClickDelete}>
-                삭제
-              </MoreButtonPopDeleteButton>
-            </>
-          ) : (
-            <MoreButtonPopLetterSendButton>
-              쪽지 보내기
-            </MoreButtonPopLetterSendButton>
-          )}
+          {type !== 'message' &&
+            (isMe ? (
+              <>
+                <MoreButtonPopReviseButton onClick={onClickRevise}>
+                  수정
+                </MoreButtonPopReviseButton>
+                <MoreButtonPopDeleteButton onClick={onClickDelete}>
+                  삭제
+                </MoreButtonPopDeleteButton>
+              </>
+            ) : (
+              <MoreButtonPopLetterSendButton onClick={onClickMessageRoomCreate}>
+                쪽지 보내기
+              </MoreButtonPopLetterSendButton>
+            ))}
 
-          {/* <MoreButtonPopLetterAllDeleteButton>
-            쪽지 전체 삭제
-          </MoreButtonPopLetterAllDeleteButton>
-          <MoreButtonPopLetterBlockButton>차단</MoreButtonPopLetterBlockButton>
-          <MoreButtonPopLetterReportButton>
-            신고
-          </MoreButtonPopLetterReportButton> */}
+          {type === 'message' && (
+            <>
+              <MoreButtonPopLetterAllDeleteButton
+                onClick={onClickMessageRoomDelete}
+              >
+                쪽지 전체 삭제
+              </MoreButtonPopLetterAllDeleteButton>
+              <MoreButtonPopLetterBlockButton>
+                차단
+              </MoreButtonPopLetterBlockButton>
+              <MoreButtonPopLetterReportButton>
+                신고
+              </MoreButtonPopLetterReportButton>
+            </>
+          )}
         </MoreButtonPopActionWrapper>
         <MoreButtonPopCancelButton onClick={morePopHandle}>
           취소
@@ -244,6 +279,8 @@ const MoreButtonPop = ({
 MoreButtonPop.propTypes = {
   boardId: PropTypes.string,
   commentId: PropTypes.number,
+  receiverId: PropTypes.number,
+  roomId: PropTypes.number,
   isMe: PropTypes.bool.isRequired,
   type: PropTypes.string.isRequired,
   morePopHandle: PropTypes.func.isRequired,

@@ -105,7 +105,7 @@ const ButtonWrapper = styled(Link)`
 const MyInfo = () => {
   const info = useSelector(({ userInfo }) => userInfo.info);
   const [menuOn, setMenuOn] = useState(true);
-  const [data, setData] = useState(null);
+  const [isData, setIsData] = useState(null);
 
   const history = useHistory();
 
@@ -122,9 +122,7 @@ const MyInfo = () => {
     const loadBoard = async () => {
       const response = await getMyPostList();
 
-      if (response.success && response.data.content.length > 0) {
-        setData(response.data);
-      }
+      setIsData(response);
     };
 
     loadBoard();
@@ -166,7 +164,7 @@ const MyInfo = () => {
 
       {/* 게시글 없을 때 */}
       <MyPostWrapper>
-        {data ? (
+        {isData ? (
           <BoardComponent myPost />
         ) : (
           <PostNotFound myInfo={menuOn ? '내가 작성한' : '내가 댓글 단'} />
