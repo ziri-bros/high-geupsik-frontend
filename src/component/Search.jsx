@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import styled from '@emotion/styled';
 
 import { getBoards } from '../lib/api/search';
@@ -17,6 +18,9 @@ function Search() {
   const [keywords, setKeywords] = useState(
     JSON.parse(localStorage.getItem('keywords') || '[]'),
   );
+  const [searchedContent, setSearchedContent] = useState(null);
+  const [searchedKeyword, setSearchedKeyword] = useState('');
+  const info = useSelector(({ userInfo }) => userInfo.info);
 
   useEffect(() => {
     localStorage.setItem('keywords', JSON.stringify(keywords));
@@ -25,18 +29,19 @@ function Search() {
   useEffect(() => {
     const getBoardsApi = async () => {
       const boardReqDTO = {
-        keyword: keywords[0].text,
+        region: info.schoolResDTO.region,
+        keyword: searchedKeyword,
       };
 
       try {
-        const response = await getBoards(boardReqDTO);
-        console.log(response);
+        const target = await getBoards(boardReqDTO);
+        setSearchedContent(target);
       } catch (e) {
         console.log(e);
       }
     };
     getBoardsApi();
-  }, [keywords[0]]);
+  }, [keywords, searchedKeyword]);
 
   const handleAddKeyword = text => {
     const newKeyword = {
@@ -64,6 +69,8 @@ function Search() {
           keywords={keywords}
           onClearKeywords={handleClearKeywords}
           onRemoveKeyword={handleRemoveKeyword}
+          searchedContent={searchedContent}
+          setSearchedKeyword={setSearchedKeyword}
         />
       </SearchWrapper>
     </div>
