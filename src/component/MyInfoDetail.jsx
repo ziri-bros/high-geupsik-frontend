@@ -136,11 +136,11 @@ const MyInfoDetail = ({ path }) => {
   useEffect(() => {
     if (path === '/modify') setLocation('modify');
     if (path === '/register' && localStorage.getItem('ACCESS_TOKEN')) {
-      alert('비정상적인 경로입니다.');
-      history.push('/home');
+      setLocation('register');
     }
     if (path === '/register' && !localStorage.getItem('ACCESS_TOKEN')) {
-      setLocation('register');
+      alert('비정상적인 경로입니다.');
+      history.push('/home');
     }
   }, []);
 
