@@ -417,7 +417,7 @@ const Preview = ({ type }) => {
     <>
       {type === 'myschool' && (
         <PreviewItem>
-          <MySchoolLink />
+          <MySchoolLink schooloInfo={info} />
         </PreviewItem>
       )}
       {type === 'schoolfood' && (

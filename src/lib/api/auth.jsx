@@ -46,3 +46,15 @@ export const updateUserInfo = async userReqDTO => {
   });
   return response;
 };
+
+export const getSchoolByRegion = async data => {
+  const response = await axios({
+    url: `${process.env.REACT_APP_API_BASE_URL}/schools`,
+    method: 'get',
+    params: { region: data },
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
+    },
+  });
+  return response;
+};

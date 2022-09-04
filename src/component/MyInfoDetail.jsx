@@ -3,17 +3,19 @@ import React, { useRef, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import Button from './common/Button';
-import DropDown from './common/DropDown';
+
 import {
-  getCurrentUserInfo,
   imageUploader,
   signUp,
   updateUserInfo,
+  getSchoolByRegion,
 } from '../lib/api/auth';
+
+import { AREAS, CLASSES, GRADES } from '../constants';
+
+import Button from './common/Button';
+import DropDown from './common/DropDown';
 import Modal from './common/Modal';
-import { getUserInfo } from '../store/userInfo';
-import { AREAS, CLASSES, GRADES, SCHOOL_CODES } from '../constants';
 
 const RegisterUserInfoBox = styled.div`
   margin: 22px 0 0 22px;
@@ -133,7 +135,13 @@ const MyInfoDetail = ({ path }) => {
   // 초기 화면 렌더링 시, 경로를 통한 상태값 관리
   useEffect(() => {
     if (path === '/modify') setLocation('modify');
-    if (path === '/register') setLocation('register');
+    if (path === '/register' && localStorage.getItem('ACCESS_TOKEN')) {
+      alert('비정상적인 경로입니다.');
+      history.push('/home');
+    }
+    if (path === '/register' && !localStorage.getItem('ACCESS_TOKEN')) {
+      setLocation('register');
+    }
   }, []);
 
   const onClickModalBtn = () => setModalOn(!modalOn);
@@ -207,6 +215,21 @@ const MyInfoDetail = ({ path }) => {
     }
   };
 
+  const [highSchoolArr, setHighSchoolArr] = useState([]);
+  useEffect(() => {
+    const matchSchoolByRegion = async req => {
+      try {
+        const response = await getSchoolByRegion(req);
+        const TMP_ARR = [];
+        response.data.data.map(v => TMP_ARR.push(v.name));
+        setHighSchoolArr(TMP_ARR);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+    matchSchoolByRegion(area);
+  }, [area]);
+
   return (
     <RegisterUserInfoBox>
       <Menu>
@@ -236,7 +259,7 @@ const MyInfoDetail = ({ path }) => {
         </InputText>
         <DropDown
           name={defaultSchool}
-          list={Object.keys(SCHOOL_CODES)}
+          list={highSchoolArr}
           onChangeSelected={onChangeSchoolName}
           narrow
           school
