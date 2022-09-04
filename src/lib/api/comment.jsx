@@ -1,15 +1,15 @@
 import axios from 'axios';
 
 // 게시글의 boardId를 받아 댓글을 받아온다.
-export const getComments = async boardId => {
+export const getComments = async (boardId, page) => {
   const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/comments`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/${boardId}/comments?page=${page}`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
-  return response.data;
+  return [...response.data.data.content];
 };
 
 // 게시글의 boardId, 댓글 정보인 commentReqDTO(content)를 받아 댓글을 단다.

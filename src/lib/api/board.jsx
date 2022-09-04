@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-export const getBoardList = async (
+export const getBoardList = async ({
   category = '',
-  pageNumber = 1,
+  page = 0,
   region = '',
-) => {
-  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&region=${region}&page=${pageNumber}`;
+}) => {
+  let urls = `${process.env.REACT_APP_API_BASE_URL}/boards?category=${category}&region=${region}&page=${page}`;
 
   if (category === 'HOT') {
-    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?&region=${region}&page=${pageNumber}&likeCount=3`;
+    urls = `${process.env.REACT_APP_API_BASE_URL}/boards?region=${region}&page=${page}&likeCount=3`;
   }
 
   const response = await axios({
@@ -18,7 +18,8 @@ export const getBoardList = async (
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
-  return response.data;
+
+  return [...response.data.data.content];
 };
 
 // 게시글 등록시 boardReqDTO에 (category, content, title, uploadFileDTOList) 필요.
@@ -85,13 +86,13 @@ export const postLike = async boardId => {
 };
 
 // 내가 쓴 게시글 리스트 받아오기
-export const getMyPostList = async () => {
+export const getMyPostList = async (page = 0) => {
   const response = await axios({
-    url: `${process.env.REACT_APP_API_BASE_URL}/boards/my`,
+    url: `${process.env.REACT_APP_API_BASE_URL}/boards/my?page=${page}`,
     method: 'get',
     headers: {
       Authorization: `Bearer ${localStorage.getItem('ACCESS_TOKEN')}`,
     },
   });
-  return response.data;
+  return [...response.data.data.content];
 };

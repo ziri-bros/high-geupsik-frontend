@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
 import { getNotifications } from '../lib/api/notification';
 import NotificationItem from './common/NotificationItem';
 
@@ -80,6 +81,15 @@ const Notification = () => {
   const history = useHistory();
   const [data, setData] = useState(null);
   const [remainNotificationCount, setRemainNotificationCount] = useState(null);
+
+  // const {
+  //   data: notificationData,
+  //   error,
+  //   ref,
+  // } = useInfiniteScroll({
+  //   key: '/my/notification',
+  //   api: (_, pageIndex) => getNotifications(pageIndex),
+  // });
 
   useEffect(() => {
     const loadNotifications = async () => {

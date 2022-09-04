@@ -161,6 +161,7 @@ const Comment = ({
         <MoreButtonPop
           boardId={boardId}
           commentId={comment.id}
+          receiverId={comment.writerId}
           type="comment"
           isMe={isMe()}
           onClickLoad={onClickLoad}

@@ -11,6 +11,7 @@ import { getComments } from '../lib/api/comment';
 import { parseTime } from '../utils';
 import Cocomment from './Cocomment';
 import useDetectOutsideClick from '../hooks/useDetectOutsideClick';
+import useInfiniteScroll from '../hooks/useInfiniteScroll';
 
 const PostMainBox = styled.div`
   overflow-y: auto;
@@ -182,6 +183,10 @@ const PostLikedButton = styled.div`
   }
 `;
 
+const DetectBoardInfiniteScroll = styled.div`
+  margin-top: 10px;
+`;
+
 const CommentInputWrapper = styled.div``;
 
 const Post = ({ boardId, setCategory }) => {
@@ -192,10 +197,26 @@ const Post = ({ boardId, setCategory }) => {
     false,
   );
   const [data, setData] = useState(null);
-  const [comments, setComments] = useState(null);
+  const [comments, setComments] = useState([]);
   const [like, setLike] = useState(null);
   const [editCommentValue, setEditCommentValue] = useState(null);
   const [commentParentId, setCommentParentId] = useState(null);
+
+  const {
+    data: commentData,
+    error,
+    ref,
+    mutate,
+  } = useInfiniteScroll({
+    key: `/board/comment/${boardId}`,
+    api: (_, pageIndex) => getComments(boardId, pageIndex),
+  });
+
+  useEffect(() => {
+    if (commentData) {
+      setComments(commentData.flat());
+    }
+  }, [commentData]);
 
   const history = useHistory();
 
@@ -225,8 +246,7 @@ const Post = ({ boardId, setCategory }) => {
       setCategory(postData.data.category);
       setLike(postData.data.userLike);
 
-      const commentsData = await getComments(boardId);
-      setComments(commentsData.data.content);
+      mutate();
     } catch (e) {
       console.log(e);
     }
@@ -256,6 +276,7 @@ const Post = ({ boardId, setCategory }) => {
           {isMoreButtonPopOn && (
             <MoreButtonPop
               boardId={boardId}
+              receiverId={data.writerId}
               type="post"
               isMe={isMe()}
               morePopHandle={morePopOn}
@@ -315,31 +336,35 @@ const Post = ({ boardId, setCategory }) => {
                     좋아요
                   </PostLikedButton>
                 </PostCommentsNumberWrapper>
-                {comments &&
-                  comments.map(comment =>
-                    comment.parent ? (
-                      <Comment
-                        comment={comment}
-                        boardId={boardId}
-                        userId={info.id}
-                        postWriterId={data.writerId}
-                        onClickLoad={onClickLoad}
-                        getEditComment={getEditComment}
-                        getCommentParentId={getCommentParentId}
-                        key={comment.id}
-                      />
-                    ) : (
-                      <Cocomment
-                        cocomment={comment}
-                        boardId={boardId}
-                        userId={info.id}
-                        postWriterId={data.writerId}
-                        onClickLoad={onClickLoad}
-                        getEditComment={getEditComment}
-                        key={comment.id}
-                      />
-                    ),
-                  )}
+                {comments && (
+                  <>
+                    {comments.map(comment =>
+                      comment.parent ? (
+                        <Comment
+                          comment={comment}
+                          boardId={boardId}
+                          userId={info.id}
+                          postWriterId={data.writerId}
+                          onClickLoad={onClickLoad}
+                          getEditComment={getEditComment}
+                          getCommentParentId={getCommentParentId}
+                          key={comment.id}
+                        />
+                      ) : (
+                        <Cocomment
+                          cocomment={comment}
+                          boardId={boardId}
+                          userId={info.id}
+                          postWriterId={data.writerId}
+                          onClickLoad={onClickLoad}
+                          getEditComment={getEditComment}
+                          key={comment.id}
+                        />
+                      ),
+                    )}
+                    <DetectBoardInfiniteScroll ref={ref} />
+                  </>
+                )}
               </PostCommentsWrapper>
             </PostWrapper>
             <CommentInputWrapper>
