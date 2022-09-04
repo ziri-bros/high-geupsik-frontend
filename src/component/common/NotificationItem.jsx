@@ -85,7 +85,7 @@ const NotificationItem = ({ item }) => {
       return '대댓글';
     }
 
-    return '좋아요';
+    return '메시지';
   };
 
   return (
@@ -95,9 +95,9 @@ const NotificationItem = ({ item }) => {
           <img src="/images/icons/comment-green.png" alt="comment" />
         </IconWrapper>
         <Container>
-          <Title>{getNotificationKind(item.notificationKind)}</Title>
+          <Title>{getNotificationKind(item.notificationType)}</Title>
           <Content>
-            {`[익명님의 ${getNotificationKind(item.notificationKind)}] : ${
+            {`[익명님의 ${getNotificationKind(item.notificationType)}] : ${
               item.content
             }`}
           </Content>
