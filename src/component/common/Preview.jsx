@@ -184,47 +184,41 @@ const Preview = ({ type }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (type === 'board' && info) {
+    if (info) {
       const loadBoard = async () => {
-        const FREE = await getBoardList('FREE', 1, info.schoolResDTO.region);
-        const INFORMATION = await getBoardList(
-          'INFORMATION',
-          1,
-          info.schoolResDTO.region,
-        );
-        const HOT = await getBoardList('HOT', 1, info.schoolResDTO.region);
-        const PROMOTION = await getBoardList(
-          'PROMOTION',
-          1,
-          info.schoolResDTO.region,
-        );
+        const FREE = await getBoardList({
+          category: 'FREE',
+          page: 0,
+          region: info.schoolResDTO.region,
+        });
+        const INFORMATION = await getBoardList({
+          category: 'INFORMATION',
+          page: 0,
+          region: info.schoolResDTO.region,
+        });
+        const HOT = await getBoardList({
+          category: 'HOT',
+          page: 0,
+          region: info.schoolResDTO.region,
+        });
+        const PROMOTION = await getBoardList({
+          category: 'PROMOTION',
+          page: 0,
+          region: info.schoolResDTO.region,
+        });
 
         setFirstContentObject({
-          free_title:
-            FREE.data.totalElements !== 0 ? FREE.data.content[0].title : '',
-          free_id: FREE.data.totalElements !== 0 ? FREE.data.content[0].id : '',
+          free_title: FREE[0] ? FREE[0].title : '',
+          free_id: FREE[0] ? FREE[0].id : '',
 
-          information_title:
-            INFORMATION.data.totalElements !== 0
-              ? INFORMATION.data.content[0].title
-              : '',
-          information_id:
-            INFORMATION.data.totalElements !== 0
-              ? INFORMATION.data.content[0].id
-              : '',
+          information_title: INFORMATION[0] ? INFORMATION[0].title : '',
+          information_id: INFORMATION[0] ? INFORMATION[0].id : '',
 
-          hot_title:
-            HOT.data.totalElements !== 0 ? HOT.data.content[0].title : '',
-          hot_id: HOT.data.totalElements !== 0 ? HOT.data.content[0].id : '',
+          hot_title: HOT[0] ? HOT[0].title : '',
+          hot_id: HOT[0] ? HOT[0].id : '',
 
-          promotion_title:
-            PROMOTION.data.totalElements !== 0
-              ? PROMOTION.data.content[0].title
-              : '',
-          promotion_id:
-            PROMOTION.data.totalElements !== 0
-              ? PROMOTION.data.content[0].id
-              : '',
+          promotion_title: PROMOTION[0] ? PROMOTION[0].title : '',
+          promotion_id: PROMOTION[0] ? PROMOTION[0].id : '',
         });
       };
 
