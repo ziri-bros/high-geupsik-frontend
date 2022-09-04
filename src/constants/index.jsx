@@ -22,15 +22,10 @@ export const AREAS = Object.freeze({
   제주특별자치도: { region: 'JEJU', code: 'T10' },
 });
 
-export const SCHOOL_CODES = Object.freeze({
-  서울과학고등학교: '7010084',
-  한성과학고등학교: '7010115',
-  대원외국어고등학교: '7010143',
-  한영외국어고등학교: '7010259',
-});
-
 export const GRADES = ['1학년', '2학년', '3학년'];
-export const CLASSES = [...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`)];
+export const CLASSES = [
+  ...new Array(20).fill(0).map((_, idx) => `${idx + 1}반`),
+];
 
 export const TIMETABLE_FRAME = [
   { name: '0교시', id: '0' },
